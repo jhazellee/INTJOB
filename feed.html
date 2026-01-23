@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Feedback & Complaints Dashboard</title>
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+/* Reset & base */
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+body { display: flex; min-height: 100vh; background: #f5f6fa; }
+
+/* Sidebar */
+nav { width: 250px; background: #2f3640; color: #fff; display: flex; flex-direction: column; }
+nav h2 { text-align: center; padding: 20px; border-bottom: 1px solid #444; }
+nav ul { list-style: none; flex: 1; }
+nav ul li { border-bottom: 1px solid #444; }
+nav ul li a {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  color: #fff;
+  text-decoration: none;
+  transition: 0.3s;
+  cursor: pointer;
+}
+nav ul li a i { margin-right: 10px; }
+nav ul li a.active, nav ul li a:hover { background: #40739e; }
+
+/* Main content */
+main { flex: 1; padding: 20px; overflow-x: auto; }
+header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+header h1 { font-size: 28px; }
+
+/* Tab Bar */
+.tabs { 
+  display: flex; 
+  gap: 0; 
+  margin-bottom: 30px; 
+  border-bottom: 2px solid #ddd; 
+  overflow-x: auto;
+  flex-wrap: nowrap;
+}
+.tab-btn { 
+  padding: 15px 25px; 
+  border: none; 
+  background: transparent; 
+  cursor: pointer; 
+  font-size: 14px; 
+  font-weight: 500;
+  color: #666;
+  transition: 0.3s; 
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+}
+.tab-btn:hover { 
+  background: #f8f9fa;
+  color: #40739e;
+}
+.tab-btn.active { 
+  color: #40739e;
+  border-bottom: 3px solid #40739e;
+}
+
+/* Content sections */
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* Stats Cards */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+}
+.stat-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  text-align: center;
+}
+.stat-card i {
+  font-size: 32px;
+  color: #40739e;
+  margin-bottom: 10px;
+}
+.stat-card h3 {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+}
+.stat-card .value {
+  font-size: 28px;
+  font-weight: bold;
+  color: #2f3640;
+}
+
+/* Table */
+.table-container {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+table th, table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+table th {
+  background: #40739e;
+  color: #fff;
+  font-weight: 600;
+}
+table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.badge-feedback {
+  background: #d4edda;
+  color: #155724;
+}
+.badge-complaint {
+  background: #f8d7da;
+  color: #721c24;
+}
+.badge-suggestion {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+.badge-resolved {
+  background: #d4edda;
+  color: #155724;
+}
+.badge-pending {
+  background: #fff3cd;
+  color: #856404;
+}
+.badge-flagged {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* Buttons */
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.3s;
+  margin: 2px;
+}
+.btn-view {
+  background: #40739e;
+  color: white;
+}
+.btn-view:hover {
+  background: #2f5a7d;
+}
+.btn-respond {
+  background: #27ae60;
+  color: white;
+}
+.btn-respond:hover {
+  background: #229954;
+}
+.btn-flag {
+  background: #e74c3c;
+  color: white;
+}
+.btn-flag:hover {
+  background: #c0392b;
+}
+.btn-resolve {
+  background: #3498db;
+  color: white;
+}
+.btn-resolve:hover {
+  background: #2980b9;
+}
+
+/* Filters */
+.filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.filters select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
+.modal-content {
+  background-color: #fff;
+  margin: 5% auto;
+  padding: 30px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.modal-header h2 {
+  font-size: 22px;
+  color: #2f3640;
+}
+.close {
+  font-size: 28px;
+  font-weight: bold;
+  color: #aaa;
+  cursor: pointer;
+}
+.close:hover {
+  color: #000;
+}
+.modal textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-family: Arial, sans-serif;
+}
+.modal-footer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+/* Responsive */
+@media (max-width:768px) {
+  nav { width: 60px; }
+  nav h2, nav ul li a span { display:none; }
+  .stats-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<nav>
+    <h2>Admin</h2>
+    <ul>
+      <li><a href="admin.html"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+      <li><a href="usermanage.html"><i class="fas fa-users"></i> <span>Users Management</span></a></li>
+      <li><a href="applimanage.html"><i class="fas fa-file-alt"></i> <span>Applications Management</span></a></li>
+      <li><a href="contntmanage.html"><i class="fas fa-file-code"></i> <span>Content Management</span></a></li>
+      <li><a href="report.html"><i class="fas fa-chart-line"></i> <span>Reports & Analytics</span></a></li>
+      <li><a href="payment.html"><i class="fas fa-credit-card"></i> <span>Payment/Subscription Management</span></a></li>
+      <li><a href="feed.html" class="active"><i class="fas fa-comment-dots"></i> <span>Feedback & Complaints</span></a></li>
+      <li><a href="sysSett.html"><i class="fas fa-cogs"></i> <span>System Settings</span></a></li>
+      <li><a href="security.html"><i class="fas fa-shield-alt"></i> <span>Security & Monitoring</span></a></li>
+    </ul>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main>
+  <header>
+    <h1><i class="fas fa-comment-dots"></i> Feedback & Complaints</h1>
+  </header>
+
+  <!-- Statistics -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <i class="fas fa-comments"></i>
+      <h3>Total Feedback</h3>
+      <div class="value">248</div>
+    </div>
+    <div class="stat-card">
+      <i class="fas fa-exclamation-circle"></i>
+      <h3>Total Complaints</h3>
+      <div class="value">52</div>
+    </div>
+    <div class="stat-card">
+      <i class="fas fa-clock"></i>
+      <h3>Pending</h3>
+      <div class="value">23</div>
+    </div>
+    <div class="stat-card">
+      <i class="fas fa-check-circle"></i>
+      <h3>Resolved</h3>
+      <div class="value">277</div>
+    </div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTabContent('applicants')">
+      <i class="fas fa-user-tie"></i> Applicant Feedback
+    </button>
+    <button class="tab-btn" onclick="showTabContent('employers')">
+      <i class="fas fa-building"></i> Employer Feedback
+    </button>
+    <button class="tab-btn" onclick="showTabContent('all')">
+      <i class="fas fa-list"></i> All Feedback
+    </button>
+  </div>
+
+  <!-- Applicant Feedback Tab -->
+  <div class="tab-content active" id="applicants">
+    <div class="filters">
+      <select id="filterTypeApplicant" onchange="filterFeedback('applicants')">
+        <option value="all">All Types</option>
+        <option value="feedback">Feedback</option>
+        <option value="complaint">Complaint</option>
+        <option value="suggestion">Suggestion</option>
+      </select>
+      <select id="filterStatusApplicant" onchange="filterFeedback('applicants')">
+        <option value="all">All Status</option>
+        <option value="pending">Pending</option>
+        <option value="resolved">Resolved</option>
+        <option value="flagged">Flagged</option>
+      </select>
+    </div>
+
+    <div class="table-container">
+      <div class="table-header">
+        <h2><i class="fas fa-user-tie"></i> Applicant Feedback & Complaints</h2>
+      </div>
+      <table id="applicantTable">
+        <thead>
+          <tr>
+            <th>Applicant Name</th>
+            <th>Type</th>
+            <th>Message</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>John Doe</td>
+            <td><span class="badge badge-feedback">Feedback</span></td>
+            <td>Great platform, very useful for job hunting!</td>
+            <td>Nov 18, 2025</td>
+            <td><span class="badge badge-resolved">Resolved</span></td>
+            <td>
+              <button class="btn btn-view" onclick="viewFeedback('John Doe', 'Feedback', 'Great platform, very useful for job hunting!')">
+                <i class="fas fa-eye"></i> View
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>Jane Smith</td>
+            <td><span class="badge badge-complaint">Complaint</span></td>
+            <td>Application submission not working properly</td>
+            <td>Nov 19, 2025</td>
+            <td><span class="badge badge-pending">Pending</span></td>
+            <td>
+              <button class="btn btn-view" onclick="viewFeedback('Jane Smith', 'Complaint', 'Application submission not working properly')">
+                <i class="fas fa-eye"></i> View
+              </button>
+              <button class="btn btn-respond" onclick="respondFeedback('Jane Smith')">
+                <i class="fas fa-reply"></i> Respond
+              </button>
+              <button class="btn btn-flag" onclick="flagFeedback('Jane Smith')">
+                <i class="fas fa-flag"></i> Flag
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>Mike Johnson</td>
+            <td><span class="badge badge-suggestion">Suggestion</span></td>
+            <td>Would like to see more filter options in job search</td>
+            <td>Nov 17, 2025</td>
+            <td><span class="badge badge-pending">Pending</span></td>
+            <td>
+              <button class="btn btn-view" onclick="viewFeedback('Mike Johnson', 'Suggestion', 'Would like to see more filter options in job search')">
+                <i class="fas fa-eye"></i> View
+              </button>
+              <button class="btn btn-respond" onclick="respondFeedback('Mike Johnson')">
+                <i class="fas fa-reply"></i> Respond
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>Sarah Williams</td>
+            <td><span class="badge badge-feedback">Feedback</span></td>
+            <td>Resume builder tool is excellent!</td>
+            <td>Nov 16, 2025</td>
+            <td><span class="badge badge-resolved">Resolved</span></td>
+            <td>
+              <button class="btn btn-view" onclick="viewFeedback('Sarah Williams', 'Feedback', 'Resume builder tool is excellent!')">
+                <i class="fas fa-eye"></i> View
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>David Brown</td>
+            <td><span class="badge badge-complaint">Complaint</span></td>
+            <td>Not receiving job alert notifications</td>
+            <td>Nov 19, 2025</td>
+            <td><span class="badge badge-pending">Pending</span></td>
+            <td>
+              <button class="btn btn-view" onclick="viewFeedback('David Brown', 'Complaint', 'Not receiving job alert notifications')">
+                <i class="fas fa-eye"></i> View
+              </button>
+              <button class="btn btn-respond" onclick="respondFeedback('David Brown')">
+                <i class="fas fa-reply"></i> Respond
+              </button>
+              <button class="btn btn-resolve" onclick="resolveFeedback('David Brown')">
+                <i class="fas fa-check"></i> Resolve
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Employer Feedback Tab -->
+  <div class="tab-content" id="employers">
+    <div class="filters">
+      <select id="filterTypeEmployer" onchange="filterFeedback('employers')">
+        <option value="all">All Types</option>
+        <option value="feedback">Feedback</option>
+        <option value="complaint">Complaint</option>
+        <option value="suggestion">Suggestion</option>
+      </select>
+      <select id="filterStatusEmployer" onchange="filterFeedback('employers')">
+        <option value="all">All Status</option>
+        <option value="pending">Pending</option>
+        <option value="resolved">Resolved</option>
+        <option value="flagged">Flagged</option>
+      </select>
+      <button class="btn btn-respond" onclick="exportEmployerFeedback()">
+        <i class="fas fa-download"></i> Export Data
+      </button>
+      <button class="btn btn-resolve" onclick="bulkResolveEmployer()">
+        <i class="fas fa-check-double"></i> Bulk Resolve
+      </button>
+    </div>
+
+    <div class="table-container">
+      <div class="table-header">
+        <h2><i class="fas fa-building"></i> Employer Feedback & Complaints</h2>
+        <div style="display: flex; gap: 10px;">
+          <button class="btn btn-view" onclick="refreshEmployerData()">
+            <i class="fas fa-sync-alt"></i> Refresh
+          </button>
+          <button class="btn btn-respond" onclick="sendBulkEmail('employer')">
+            <i class="fas fa-envelope"></i> Send Update
+          </button>
+        </div>
+      </div>
+      <table id="employerTable">
+        <thead>
+          <tr>
+            <th><input type="checkbox" onclick="toggleSelectAllEmployer(this)"></th>
+            <th>Company Name</th>
+            <th>Type</th>
+            <th>Message</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox" class="employer-checkbox"></td>
+            <td>Tech Innovations Inc.</td>
+            <td><span class="badge badge-feedback">Feedback</span></td>
+            <td>Excellent candidate quality from this platform</td>
+            <td>Nov 18, 2025</td>
+            <td><span class="badge badge-resolved">Resolved</span></td>
+            <td>
+              <button class="btn btn-view" onclick="viewFeedback('Tech Innovations Inc.', 'Feedback', 'Excellent candidate quality from this platform')">
+                <i class="fas fa-eye"></i> View
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" class="employer-checkbox"></td>
+            <td>Acme Corporation</td>
+            <td><span class="badge badge-complaint">Complaint</span></td>
+            <td>Payment processing issues not resolved</td>
+            <td>Nov 19, 2025</td>
+            <td><span class="badge badge-pending">Pending</span></td>
+            <td>
+              <button class="btn btn-view" onclick="viewFeedback('Acme Corporation', 'Complaint', 'Payment processing issues not resolved')">
+                <i class="fas fa-eye"></i> View
+              </button>
+              <button class="btn btn-respond" onclick="respondFeedback('Acme Corporation')">
+                <i class="fas fa-reply"></i> Respond
+              </button>
+              <button class="btn btn-flag" onclick="flagFeedback('Acme Corporation')">
+                <i class="fas fa-flag"></i> Flag
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" class="employer-checkbox"></td>
+            <td>Global Finance Corp</td>
+            <td><span class="badge badge-suggestion">Suggestion</span></td>
+            <td>Add video interview feature for remote screening</td>
+            <td>Nov 17, 2025</td>
+            <td><span class="badge badge-pending">Pending</span></td>
+            <td>
+              <button class="btn btn-view" onclick="viewFeedback('Global Finance Corp', 'Suggestion', 'Add video interview feature for remote screening')">
+                <i class="fas fa-eye"></i> View
+              </button>
+              <button class="btn btn-respond" onclick="respondFeedback('Global Finance Corp')">
+                <i class="fas fa-reply"></i> Respond
+              </button>
+              <button class="btn btn-resolve" onclick="resolveFeedback('Global Finance Corp')">
+                <i class="fas fa-check"></i> Resolve
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" class="employer-checkbox"></td>
+            <td>Healthcare Solutions</td>
+            <td><span class="badge badge-feedback">Feedback</span></td>
+            <td>Dashboard analytics are very helpful</td>
+            <td>Nov 16, 2025</td>
+            <td><span class="badge badge-resolved">Resolved</span></td>
+            <td>
+              <button class="btn btn-view" onclick="viewFeedback('Healthcare Solutions', 'Feedback', 'Dashboard analytics are very helpful')">
+                <i class="fas fa-eye"></i> View
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" class="employer-checkbox"></td>
+            <td>Retail Enterprises</td>
+            <td><span class="badge badge-complaint">Complaint</span></td>
+            <td>Job posting limit is too restrictive</td>
+            <td>Nov 19, 2025</td>
+            <td><span class="badge badge-flagged">Flagged</span></td>
+            <td>
+              <button class="btn btn-view" onclick="viewFeedback('Retail Enterprises', 'Complaint', 'Job posting limit is too restrictive')">
+                <i class="fas fa-eye"></i> View
+              </button>
+              <button class="btn btn-respond" onclick="respondFeedback('Retail Enterprises')">
+                <i class="fas fa-reply"></i> Respond
+              </button>
+              <button class="btn btn-resolve" onclick="resolveFeedback('Retail Enterprises')">
+                <i class="fas fa-check"></i> Resolve
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- All Feedback Tab -->
+  <div class="tab-content" id="all">
+    <div class="filters">
+      <select id="filterTypeAll" onchange="filterFeedback('all')">
+        <option value="all">All Types</option>
+        <option value="feedback">Feedback</option>
+        <option value="complaint">Complaint</option>
+        <option value="suggestion">Suggestion</option>
+      </select>
+      <select id="filterStatusAll" onchange="filterFeedback('all')">
+        <option value="all">All Status</option>
+        <option value="pending">Pending</option>
+        <option value="resolved">Resolved</option>
+        <option value="flagged">Flagged</option>
+      </select>
+      <select id="filterUserType" onchange="filterFeedback('all')">
+        <option value="all">All Users</option>
+        <option value="applicant">Applicants</option>
+        <option value="employer">Employers</option>
+      </select>
+      <button class="btn btn-respond" onclick="exportAllFeedback()">
+        <i class="fas fa-download"></i> Export All
+      </button>
+      <button class="btn btn-resolve" onclick="bulkResolveAll()">
+        <i class="fas fa-check-double"></i> Bulk Resolve
+      </button>
+    </div>
+
+    <div class="table-container">
+      <div class="table-header">
+        <h2><i class="fas fa-list"></i> All Feedback & Complaints</h2>
+        <div style="display: flex; gap: 10px;">
+          <button class="btn btn-view" onclick="refreshAllData()">
+            <i class="fas fa-sync-alt"></i> Refresh
+          </button>
+          <button class="btn btn-respond" onclick="generateReport()">
+            <i class="fas fa-file-alt"></i> Generate Report
+          </button>
+          <button class="btn btn-resolve" onclick="archiveSelected()">
+            <i class="fas fa-archive"></i> Archive Selected
+          </button>
+        </div>
+      </div>
+      <table id="allTable">
+        <thead>
+          <tr>
+            <th><input type="checkbox" onclick="toggleSelectAllFeedback(this)"></th>
+            <th>User Name</th>
+            <th>User Type</th>
+            <th>Type</th>
+            <th>Message</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox" class="all-checkbox"></td>
+            <td>John Doe</td>
+            <td><i class="fas fa-user-tie"></i> Applicant</td>
+            <td><span class="badge badge-feedback">Feedback</span></td>
+            <td>Great platform, very useful for job hunting!</td>
+            <td>Nov 18, 2025</td>
+            <td><span class="badge badge-resolved">Resolved</span></td>
+            <td>
+              <button class="btn btn-view" onclick="viewFeedback('John Doe', 'Feedback', 'Great platform, very useful for job hunting!')">
+                <i class="fas fa-eye"></i> View
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" class="all-checkbox"></td>
+            <td>Tech Innovations Inc.</td>
+            <td><i class="fas fa-building"></i> Employer</td>
+            <td><span class="badge badge-feedback">Feedback</span></td>
+            <td>Excellent candidate quality from this platform</td>
+            <td>Nov 18, 2025</td>
+            <td><span class="badge badge-resolved">Resolved</span></td>
+            <td>
+              <button class="btn btn-view" onclick="viewFeedback('Tech Innovations Inc.', 'Feedback', 'Excellent candidate quality')">
+                <i class="fas fa-eye"></i> View
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" class="all-checkbox"></td>
+            <td>Acme Corporation</td>
+            <td><i class="fas fa-building"></i> Employer</td>
+            <td><span class="badge badge-complaint">Complaint</span></td>
+            <td>Payment processing issues not resolved</td>
+            <td>Nov 19, 2025</td>
+            <td><span class="badge badge-pending">Pending</span></td>
+            <td>
+              <button class="btn btn-view" onclick="viewFeedback('Acme Corporation', 'Complaint', 'Payment processing issues')">
+                <i class="fas fa-eye"></i> View
+              </button>
+              <button class="btn btn-respond" onclick="respondFeedback('Acme Corporation')">
+                <i class="fas fa-reply"></i> Respond
+              </button>
+              <button class="btn btn-resolve" onclick="resolveFeedback('Acme Corporation')">
+                <i class="fas fa-check"></i> Resolve
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" class="all-checkbox"></td>
+            <td>Jane Smith</td>
+            <td><i class="fas fa-user-tie"></i> Applicant</td>
+            <td><span class="badge badge-complaint">Complaint</span></td>
+            <td>Application submission not working properly</td>
+            <td>Nov 19, 2025</td>
+            <td><span class="badge badge-pending">Pending</span></td>
+            <td>
+              <button class="btn btn-view" onclick="viewFeedback('Jane Smith', 'Complaint', 'Application submission not working')">
+                <i class="fas fa-eye"></i> View
+              </button>
+              <button class="btn btn-respond" onclick="respondFeedback('Jane Smith')">
+                <i class="fas fa-reply"></i> Respond
+              </button>
+              <button class="btn btn-flag" onclick="flagFeedback('Jane Smith')">
+                <i class="fas fa-flag"></i> Flag
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" class="all-checkbox"></td>
+            <td>Mike Johnson</td>
+            <td><i class="fas fa-user-tie"></i> Applicant</td>
+            <td><span class="badge badge-suggestion">Suggestion</span></td>
+            <td>Would like to see more filter options in job search</td>
+            <td>Nov 17, 2025</td>
+            <td><span class="badge badge-pending">Pending</span></td>
+            <td>
+              <button class="btn btn-view" onclick="viewFeedback('Mike Johnson', 'Suggestion', 'Would like more filter options')">
+                <i class="fas fa-eye"></i> View
+              </button>
+              <button class="btn btn-respond" onclick="respondFeedback('Mike Johnson')">
+                <i class="fas fa-reply"></i> Respond
+              </button>
+              <button class="btn btn-resolve" onclick="resolveFeedback('Mike Johnson')">
+                <i class="fas fa-check"></i> Resolve
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" class="all-checkbox"></td>
+            <td>Global Finance Corp</td>
+            <td><i class="fas fa-building"></i> Employer</td>
+            <td><span class="badge badge-suggestion">Suggestion</span></td>
+            <td>Add video interview feature for remote screening</td>
+            <td>Nov 17, 2025</td>
+            <td><span class="badge badge-pending">Pending</span></td>
+            <td>
+              <button class="btn btn-view" onclick="viewFeedback('Global Finance Corp', 'Suggestion', 'Add video interview feature')">
+                <i class="fas fa-eye"></i> View
+              </button>
+              <button class="btn btn-respond" onclick="respondFeedback('Global Finance Corp')">
+                <i class="fas fa-reply"></i> Respond
+              </button>
+              <button class="btn btn-resolve" onclick="resolveFeedback('Global Finance Corp')">
+                <i class="fas fa-check"></i> Resolve
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal for View/Respond -->
+  <div id="feedbackModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle">Feedback Details</h2>
+        <span class="close" onclick="closeModal()">&times;</span>
+      </div>
+      <div id="modalBody">
+        <!-- Content will be populated by JavaScript -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-view" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for Respond -->
+  <div id="respondModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Respond to Feedback</h2>
+        <span class="close" onclick="closeRespondModal()">&times;</span>
+      </div>
+      <div>
+        <p><strong>User:</strong> <span id="respondUser"></span></p>
+        <textarea id="responseText" placeholder="Type your response here..."></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-respond" onclick="submitResponse()">
+          <i class="fas fa-paper-plane"></i> Send Response
+        </button>
+        <button class="btn btn-view" onclick="closeRespondModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+// Tab navigation
+function showTabContent(tabId) {
+  // Remove active class from all tabs
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+  
+  // Add active class to clicked tab
+  event.target.classList.add('active');
+  document.getElementById(tabId).classList.add('active');
+}
+
+// View feedback modal
+function viewFeedback(userName, type, message) {
+  const modal = document.getElementById('feedbackModal');
+  const modalBody = document.getElementById('modalBody');
+  
+  modalBody.innerHTML = `
+    <p><strong>User:</strong> ${userName}</p>
+    <p><strong>Type:</strong> ${type}</p>
+    <p><strong>Message:</strong></p>
+    <p style="background: #f8f9fa; padding: 15px; border-radius: 4px; margin-top: 10px;">${message}</p>
+  `;
+  
+  modal.style.display = 'block';
+}
+
+function closeModal() {
+  document.getElementById('feedbackModal').style.display = 'none';
+}
+
+// Respond to feedback
+function respondFeedback(userName) {
+  const modal = document.getElementById('respondModal');
+  document.getElementById('respondUser').textContent = userName;
+  document.getElementById('responseText').value = '';
+  modal.style.display = 'block';
+}
+
+function closeRespondModal() {
+  document.getElementById('respondModal').style.display = 'none';
+}
+
+function submitResponse() {
+  const user = document.getElementById('respondUser').textContent;
+  const response = document.getElementById('responseText').value;
+  
+  if (!response.trim()) {
+    alert('Please enter a response message.');
+    return;
+  }
+  
+  console.log('Sending response to:', user);
+  console.log('Response:', response);
+  
+  alert(`Response sent to ${user} successfully!`);
+  closeRespondModal();
+}
+
+// Flag feedback
+function flagFeedback(userName) {
+  if (confirm(`Are you sure you want to flag feedback from ${userName}?`)) {
+    console.log('Flagged:', userName);
+    alert(`Feedback from ${userName} has been flagged for review.`);
+  }
+}
+
+// Resolve feedback
+function resolveFeedback(userName) {
+  if (confirm(`Mark feedback from ${userName} as resolved?`)) {
+    console.log('Resolved:', userName);
+    alert(`Feedback from ${userName} has been marked as resolved.`);
+  }
+}
+
+// Filter feedback
+function filterFeedback(tab) {
+  console.log('Filtering feedback for tab:', tab);
+  // In a real application, this would filter the table rows based on selected filters
+  alert('Filter functionality would be implemented here in a production environment.');
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+  const feedbackModal = document.getElementById('feedbackModal');
+  const respondModal = document.getElementById('respondModal');
+  
+  if (event.target == feedbackModal) {
+    feedbackModal.style.display = 'none';
+  }
+  if (event.target == respondModal) {
+    respondModal.style.display = 'none';
+  }
+}
+
+// Checkbox selection functions
+function toggleSelectAllEmployer(checkbox) {
+  const checkboxes = document.querySelectorAll('.employer-checkbox');
+  checkboxes.forEach(cb => cb.checked = checkbox.checked);
+  
+  const count = checkbox.checked ? checkboxes.length : 0;
+  if (count > 0) {
+    alert(`${count} employer feedback items selected`);
+  }
+}
+
+function toggleSelectAllFeedback(checkbox) {
+  const checkboxes = document.querySelectorAll('.all-checkbox');
+  checkboxes.forEach(cb => cb.checked = checkbox.checked);
+  
+  const count = checkbox.checked ? checkboxes.length : 0;
+  if (count > 0) {
+    alert(`${count} feedback items selected`);
+  }
+}
+
+// Employer section functions
+function exportEmployerFeedback() {
+  console.log('Exporting employer feedback data...');
+  alert('Exporting employer feedback to CSV file...');
+}
+
+function bulkResolveEmployer() {
+  const checkboxes = document.querySelectorAll('.employer-checkbox:checked');
+  if (checkboxes.length === 0) {
+    alert('Please select at least one feedback item to resolve.');
+    return;
+  }
+  
+  if (confirm(`Mark ${checkboxes.length} selected employer feedback items as resolved?`)) {
+    console.log(`Resolving ${checkboxes.length} employer feedback items`);
+    alert(`${checkboxes.length} employer feedback items marked as resolved!`);
+    checkboxes.forEach(cb => cb.checked = false);
+  }
+}
+
+function refreshEmployerData() {
+  console.log('Refreshing employer feedback data...');
+  alert('Refreshing employer feedback data...');
+  // In production, this would reload data from the server
+}
+
+function sendBulkEmail(type) {
+  console.log(`Sending bulk email to ${type}s...`);
+  alert(`Preparing bulk email notification for ${type}s...`);
+}
+
+// All feedback section functions
+function exportAllFeedback() {
+  console.log('Exporting all feedback data...');
+  alert('Exporting all feedback to Excel file...');
+}
+
+function bulkResolveAll() {
+  const checkboxes = document.querySelectorAll('.all-checkbox:checked');
+  if (checkboxes.length === 0) {
+    alert('Please select at least one feedback item to resolve.');
+    return;
+  }
+  
+  if (confirm(`Mark ${checkboxes.length} selected feedback items as resolved?`)) {
+    console.log(`Resolving ${checkboxes.length} feedback items`);
+    alert(`${checkboxes.length} feedback items marked as resolved!`);
+    checkboxes.forEach(cb => cb.checked = false);
+  }
+}
+
+function refreshAllData() {
+  console.log('Refreshing all feedback data...');
+  alert('Refreshing all feedback data...');
+  // In production, this would reload data from the server
+}
+
+function generateReport() {
+  console.log('Generating comprehensive feedback report...');
+  alert('Generating comprehensive feedback report...\n\nReport will include:\n- Summary statistics\n- Feedback trends\n- Response times\n- User satisfaction metrics');
+}
+
+function archiveSelected() {
+  const checkboxes = document.querySelectorAll('.all-checkbox:checked');
+  if (checkboxes.length === 0) {
+    alert('Please select at least one feedback item to archive.');
+    return;
+  }
+  
+  if (confirm(`Archive ${checkboxes.length} selected feedback items?\n\nArchived items will be moved to the archive section.`)) {
+    console.log(`Archiving ${checkboxes.length} feedback items`);
+    alert(`${checkboxes.length} feedback items have been archived!`);
+    checkboxes.forEach(cb => cb.checked = false);
+  }
+}
+</script>

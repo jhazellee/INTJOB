@@ -1,0 +1,448 @@
+/* jobspost.css - Job Posts Page Styles */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 260px;
+  background: #2c3e50;
+  position: fixed;
+  height: 100vh;
+  overflow-y: auto;
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 18px 25px;
+  color: #ecf0f1;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+  font-size: 15px;
+}
+
+.sidebar a:hover {
+  background: rgba(52, 152, 219, 0.15);
+  border-left-color: #3498db;
+  padding-left: 30px;
+}
+
+.sidebar a.active {
+  background: rgba(52, 152, 219, 0.25);
+  border-left-color: #3498db;
+}
+
+.sidebar a i {
+  width: 20px;
+  text-align: center;
+  font-size: 18px;
+}
+
+/* Main Content */
+.main-content {
+  margin-left: 260px;
+  padding: 40px;
+  width: calc(100% - 260px);
+}
+
+/* Page Title */
+h1 {
+  color: white;
+  font-size: 32px;
+  margin-bottom: 35px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+h1 i {
+  font-size: 36px;
+}
+
+/* Job Post Cards */
+.card {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  margin-bottom: 25px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+}
+
+.card h2 {
+  color: #2c3e50;
+  font-size: 24px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.card p {
+  color: #555;
+  line-height: 1.8;
+  margin-bottom: 12px;
+  font-size: 15px;
+}
+
+.card p strong {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+/* Status Badges */
+.status {
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status.active {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status.closed {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.status.pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+/* Buttons */
+.btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  margin-right: 10px;
+  margin-top: 15px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+.btn:last-child {
+  margin-right: 0;
+}
+
+/* Button variations */
+.btn.edit {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+}
+
+.btn.view {
+  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+}
+
+.btn.close,
+.btn.delete {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+}
+
+.btn.reopen {
+  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+}
+
+/* Add New Job Button */
+.add-job-btn {
+  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.add-job-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(46, 204, 113, 0.6);
+}
+
+/* Job Description */
+.card > p:last-of-type {
+  margin-bottom: 20px;
+  font-style: italic;
+  color: #666;
+  border-left: 3px solid #667eea;
+  padding-left: 15px;
+  margin-top: 15px;
+}
+
+/* Responsive Design */
+
+/* Tablets and below (768px) */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 70px;
+  }
+
+  .sidebar a span {
+    display: none;
+  }
+
+  .sidebar a {
+    justify-content: center;
+    padding: 18px 10px;
+  }
+
+  .sidebar a:hover {
+    padding-left: 10px;
+  }
+
+  .main-content {
+    margin-left: 70px;
+    width: calc(100% - 70px);
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  h1 i {
+    font-size: 28px;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .card h2 {
+    font-size: 18px;
+  }
+
+  .btn {
+    padding: 10px 16px;
+    font-size: 13px;
+    margin-right: 8px;
+    margin-top: 10px;
+  }
+}
+
+/* Small phones (576px and below) */
+@media (max-width: 576px) {
+  .main-content {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  h1 i {
+    font-size: 24px;
+  }
+
+  .card {
+    padding: 18px;
+    margin-bottom: 20px;
+  }
+
+  .card h2 {
+    font-size: 17px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .card p {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .status {
+    font-size: 12px;
+    padding: 5px 14px;
+  }
+
+  .btn {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 10px;
+    padding: 12px 20px;
+    font-size: 14px;
+    justify-content: center;
+  }
+
+  .btn:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* Extra small phones (390px and below - iPhone SE, etc) */
+@media (max-width: 390px) {
+  body {
+    font-size: 14px;
+  }
+
+  .sidebar {
+    width: 60px;
+  }
+
+  .sidebar a {
+    padding: 16px 8px;
+  }
+
+  .sidebar a i {
+    font-size: 16px;
+  }
+
+  .main-content {
+    margin-left: 60px;
+    width: calc(100% - 60px);
+    padding: 12px;
+  }
+
+  h1 {
+    font-size: 18px;
+    margin-bottom: 18px;
+    gap: 10px;
+  }
+
+  h1 i {
+    font-size: 22px;
+  }
+
+  .card {
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 12px;
+  }
+
+  .card h2 {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .card p {
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+
+  .status {
+    font-size: 11px;
+    padding: 4px 12px;
+  }
+
+  .btn {
+    padding: 11px 18px;
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  .card > p:last-of-type {
+    padding-left: 12px;
+    margin-top: 12px;
+  }
+}
+
+/* Very small phones (320px - older devices) */
+@media (max-width: 320px) {
+  .sidebar {
+    width: 50px;
+  }
+
+  .sidebar a {
+    padding: 14px 6px;
+  }
+
+  .sidebar a i {
+    font-size: 14px;
+  }
+
+  .main-content {
+    margin-left: 50px;
+    width: calc(100% - 50px);
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+
+  h1 i {
+    font-size: 20px;
+  }
+
+  .card {
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+
+  .card h2 {
+    font-size: 15px;
+  }
+
+  .card p {
+    font-size: 12px;
+  }
+
+  .btn {
+    padding: 10px 16px;
+    font-size: 12px;
+  }
+}
+
+.logo {
+  font-size: 32px;
+  font-weight: bold;
+  color: #fff;             /* Main color */
+  text-align: center;
+  margin: 20px 0;
+  font-family: 'Arial', sans-serif;
+}
+
+.logo span {
+  color: #3d044e;           /* Accent color */
+}

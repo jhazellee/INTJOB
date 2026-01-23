@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IntJob Dashboard</title>
+  <!-- External CSS -->
+  <link rel="stylesheet" href="main2.1.css">
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <!-- Logo -->
+    <div class="logo">
+      <img src="1.jpg" alt="IntJob Logo">
+      <span>INTJOB</span>
+    </div>
+    
+    <!-- Navigation -->
+    <ul>
+      <li><a href="main2.html">🏠 <span>Home page</span></a></li>
+      <li><a href="jobcatego.html">📂 <span>Job categories</span></a></li>
+      <li><a href="inbox.html">📥 <span>Inbox</span></a></li>
+      <li><a href="appliedsta.html">✅ <span>Applied status</span></a></li>
+      <li><a href="resume.html">📄 <span>Resume</span></a></li>
+    </ul>
+  
+    <!-- Bottom Links -->
+    <div class="bottom-links">
+      <a href="settings.html">⚙️ <span>Settings</span></a>
+      <a href="profile.html">👤 <span>Profile</span></a>
+    </div>
+  </div>
+
+  <!-- Toggle Button -->
+  <button class="toggle-btn" id="toggleBtn">☰</button>
+  
+  <!-- Main Content -->
+  <div class="main-content">
+    <header>
+      <div class="topbar">
+        <form class="search-container">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Search jobs, companies..." />
+          <button type="submit">Search</button>
+        </form>
+    
+        <!-- 🔔 Notification Bar -->
+        <div class="notification-bar">
+          <i class="fa-solid fa-bell"></i>
+          <span class="notif-count">3</span>
+          <div class="notif-dropdown">
+            <p><strong>New Job Posted:</strong> Web Developer</p>
+            <p><strong>Reminder:</strong> Interview at 3 PM</p>
+            <p><strong>Message:</strong> HR responded to your application</p>
+          </div>
+        </div>
+      </div>
+    </header>
+    
+    
+    <!-- Content Grid -->
+    <div class="content-wrapper">
+      <!-- Left Column -->
+      <div class="left-panel">
+        <div class="card">Job hunting vids</div>
+        <div class="card ads">PLACE ADS HERE!</div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="right-panel">
+        <div class="job-card">
+          <div>
+            <h3>Job 1</h3>
+            <p>Details about job 1...</p>
+          </div>
+          <button class="check-btn">Check</button>
+        </div>
+
+        <div class="job-card">
+          <div>
+            <h3>Job 2</h3>
+            <p>Details about job 2...</p>
+          </div>
+          <button class="check-btn">Check</button>
+        </div>
+
+        <div class="job-card">
+          <div>
+            <h3>Job 3</h3>
+            <p>Details about job 3...</p>
+          </div>
+          <button class="check-btn">Check</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chatbot Button -->
+    <a href="customersupport.html" class="chatbot-btn">
+      <i class="fa-solid fa-headset"></i>
+    </a>
+  </div> <!-- end main-content -->
+
+  <!-- Sidebar Toggle Script -->
+  <script>
+    const sidebar = document.getElementById("sidebar");
+    const toggleBtn = document.getElementById("toggleBtn");
+
+    toggleBtn.addEventListener("click", () => {
+      sidebar.classList.toggle("collapsed");
+    });
+  </script>
+</body>
+</html>

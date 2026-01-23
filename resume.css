@@ -1,0 +1,227 @@
+/* === GENERAL === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    background: #0b1220;
+    color: #e5e9f0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    overflow: hidden;
+  }
+  
+  /* === LAYOUT === */
+  .container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  /* === SIDEBAR === */
+  .sidebar {
+    width: 240px;
+    background: #10192c;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 15px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.4);
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 30px;
+  }
+  .logo img {
+    width: 38px;
+    height: 38px;
+  }
+  .logo span {
+    font-size: 22px;
+    font-weight: bold;
+    color: #00ffff;
+  }
+  
+  /* Sidebar Links */
+  .sidebar ul {
+    list-style: none;
+    flex: 1;
+  }
+  .sidebar ul li {
+    margin: 6px 0;
+  }
+  .sidebar ul li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: #c9d1e0;
+    font-size: 15px;
+    padding: 12px;
+    border-radius: 10px;
+    transition: background 0.3s, color 0.3s, transform 0.2s;
+  }
+  .sidebar ul li a:hover,
+  .sidebar ul li a.active {
+    background: #162338;
+    color: #00ffff;
+    transform: translateX(4px);
+    box-shadow: inset 2px 0 0 #00ffff;
+  }
+  
+  /* Bottom Links */
+  .bottom-links {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .bottom-links a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: #c9d1e0;
+    font-size: 15px;
+    padding: 10px;
+    border-radius: 8px;
+  }
+  .bottom-links a:hover {
+    color: #00ffff;
+    transform: translateX(4px);
+  }
+  
+  /* === MAIN CONTENT === */
+  .main-content {
+    margin-left: 240px;
+    flex: 1;
+    height: 100vh;
+    padding: 30px;
+    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+    background: #0b1220;
+  }
+  
+  /* === FORM CARD === */
+  .resume-form {
+    width: 90%;
+    max-width: 2000px;
+    background: #111a2b;
+    padding: 40px;
+    border-radius: 40px;
+    box-shadow: 0 0 15px #00ffff;
+    animation: fadeIn 0.5s ease-in-out;
+    margin: 40px 0;
+  }
+  .resume-form {
+    min-height: 165vh; /* 150% of the screen height */
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* === FORM ELEMENTS === */
+  .resume-form h2 {
+    color: #00ffff;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  section {
+    margin-bottom: 25px;
+  }
+  section h3 {
+    color: #00ffff;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #00ffff;
+    padding-bottom: 5px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+  
+  input, select, textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #00ffff;
+    background: transparent;
+    color: #e5e9f0;
+    border-radius: 5px;
+    margin-top: 5px;
+  }
+  
+  textarea {
+    height: 80px;
+    resize: vertical;
+  }
+  
+  .two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+  
+  .button-row {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+  
+  button.draft {
+    background: transparent;
+    color: #00ffff;
+    border: 1px solid #00ffff;
+  }
+  
+  button.submit {
+    background: #00ffff;
+    color: #0b1220;
+  }
+  
+  button:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+  
+  footer {
+    text-align: center;
+    font-size: 12px;
+    margin-top: 30px;
+    color: #888;
+  }
+  
+  /* === RESPONSIVE === */
+  @media (max-width: 768px) {
+    .main-content {
+      margin-left: 0;
+      padding: 20px;
+    }
+    .resume-form {
+      width: 100%;
+      padding: 20px;
+    }
+    .two-column {
+      grid-template-columns: 1fr;
+    }
+  }
+  

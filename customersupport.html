@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Support - IntJob</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="custosupport.css">
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo">
+      <img src="1.jpg" alt="IntJob Logo">
+      <span>INTJOB</span>
+    </div>
+
+    <ul>
+      <li><a href="jobcatego.html"><i class="fas fa-briefcase"></i><span>Job categories</span></a></li>
+      <li><a href="inbox.html"><i class="fas fa-inbox"></i><span>Inbox</span></a></li>
+      <li><a href="support.html" class="active"><i class="fas fa-headset"></i><span>Support</span></a></li>
+    </ul>
+
+    <div class="bottom-links">
+      <a href="settings.html"><i class="fas fa-cog"></i><span>Settings</span></a>
+      <a href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <header>
+      <h2><i class="fas fa-headset"></i> Customer Support</h2>
+    </header>
+
+    <div class="support-wrapper">
+      <!-- Left Panel: Ticket List -->
+      <div class="ticket-list">
+        <h3>Support Tickets</h3>
+        <ul>
+          <li><i class="fas fa-circle text-green"></i> Issue with login</li>
+          <li><i class="fas fa-circle text-yellow"></i> Application not submitting</li>
+          <li><i class="fas fa-circle text-red"></i> Payment failed</li>
+        </ul>
+        <button class="new-ticket"><i class="fas fa-plus"></i> New Ticket</button>
+      </div>
+
+      <!-- Right Panel: Chat Window -->
+      <div class="chat-window">
+        <div class="chat-header">Support Chat</div>
+        <div class="chat-messages">
+          <div class="message bot"><strong>Support:</strong> Hi! How can we help you today?</div>
+          <div class="message user"><strong>You:</strong> I can’t upload my resume.</div>
+          <div class="message bot"><strong>Support:</strong> Thanks for reaching out. Can you try again using PDF format?</div>
+        </div>
+        <div class="chat-input">
+          <input type="text" placeholder="Type your message..." />
+          <button><i class="fas fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

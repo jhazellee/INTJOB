@@ -1,0 +1,343 @@
+/* ==================== GENERAL RESET ==================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #0b1220;
+  color: #e5e9f0;
+}
+
+/* ==================== LAYOUT ==================== */
+.container {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ==================== SIDEBAR ==================== */
+.sidebar {
+  width: 240px;
+  background: #10192c;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+  transition: width 0.4s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Collapse behavior */
+.sidebar.collapsed {
+  width: 80px;
+}
+
+/* Logo */
+.sidebar .logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #4cd2f3;
+  text-transform: uppercase;
+  transition: 0.3s ease;
+}
+
+.sidebar .logo img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  object-fit: cover;
+  transition: 0.3s ease;
+}
+
+.sidebar .logo span {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  transition: 0.3s ease;
+}
+
+/* Collapse logo text */
+.sidebar.collapsed .logo span {
+  opacity: 0;
+  transform: translateX(-15px);
+  pointer-events: none;
+}
+
+/* Navigation List */
+.sidebar ul {
+  list-style: none;
+  flex: 1;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin: 6px 0;
+}
+
+.sidebar ul li a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #c9d1e0;
+  font-size: 15px;
+  padding: 12px;
+  border-radius: 10px;
+  transition: background 0.3s, color 0.3s, transform 0.2s;
+}
+
+.sidebar ul li a i {
+  font-size: 18px;
+  min-width: 24px;
+  text-align: center;
+  color: #c9d1e0;
+  transition: color 0.3s;
+}
+
+.sidebar ul li a:hover i,
+.bottom-links a:hover i {
+  color: #4cd2f3;
+}
+
+/* Hover effect with glow */
+.sidebar ul li a:hover,
+.sidebar ul li a.active {
+  background: #162338;
+  color: #4cd2f3;
+  transform: translateX(4px);
+  box-shadow: inset 2px 0 0 #4cd2f3;
+}
+
+/* Collapse labels */
+.sidebar.collapsed ul li a span {
+  opacity: 0;
+  transform: translateX(-15px);
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+/* Bottom Links */
+.bottom-links {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  border-top: 1px solid #2d3b55;
+}
+
+.bottom-links a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #c9d1e0;
+  font-size: 15px;
+  padding: 10px;
+  border-radius: 8px;
+  transition: color 0.3s, transform 0.2s;
+}
+
+.bottom-links a:hover {
+  color: #4cd2f3;
+  transform: translateX(4px);
+}
+
+/* Collapse bottom labels */
+.sidebar.collapsed .bottom-links a span {
+  opacity: 0;
+  transform: translateX(-15px);
+  pointer-events: none;
+}
+
+/* === Toggle Button === */
+.toggle-btn {
+  position: absolute;
+  top: 20px;
+  left: 250px;
+  background: #4cd2f3;
+  color: #0b1220;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  transition: left 0.4s ease, background 0.3s, transform 0.4s ease;
+  z-index: 100;
+}
+
+.toggle-btn:hover {
+  background: #37aecd;
+  transform: scale(1.05);
+}
+
+/* Adjust button when collapsed */
+.sidebar.collapsed + .toggle-btn {
+  left: 100px;
+  transform: rotate(180deg);
+}
+
+/* ==================== PROFILE CONTENT ==================== */
+.profile-content {
+  flex: 1;
+  padding: 30px;
+  background: #0b1220;
+  border-left: 1px solid #2d3b55;
+  overflow-y: auto; 
+  max-height: 100vh;
+  scrollbar-width: thin;
+  scrollbar-color: #4cd2f3 #0b1220;
+}
+
+/* Scrollbar (WebKit) */
+.profile-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.profile-content::-webkit-scrollbar-track {
+  background: #0b1220;
+}
+
+.profile-content::-webkit-scrollbar-thumb {
+  background-color: #4cd2f3;
+  border-radius: 6px;
+}
+
+/* ==================== PROFILE HEADER ==================== */
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #162338;
+}
+
+.profile-header h1 {
+  color: #fff;
+}
+
+.profile-info p {
+  color: #cfd6e6;
+  font-size: 14px;
+}
+
+.profile-pic img {
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  border: 3px solid #4cd2f3;
+  object-fit: cover;
+}
+
+/* ==================== PROFILE SECTIONS ==================== */
+.profile-section {
+  margin-bottom: 25px;
+  padding: 18px;
+  border-radius: 10px;
+  background: #141e33;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: 0.3s;
+}
+
+.profile-section:hover {
+  background: #192747;
+  transform: translateY(-3px);
+}
+
+.profile-section h2 {
+  margin-bottom: 10px;
+  color: #4cd2f3;
+}
+
+.profile-section p {
+  margin-bottom: 12px;
+  color: #cfd6e6;
+}
+
+.profile-section button {
+  padding: 8px 16px;
+  border: none;
+  background: #4cd2f3;
+  color: #0b1220;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.profile-section button:hover {
+  background: #37aecd;
+}
+
+/* ==================== LOGOUT ==================== */
+.logout {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.logout-btn {
+  padding: 12px 20px;
+  width: 100%;
+  border: none;
+  background: #d33;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: bold;
+}
+
+.logout-btn:hover {
+  background: #b51f1f;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 200px;
+  }
+
+  .toggle-btn {
+    left: 210px;
+  }
+
+  .sidebar.collapsed + .toggle-btn {
+    left: 80px;
+  }
+
+  .profile-content {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .sidebar {
+    display: none;
+  }
+
+  .toggle-btn {
+    display: none;
+  }
+
+  .profile-content {
+    margin-left: 0;
+    padding: 16px;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+}

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Content Management</title>
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+/* Reset & base */
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+body { display: flex; min-height: 100vh; background: #f5f6fa; }
+
+/* Sidebar */
+nav { width: 250px; background: #2f3640; color: #fff; display: flex; flex-direction: column; }
+nav h2 { text-align: center; padding: 20px; border-bottom: 1px solid #444; }
+nav ul { list-style: none; flex: 1; }
+nav ul li { border-bottom: 1px solid #444; }
+nav ul li a {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  color: #fff;
+  text-decoration: none;
+  transition: 0.3s;
+  cursor:pointer;
+}
+nav ul li a i { margin-right: 10px; }
+nav ul li a.active, nav ul li a:hover { background: #40739e; }
+
+/* Main content */
+main { flex: 1; padding: 20px; overflow-x: auto; }
+header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+header h1 { font-size: 28px; }
+
+/* Table */
+table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+th { background: #40739e; color: #fff; }
+
+/* File Upload */
+.file-upload { display: flex; flex-direction: column; gap: 8px; max-width: 250px; }
+.upload-label { display: flex; align-items: center; gap: 8px; padding: 10px 15px; background: #2f3640; color: #fff; border-radius: 6px; cursor: pointer; transition: 0.3s; }
+.upload-label:hover { background: #40739e; }
+.file-upload input[type="file"] { display:none; }
+.file-name { font-size: 13px; color:#888; font-style:italic; }
+
+/* Pages */
+.page { display: none; }
+.page.active { display: block; }
+
+/* Responsive */
+@media (max-width:768px) {
+  nav { width: 60px; }
+  nav h2, nav ul li a span { display:none; }
+}
+/* Cards */
+.card {
+    background: #ffffff;
+    padding: 18px 20px;
+    margin: 15px 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+    border-left: 5px solid #40739e;
+  }
+  
+  .card h3 {
+    margin-bottom: 8px;
+    color: #2f3640;
+  }
+  
+  .btn-action {
+    margin-top: 10px;
+    padding: 6px 12px;
+    background: #40739e;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .btn-action:hover { background:#2f3640; }
+  
+  /* FAQ styling */
+  .faq-item {
+    background: #fff;
+    padding: 15px 18px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+  
+  .faq-item h3 {
+    margin-bottom: 6px;
+    font-size: 17px;
+  }
+  
+  /* 3-column info grid */
+  .info-grid {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+  }
+  
+  .info-box {
+    background: #fff;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.07);
+  }
+  
+  .info-box i {
+    font-size: 26px;
+    color: #40739e;
+    margin-bottom: 10px;
+  }
+  /* New Tab Bar Style */
+.tab-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 22px;
+    padding: 12px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  
+  .tab-btn {
+    padding: 10px 18px;
+    background: #dcdde1;
+    border: none;
+    border-radius: 20px; /* pill style */
+    cursor: pointer;
+    font-size: 14px;
+    color: #2f3640;
+    transition: 0.25s;
+  }
+  
+  .tab-btn:hover {
+    background: #bfc4c8;
+  }
+  
+  .tab-btn.active {
+    background: #40739e;
+    color: #fff;
+    font-weight: bold;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+  
+  
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR (your version) -->
+<nav>
+    <h2>Admin</h2>
+    <ul>
+      <li><a href="admin.html"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+      <li><a href="usermanage.html"><i class="fas fa-users"></i> <span>Users Management</span></a></li>
+      <li><a href="applimanage.html"><i class="fas fa-file-alt"></i> <span>Applications Management</span></a></li>
+      <li><a href="contntmanage.html" class="active"><i class="fas fa-file-code"></i> <span>Content Management</span></a></li>
+      <li><a href="report.html"><i class="fas fa-chart-line"></i> <span>Reports & Analytics</span></a></li>
+      <li><a href="payment.html"><i class="fas fa-credit-card"></i> <span>Payment/Subscription Management</span></a></li>
+      <li><a href="feed.html"><i class="fas fa-comment-dots"></i> <span>Feedback & Complaints</span></a></li>
+      <li><a href="sysSett.html"><i class="fas fa-cogs"></i> <span>System Settings</span></a></li>
+      <li><a href="security.html"><i class="fas fa-shield-alt"></i> <span>Security & Monitoring</span></a></li>
+    </ul>
+  </nav>
+
+<!-- MAIN CONTENT -->
+<main>
+
+  <!-- Only Content Management section is functional with pages inside -->
+
+  <section id="content" class="page active">
+    <header><h1>Content Management</h1></header>
+
+    <div class="tab-bar">
+        <button class="tab-btn" onclick="showTab('announcements')">Announcements</button>
+        <button class="tab-btn" onclick="showTab('faq')">FAQs</button>
+        <button class="tab-btn" onclick="showTab('about')">About Page</button>
+        <button class="tab-btn" onclick="showTab('terms')">Terms</button>
+        <button class="tab-btn" onclick="showTab('privacy')">Privacy Policy</button>
+      </div>
+      
+    <!-- ANNOUNCEMENTS TAB -->
+    <div id="announcements" class="tab-content" style="display:block;">
+      <h2>Announcements</h2>
+      <table>
+        <tr><th>Date</th><th>Announcement</th></tr>
+        <tr><td>Jan 20, 2025</td><td>Website launched successfully!</td></tr>
+        <tr><td>Feb 02, 2025</td><td>New CMS features added.</td></tr>
+      </table>
+    </div>
+  
+  <!-- FAQ TAB -->
+  <div id="faq" class="tab-content" style="display:none;">
+    <h2><i class="fas fa-question-circle"></i> Frequently Asked Questions</h2>
+  
+    <div class="faq-item">
+      <h3><i class="fas fa-angle-right"></i> What is this site?</h3>
+      <p>A fully modular content management interface designed for admin panels.</p>
+    </div>
+  
+    <div class="faq-item">
+      <h3><i class="fas fa-angle-right"></i> Can I customize it?</h3>
+      <p>Yes! All modules, tabs, and content are fully customizable.</p>
+    </div>
+  
+    <div class="faq-item">
+      <h3><i class="fas fa-angle-right"></i> Does it support more content types?</h3>
+      <p>Absolutely. You can add galleries, documents, media sections, team profiles, banners, and more.</p>
+    </div>
+  </div>
+  
+  <!-- ABOUT TAB -->
+  <div id="about" class="tab-content" style="display:none;">
+    <h2><i class="fas fa-info-circle"></i> About This System</h2>
+  
+    <div class="card">
+      <p>
+        This Content Management Panel is built to provide a clean, simple, and powerful interface for editing website content.  
+        It combines usability, speed, and flexibility — all in one place.
+      </p>
+    </div>
+  
+    <div class="info-grid">
+      <div class="info-box">
+        <i class="fas fa-cogs"></i>
+        <h3>Configurable</h3>
+        <p>Every module is modular and easy to adapt.</p>
+      </div>
+  
+      <div class="info-box">
+        <i class="fas fa-shield-alt"></i>
+        <h3>Secure</h3>
+        <p>Built with security and reliability in mind.</p>
+      </div>
+  
+      <div class="info-box">
+        <i class="fas fa-bolt"></i>
+        <h3>Fast</h3>
+        <p>Instant content updates without page reloads.</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- TERMS TAB -->
+  <div id="terms" class="tab-content" style="display:none;">
+    <h2><i class="fas fa-file-contract"></i> Terms & Conditions</h2>
+  
+    <div class="card">
+      <h3>General Rules</h3>
+      <p>Users must follow guidelines, respect data privacy, and use the platform responsibly.</p>
+    </div>
+  
+    <div class="card">
+      <h3>Content Responsibility</h3>
+      <p>Administrators are accountable for provided content, accuracy, and compliance with laws and standards.</p>
+    </div>
+  
+    <div class="card">
+      <h3>Usage & Limitations</h3>
+      <p>The system restricts unauthorized access and enforces monitoring for system security.</p>
+    </div>
+  </div>
+  
+  <!-- PRIVACY TAB -->
+  <div id="privacy" class="tab-content" style="display:none;">
+    <h2><i class="fas fa-user-shield"></i> Privacy Policy</h2>
+  
+    <div class="card">
+      <h3>Data Collection</h3>
+      <p>The system collects minimal personal information required for functionality and security.</p>
+    </div>
+  
+    <div class="card">
+      <h3>Data Protection</h3>
+      <p>All stored data is encrypted and access-controlled, ensuring safety against unauthorized use.</p>
+    </div>
+  
+    <div class="card">
+      <h3>User Rights</h3>
+      <p>Users may request data access, correction, or removal at any time through the admin support portal.</p>
+    </div>
+  </div>
+  
+</main>
+
+<script>
+/* Switch entire admin sections (non-functional placeholders except content) */
+function go(section) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(section)?.classList.add('active');
+
+  document.querySelectorAll("nav a").forEach(a => a.classList.remove("active"));
+  event.target.classList.add("active");
+}
+
+/* Tab switching inside Content Management */
+function showTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+  document.getElementById(tab).style.display = 'block';
+}
+</script>
+
+</body>
+</html>

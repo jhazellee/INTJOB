@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reports & Analytics Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Reset & base */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+    body { display: flex; min-height: 100vh; background: #f5f6fa; }
+
+    /* Sidebar */
+    nav { width: 250px; background: #2f3640; color: #fff; display: flex; flex-direction: column; }
+    nav h2 { text-align: center; padding: 20px; border-bottom: 1px solid #444; }
+    nav ul { list-style: none; flex: 1; }
+    nav ul li { border-bottom: 1px solid #444; }
+    nav ul li a { display: flex; align-items: center; padding: 15px 20px; color: #fff; text-decoration: none; transition: 0.3s; }
+    nav ul li a i { margin-right: 10px; }
+    nav ul li a.active, nav ul li a:hover { background: #40739e; }
+
+    /* Main content */
+    main { flex: 1; padding: 20px; overflow-x: auto; }
+    
+    /* Tab Bar */
+    .tab-bar { 
+      display: flex; 
+      gap: 0; 
+      margin-bottom: 30px; 
+      border-bottom: 2px solid #ddd; 
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      background: #fff;
+      border-radius: 8px 8px 0 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .tab-btn { 
+      padding: 15px 25px; 
+      border: none; 
+      background: transparent; 
+      cursor: pointer; 
+      font-size: 14px; 
+      font-weight: 500;
+      color: #666;
+      transition: all 0.3s ease; 
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tab-btn:hover { 
+      background: #f8f9fa;
+      color: #40739e;
+      transform: translateY(-2px);
+    }
+    .tab-btn.active { 
+      color: #40739e;
+      border-bottom: 3px solid #40739e;
+      background: #f8f9fa;
+      font-weight: 600;
+    }
+    .tab-btn i {
+      font-size: 16px;
+    }
+
+    /* Page Header */
+    .page-header {
+      margin-bottom: 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .page-header h1 {
+      font-size: 28px;
+      color: #2f3640;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .page-header h1 i {
+      color: #40739e;
+    }
+
+    /* Stats cards */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
+    .stat-card { 
+      background: #fff; 
+      padding: 20px; 
+      border-radius: 8px; 
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .stat-card h3 { font-size: 14px; color: #666; margin-bottom: 8px; }
+    .stat-card .value { font-size: 28px; font-weight: bold; color: #40739e; }
+    .stat-card .change { font-size: 12px; color: #27ae60; margin-top: 5px; }
+    .stat-card .change.negative { color: #e74c3c; }
+
+    /* Table */
+    .table-container { 
+      background: #fff; 
+      border-radius: 8px; 
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1); 
+      padding: 20px; 
+      margin-bottom: 20px;
+      animation: fadeIn 0.5s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
+    .table-header h2 { font-size: 20px; color: #2f3640; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+    th { background: #40739e; color: #fff; font-weight: 600; }
+    tbody tr { transition: background 0.2s ease; }
+    tbody tr:hover { background: #f8f9fa; }
+
+    /* Buttons */
+    .btn { 
+      padding: 8px 16px; 
+      border: none; 
+      border-radius: 4px; 
+      cursor: pointer; 
+      font-size: 14px; 
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    .btn-filter { background: #dcdde1; }
+    .btn-filter:hover { background: #b2bec3; }
+    .btn-export { background: #27ae60; color: #fff; }
+    .btn-export:hover { background: #229954; }
+    .btn-primary { background: #40739e; color: #fff; }
+    .btn-primary:hover { background: #2f5a7d; }
+
+    /* Chart container */
+    .chart-container { 
+      background: #fff; 
+      padding: 20px; 
+      border-radius: 8px; 
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1); 
+      margin-bottom: 20px;
+      animation: fadeIn 0.5s ease;
+    }
+    .chart-container h2 { margin-bottom: 15px; font-size: 20px; color: #2f3640; }
+    .chart { height: 300px; display: flex; align-items: flex-end; gap: 15px; padding: 20px 0; }
+    .bar { 
+      flex: 1; 
+      background: linear-gradient(to top, #40739e, #5a9bd4); 
+      border-radius: 4px 4px 0 0; 
+      position: relative; 
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .bar:hover { 
+      opacity: 0.8;
+      transform: translateY(-5px);
+    }
+    .bar-label { position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #666; white-space: nowrap; }
+    .bar-value { position: absolute; top: -25px; left: 50%; transform: translateX(-50%); font-size: 13px; font-weight: bold; color: #40739e; }
+
+    /* Filters */
+    .filters { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .filters select { 
+      padding: 8px 12px; 
+      border: 1px solid #ddd; 
+      border-radius: 4px; 
+      font-size: 14px;
+      cursor: pointer;
+      transition: border-color 0.3s ease;
+    }
+    .filters select:hover {
+      border-color: #40739e;
+    }
+
+    /* Content sections */
+    .content-section { 
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+    .content-section.active { display: block; }
+
+    /* Form elements */
+    input[type="text"], input[type="date"] { 
+      padding: 8px; 
+      border: 1px solid #ddd; 
+      border-radius: 4px; 
+      font-size: 14px; 
+      width: 100%;
+      transition: border-color 0.3s ease;
+    }
+    input[type="text"]:focus, input[type="date"]:focus {
+      outline: none;
+      border-color: #40739e;
+    }
+
+    /* Export tabs */
+    .export-tabs { 
+      display: flex; 
+      gap: 10px; 
+      margin-bottom: 20px; 
+      flex-wrap: wrap; 
+    }
+    .export-tabs button { 
+      padding: 10px 20px; 
+      border: none; 
+      border-radius: 5px; 
+      cursor: pointer; 
+      background: #dcdde1; 
+      transition: all 0.3s ease;
+      font-size: 14px; 
+    }
+    .export-tabs button.active { 
+      background: #40739e; 
+      color: #fff; 
+    }
+    .export-tabs button:hover { 
+      background: #b2bec3;
+      transform: translateY(-2px);
+    }
+    .export-tabs button.active:hover { 
+      background: #2f5a7d; 
+    }
+
+    /* Loading indicator */
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 20px;
+      color: #40739e;
+    }
+    .loading.active {
+      display: block;
+    }
+
+    /* Notification badge */
+    .badge {
+      background: #e74c3c;
+      color: white;
+      border-radius: 10px;
+      padding: 2px 6px;
+      font-size: 11px;
+      font-weight: bold;
+      margin-left: 5px;
+    }
+
+    /* Responsive */
+    @media (max-width:768px) {
+      nav { width: 60px; }
+      nav h2, nav ul li a span { display: none; }
+      .page-header h1 { font-size: 22px; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .tab-bar { overflow-x: auto; }
+      .tab-btn { padding: 12px 15px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <nav>
+    <h2>Admin</h2>
+    <ul>
+      <li><a href="admin.html"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+      <li><a href="usermanage.html"><i class="fas fa-users"></i> <span>Users Management</span></a></li>
+      <li><a href="applimanage.html"><i class="fas fa-file-alt"></i> <span>Applications Management</span></a></li>
+      <li><a href="contntmanage.html"><i class="fas fa-file-code"></i> <span>Content Management</span></a></li>
+      <li><a href="report.html" class="active"><i class="fas fa-chart-line"></i> <span>Reports & Analytics</span></a></li>
+      <li><a href="payment.html"><i class="fas fa-credit-card"></i> <span>Payment/Subscription Management</span></a></li>
+      <li><a href="feed.html"><i class="fas fa-comment-dots"></i> <span>Feedback & Complaints</span></a></li>
+      <li><a href="sysSett.html"><i class="fas fa-cogs"></i> <span>System Settings</span></a></li>
+      <li><a href="security.html"><i class="fas fa-shield-alt"></i> <span>Security & Monitoring</span></a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1><i class="fas fa-chart-line"></i> Reports & Analytics</h1>
+      <div class="filters">
+        <button class="btn btn-export" onclick="exportAllReports()">
+          <i class="fas fa-download"></i> 
+        </button>
+        <button class="btn btn-primary" onclick="refreshDashboard()">
+          <i class="fas fa-sync-alt"></i> Refresh
+        </button>
+      </div>
+    </div>
+
+    <!-- Tab Bar -->
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="showTab('overview')">
+        <i class="fas fa-chart-pie"></i> Overview
+      </button>
+      <button class="tab-btn" onclick="showTab('job-trends')">
+        <i class="fas fa-briefcase"></i> Job Posting Trends
+      </button>
+      <button class="tab-btn" onclick="showTab('user-registration')">
+        <i class="fas fa-user-plus"></i> User Registration
+      </button>
+      <button class="tab-btn" onclick="showTab('job-categories')">
+        <i class="fas fa-tags"></i> Applied Categories
+      </button>
+      <button class="tab-btn" onclick="showTab('employer-activity')">
+        <i class="fas fa-building"></i> Employer Activity
+      </button>
+      <button class="tab-btn" onclick="showTab('system-usage')">
+        <i class="fas fa-server"></i> System Usage
+      </button>
+      <button class="tab-btn" onclick="showTab('reports')">
+        <i class="fas fa-file-download"></i> Export Reports
+        <span class="badge">3</span>
+      </button>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div class="loading" id="loadingIndicator">
+      <i class="fas fa-spinner fa-spin fa-2x"></i>
+      <p>Loading data...</p>
+    </div>
+
+    <!-- Overview Section -->
+    <div class="content-section active" id="overview">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+        <h2><i class="fas fa-chart-pie"></i> Dashboard Overview</h2>
+        <div class="filters">
+          <select id="period" onchange="updateOverviewData()">
+            <option>Last 7 Days</option>
+            <option>Last 30 Days</option>
+            <option selected>Last 3 Months</option>
+            <option>Last Year</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card" onclick="showTab('job-trends')">
+          <h3><i class="fas fa-briefcase"></i> Total Job Posts</h3>
+          <div class="value">1,247</div>
+          <div class="change">↑ 12% from last month</div>
+        </div>
+        <div class="stat-card" onclick="showTab('user-registration')">
+          <h3><i class="fas fa-users"></i> New Users</h3>
+          <div class="value">3,582</div>
+          <div class="change">↑ 8% from last month</div>
+        </div>
+        <div class="stat-card" onclick="showTab('job-categories')">
+          <h3><i class="fas fa-paper-plane"></i> Applications</h3>
+          <div class="value">8,943</div>
+          <div class="change">↑ 15% from last month</div>
+        </div>
+        <div class="stat-card" onclick="showTab('employer-activity')">
+          <h3><i class="fas fa-building"></i> Active Employers</h3>
+          <div class="value">456</div>
+          <div class="change negative">↓ 3% from last month</div>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <h2>Weekly Activity Overview</h2>
+        <div class="chart">
+          <div class="bar" style="height: 75%;" onclick="viewDayDetails('Monday')">
+            <span class="bar-value">180</span>
+            <span class="bar-label">Mon</span>
+          </div>
+          <div class="bar" style="height: 85%;" onclick="viewDayDetails('Tuesday')">
+            <span class="bar-value">204</span>
+            <span class="bar-label">Tue</span>
+          </div>
+          <div class="bar" style="height: 92%;" onclick="viewDayDetails('Wednesday')">
+            <span class="bar-value">221</span>
+            <span class="bar-label">Wed</span>
+          </div>
+          <div class="bar" style="height: 88%;" onclick="viewDayDetails('Thursday')">
+            <span class="bar-value">211</span>
+            <span class="bar-label">Thu</span>
+          </div>
+          <div class="bar" style="height: 100%;" onclick="viewDayDetails('Friday')">
+            <span class="bar-value">240</span>
+            <span class="bar-label">Fri</span>
+          </div>
+          <div class="bar" style="height: 55%;" onclick="viewDayDetails('Saturday')">
+            <span class="bar-value">132</span>
+            <span class="bar-label">Sat</span>
+          </div>
+          <div class="bar" style="height: 45%;" onclick="viewDayDetails('Sunday')">
+            <span class="bar-value">108</span>
+            <span class="bar-label">Sun</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Job Posting Trends -->
+    <div class="content-section" id="job-trends">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+        <h2><i class="fas fa-briefcase"></i> Job Posting Trends</h2>
+        <button class="btn btn-export" onclick="exportData('job-trends')">
+        </button>
+      </div>
+
+      <div class="chart-container">
+        <h2>Monthly Job Postings</h2>
+        <div class="chart">
+          <div class="bar" style="height: 65%;" onclick="viewMonthDetails('January', 325)">
+            <span class="bar-value">325</span><span class="bar-label">Jan</span>
+          </div>
+          <div class="bar" style="height: 72%;" onclick="viewMonthDetails('February', 360)">
+            <span class="bar-value">360</span><span class="bar-label">Feb</span>
+          </div>
+          <div class="bar" style="height: 80%;" onclick="viewMonthDetails('March', 400)">
+            <span class="bar-value">400</span><span class="bar-label">Mar</span>
+          </div>
+          <div class="bar" style="height: 85%;" onclick="viewMonthDetails('April', 425)">
+            <span class="bar-value">425</span><span class="bar-label">Apr</span>
+          </div>
+          <div class="bar" style="height: 100%;" onclick="viewMonthDetails('May', 500)">
+            <span class="bar-value">500</span><span class="bar-label">May</span>
+          </div>
+          <div class="bar" style="height: 90%;" onclick="viewMonthDetails('June', 450)">
+            <span class="bar-value">450</span><span class="bar-label">Jun</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <div class="table-header">
+          <h2>Top Industries</h2>
+          <button class="btn btn-primary" onclick="viewFullIndustryReport()">
+            <i class="fas fa-eye"></i> View Full Report
+          </button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Industry</th>
+              <th>Job Posts</th>
+              <th>Growth</th>
+              <th>Avg. Salary</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="cursor: pointer;" onclick="viewIndustryDetails('Technology')">
+              <td><i class="fas fa-laptop-code"></i> Technology</td><td>342</td><td style="color: #27ae60;">↑ 18%</td><td>₱45,000</td>
+            </tr>
+            <tr style="cursor: pointer;" onclick="viewIndustryDetails('Healthcare')">
+              <td><i class="fas fa-heartbeat"></i> Healthcare</td><td>289</td><td style="color: #27ae60;">↑ 12%</td><td>₱30,000</td>
+            </tr>
+            <tr style="cursor: pointer;" onclick="viewIndustryDetails('Finance')">
+              <td><i class="fas fa-dollar-sign"></i> Finance</td><td>256</td><td style="color: #27ae60;">↑ 9%</td><td>₱38,000</td>
+            </tr>
+            <tr style="cursor: pointer;" onclick="viewIndustryDetails('Education')">
+              <td><i class="fas fa-graduation-cap"></i> Education</td><td>198</td><td style="color: #27ae60;">↑ 6%</td><td>₱35,000</td>
+            </tr>
+            <tr style="cursor: pointer;" onclick="viewIndustryDetails('Retail')">
+              <td><i class="fas fa-shopping-cart"></i> Retail</td><td>162</td><td style="color: #e74c3c;">↓ 4%</td><td>₱20,000</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- User Registration Trends -->
+    <div class="content-section" id="user-registration">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+        <h2><i class="fas fa-user-plus"></i> User Registration Trends</h2>
+        <button class="btn btn-export" onclick="exportData('user-registration')">
+        </button>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3><i class="fas fa-users"></i> Total Users</h3>
+          <div class="value">24,567</div>
+          <div class="change">↑ 8% this month</div>
+        </div>
+        <div class="stat-card">
+          <h3><i class="fas fa-user-tie"></i> Job Seekers</h3>
+          <div class="value">21,890</div>
+          <div class="change">↑ 9% this month</div>
+        </div>
+        <div class="stat-card">
+          <h3><i class="fas fa-building"></i> Employers</h3>
+          <div class="value">2,677</div>
+          <div class="change">↑ 5% this month</div>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <h2>Monthly User Growth</h2>
+        <div class="chart">
+          <div class="bar" style="height: 60%;" onclick="viewUserGrowth('January')">
+            <span class="bar-value">480</span><span class="bar-label">Jan</span>
+          </div>
+          <div class="bar" style="height: 68%;" onclick="viewUserGrowth('February')">
+            <span class="bar-value">544</span><span class="bar-label">Feb</span>
+          </div>
+          <div class="bar" style="height: 75%;" onclick="viewUserGrowth('March')">
+            <span class="bar-value">600</span><span class="bar-label">Mar</span>
+          </div>
+          <div class="bar" style="height: 82%;" onclick="viewUserGrowth('April')">
+            <span class="bar-value">656</span><span class="bar-label">Apr</span>
+          </div>
+          <div class="bar" style="height: 95%;" onclick="viewUserGrowth('May')">
+            <span class="bar-value">760</span><span class="bar-label">May</span>
+          </div>
+          <div class="bar" style="height: 100%;" onclick="viewUserGrowth('June')">
+            <span class="bar-value">800</span><span class="bar-label">Jun</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <div class="table-header">
+          <h2>Recent Registrations</h2>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>User Type</th>
+              <th>Count</th>
+              <th>Source</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Nov 19, 2025</td><td>Job Seeker</td><td>127</td><td>Organic Search</td></tr>
+            <tr><td>Nov 18, 2025</td><td>Job Seeker</td><td>145</td><td>Social Media</td></tr>
+            <tr><td>Nov 17, 2025</td><td>Employer</td><td>23</td><td>Direct</td></tr>
+            <tr><td>Nov 16, 2025</td><td>Job Seeker</td><td>132</td><td>Organic Search</td></tr>
+            <tr><td>Nov 15, 2025</td><td>Job Seeker</td><td>118</td><td>Referral</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Most Applied Job Categories -->
+    <div class="content-section" id="job-categories">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+        <h2><i class="fas fa-tags"></i> Most Applied Job Categories</h2>
+        <button class="btn btn-export" onclick="exportData('job-categories')">
+        </button>
+      </div>
+
+      <div class="chart-container">
+        <h2>Applications by Category</h2>
+        <div class="chart">
+          <div class="bar" style="height: 100%;" onclick="viewCategoryDetails('IT', 1842)">
+            <span class="bar-value">1,842</span><span class="bar-label">IT</span>
+          </div>
+          <div class="bar" style="height: 85%;" onclick="viewCategoryDetails('Sales', 1565)">
+            <span class="bar-value">1,565</span><span class="bar-label">Sales</span>
+          </div>
+          <div class="bar" style="height: 75%;" onclick="viewCategoryDetails('Marketing', 1382)">
+            <span class="bar-value">1,382</span><span class="bar-label">Marketing</span>
+          </div>
+          <div class="bar" style="height: 68%;" onclick="viewCategoryDetails('Finance', 1252)">
+            <span class="bar-value">1,252</span><span class="bar-label">Finance</span>
+          </div>
+          <div class="bar" style="height: 55%;" onclick="viewCategoryDetails('HR', 1013)">
+            <span class="bar-value">1,013</span><span class="bar-label">HR</span>
+          </div>
+          <div class="bar" style="height: 45%;" onclick="viewCategoryDetails('Design', 829)">
+            <span class="bar-value">829</span><span class="bar-label">Design</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <div class="table-header">
+          <h2>Category Details</h2>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Applications</th>
+              <th>Job Posts</th>
+              <th>Avg. Applications/Post</th>
+              <th>Competition</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Information Technology</td><td>1,842</td><td>342</td><td>5.4</td><td style="color: #f39c12;">Medium</td></tr>
+            <tr><td>Sales & Marketing</td><td>1,565</td><td>289</td><td>5.4</td><td style="color: #f39c12;">Medium</td></tr>
+            <tr><td>Marketing</td><td>1,382</td><td>198</td><td>7.0</td><td style="color: #e74c3c;">High</td></tr>
+            <tr><td>Finance & Accounting</td><td>1,252</td><td>256</td><td>4.9</td><td style="color: #27ae60;">Low</td></tr>
+            <tr><td>Human Resources</td><td>1,013</td><td>145</td><td>7.0</td><td style="color: #e74c3c;">High</td></tr>
+            <tr><td>Design & Creative</td><td>829</td><td>112</td><td>7.4</td><td style="color: #e74c3c;">High</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Employer Activity -->
+    <div class="content-section" id="employer-activity">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+        <h2><i class="fas fa-building"></i> Employer Activity Reports</h2>
+        <button class="btn btn-export" onclick="exportData('employer-activity')">
+        </button>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3><i class="fas fa-building"></i> Active Employers</h3>
+          <div class="value">456</div>
+          <div class="change negative">↓ 3% this month</div>
+        </div>
+        <div class="stat-card">
+          <h3><i class="fas fa-plus-circle"></i> New Employers</h3>
+          <div class="value">67</div>
+          <div class="change">↑ 15% this month</div>
+        </div>
+        <div class="stat-card">
+          <h3><i class="fas fa-chart-line"></i> Avg. Posts/Employer</h3>
+          <div class="value">2.7</div>
+          <div class="change">↑ 5% this month</div>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <div class="table-header">
+          <h2>Top Employers by Activity</h2>
+          <button class="btn btn-primary" onclick="viewAllEmployers()">
+            <i class="fas fa-list"></i> View All Employers
+          </button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Job Posts</th>
+              <th>Applications Received</th>
+              <th>Hires</th>
+              <th>Last Activity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="cursor: pointer;" onclick="viewEmployerProfile('Tech Innovations Inc.')">
+              <td><i class="fas fa-building"></i> Tech Innovations Inc.</td><td>28</td><td>342</td><td>12</td><td>Today</td>
+            </tr>
+            <tr style="cursor: pointer;" onclick="viewEmployerProfile('Global Finance Corp')">
+              <td><i class="fas fa-building"></i> Global Finance Corp</td><td>24</td><td>298</td><td>9</td><td>Today</td>
+            </tr>
+            <tr style="cursor: pointer;" onclick="viewEmployerProfile('Healthcare Solutions')">
+              <td><i class="fas fa-building"></i> Healthcare Solutions</td><td>19</td><td>267</td><td>8</td><td>Yesterday</td>
+            </tr>
+            <tr style="cursor: pointer;" onclick="viewEmployerProfile('Digital Marketing Co.')">
+              <td><i class="fas fa-building"></i> Digital Marketing Co.</td><td>17</td><td>245</td><td>7</td><td>2 days ago</td>
+            </tr>
+            <tr style="cursor: pointer;" onclick="viewEmployerProfile('Retail Enterprises')">
+              <td><i class="fas fa-building"></i> Retail Enterprises</td><td>15</td><td>189</td><td>6</td><td>3 days ago</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- System Usage Statistics -->
+    <div class="content-section" id="system-usage">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+        <h2><i class="fas fa-server"></i> System Usage Statistics</h2>
+        <button class="btn btn-export" onclick="exportData('system-usage')">
+        </button>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3><i class="fas fa-users"></i> Daily Active Users</h3>
+          <div class="value">8,234</div>
+          <div class="change">↑ 11% from yesterday</div>
+        </div>
+        <div class="stat-card">
+          <h3><i class="fas fa-clock"></i> Avg. Session Duration</h3>
+          <div class="value">12m 34s</div>
+          <div class="change">↑ 2% this week</div>
+        </div>
+        <div class="stat-card">
+          <h3><i class="fas fa-eye"></i> Page Views</h3>
+          <div class="value">45,892</div>
+          <div class="change">↑ 7% from yesterday</div>
+        </div>
+        <div class="stat-card">
+          <h3><i class="fas fa-sign-out-alt"></i> Bounce Rate</h3>
+          <div class="value">32.4%</div>
+          <div class="change negative">↑ 1.2% this week</div>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <h2>Hourly Traffic Pattern</h2>
+        <div class="chart">
+          <div class="bar" style="height: 20%;" onclick="viewHourDetails('00:00', 120)">
+            <span class="bar-value">120</span><span class="bar-label">00:00</span>
+          </div>
+          <div class="bar" style="height: 30%;" onclick="viewHourDetails('04:00', 180)">
+            <span class="bar-value">180</span><span class="bar-label">04:00</span>
+          </div>
+          <div class="bar" style="height: 55%;" onclick="viewHourDetails('08:00', 330)">
+            <span class="bar-value">330</span><span class="bar-label">08:00</span>
+          </div>
+          <div class="bar" style="height: 85%;" onclick="viewHourDetails('12:00', 510)">
+            <span class="bar-value">510</span><span class="bar-label">12:00</span>
+          </div>
+          <div class="bar" style="height: 100%;" onclick="viewHourDetails('16:00', 600)">
+            <span class="bar-value">600</span><span class="bar-label">16:00</span>
+          </div>
+          <div class="bar" style="height: 75%;" onclick="viewHourDetails('20:00', 450)">
+            <span class="bar-value">450</span><span class="bar-label">20:00</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <div class="table-header">
+          <h2>Most Visited Pages</h2>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Page</th>
+              <th>Views</th>
+              <th>Unique Visitors</th>
+              <th>Avg. Time on Page</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="cursor: pointer;" onclick="viewPageAnalytics('Job Search')">
+              <td><i class="fas fa-search"></i> Job Search</td><td>12,456</td><td>8,234</td><td>4m 23s</td>
+            </tr>
+            <tr style="cursor: pointer;" onclick="viewPageAnalytics('Job Details')">
+              <td><i class="fas fa-info-circle"></i> Job Details</td><td>9,872</td><td>6,543</td><td>2m 45s</td>
+            </tr>
+            <tr style="cursor: pointer;" onclick="viewPageAnalytics('Company Profiles')">
+              <td><i class="fas fa-building"></i> Company Profiles</td><td>5,634</td><td>4,123</td><td>3m 12s</td>
+            </tr>
+            <tr style="cursor: pointer;" onclick="viewPageAnalytics('Dashboard')">
+              <td><i class="fas fa-tachometer-alt"></i> Dashboard</td><td>4,892</td><td>3,456</td><td>5m 34s</td>
+            </tr>
+            <tr style="cursor: pointer;" onclick="viewPageAnalytics('Application Form')">
+              <td><i class="fas fa-file-alt"></i> Application Form</td><td>3,245</td><td>2,987</td><td>6m 18s</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Export Reports -->
+    <div class="content-section" id="reports">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+        <h2><i class="fas fa-file-download"></i> Exportable Reports</h2>
+      </div>
+
+      <div class="export-tabs">
+        <button class="active" onclick="selectReportType(event, 'summary')">
+          <i class="fas fa-file-alt"></i> Summary Reports
+        </button>
+        <button onclick="selectReportType(event, 'detailed')">
+          <i class="fas fa-file-invoice"></i> Detailed Reports
+        </button>
+        <button onclick="selectReportType(event, 'custom')">
+          <i class="fas fa-cog"></i> Custom Reports
+        </button>
+      </div>
+
+      <div class="table-container">
+        <div class="table-header">
+          <h2>Available Reports</h2>
+          <div class="filters">
+            <select onchange="filterReports()">
+              <option>All Time Periods</option>
+              <option>This Week</option>
+              <option>This Month</option>
+              <option>This Quarter</option>
+              <option>This Year</option>
+            </select>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Report Name</th>
+              <th>Type</th>
+              <th>Last Generated</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><i class="fas fa-chart-bar"></i> Complete Analytics Report</td>
+              <td><span style="background: #d4edda; color: #155724; padding: 4px 8px; border-radius: 4px; font-size: 12px;">Summary</span></td>
+              <td>Nov 19, 2025</td>
+              <td>
+                <button class="btn btn-export" onclick="exportReport('pdf', 'complete')">
+                  <i class="fas fa-file-pdf"></i> PDF
+                </button>
+                <button class="btn btn-export" onclick="exportReport('excel', 'complete')">
+                  <i class="fas fa-file-excel"></i> Excel
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td><i class="fas fa-briefcase"></i> Job Posting Trends</td>
+              <td><span style="background: #d1ecf1; color: #0c5460; padding: 4px 8px; border-radius: 4px; font-size: 12px;">Detailed</span></td>
+              <td>Nov 19, 2025</td>
+              <td>
+                <button class="btn btn-export" onclick="exportReport('pdf', 'job-trends')">
+                  <i class="fas fa-file-pdf"></i> PDF
+                </button>
+                <button class="btn btn-export" onclick="exportReport('excel', 'job-trends')">
+                  <i class="fas fa-file-excel"></i> Excel
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td><i class="fas fa-user-plus"></i> User Registration Analysis</td>
+              <td><span style="background: #d1ecf1; color: #0c5460; padding: 4px 8px; border-radius: 4px; font-size: 12px;">Detailed</span></td>
+              <td>Nov 18, 2025</td>
+              <td>
+                <button class="btn btn-export" onclick="exportReport('pdf', 'users')">
+                  <i class="fas fa-file-pdf"></i> PDF
+                </button>
+                <button class="btn btn-export" onclick="exportReport('excel', 'users')">
+                  <i class="fas fa-file-excel"></i> Excel
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td><i class="fas fa-building"></i> Employer Activity Report</td>
+              <td><span style="background: #d4edda; color: #155724; padding: 4px 8px; border-radius: 4px; font-size: 12px;">Summary</span></td>
+              <td>Nov 18, 2025</td>
+              <td>
+                <button class="btn btn-export" onclick="exportReport('pdf', 'employers')">
+                  <i class="fas fa-file-pdf"></i> PDF
+                </button>
+                <button class="btn btn-export" onclick="exportReport('excel', 'employers')">
+                  <i class="fas fa-file-excel"></i> Excel
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td><i class="fas fa-server"></i> System Usage Statistics</td>
+              <td><span style="background: #d1ecf1; color: #0c5460; padding: 4px 8px; border-radius: 4px; font-size: 12px;">Detailed</span></td>
+              <td>Nov 17, 2025</td>
+              <td>
+                <button class="btn btn-export" onclick="exportReport('pdf', 'system')">
+                  <i class="fas fa-file-pdf"></i> PDF
+                </button>
+                <button class="btn btn-export" onclick="exportReport('excel', 'system')">
+                  <i class="fas fa-file-excel"></i> Excel
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-container" style="margin-top: 20px;">
+        <div class="table-header">
+          <h2><i class="fas fa-magic"></i> Generate Custom Report</h2>
+        </div>
+        <div style="padding: 20px;">
+          <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: 600;">Report Name:</label>
+            <input type="text" placeholder="Enter report name" id="customReportName">
+          </div>
+          <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: 600;">Date Range:</label>
+            <div style="display: flex; gap: 10px;">
+              <input type="date" style="flex: 1;" id="startDate">
+              <input type="date" style="flex: 1;" id="endDate">
+            </div>
+          </div>
+          <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: 600;">Include Sections:</label>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+              <label style="display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" checked id="includeJobTrends"> Job Posting Trends
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" checked id="includeUserReg"> User Registration
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" checked id="includeApplications"> Application Statistics
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" id="includeEmployer"> Employer Activity
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" id="includeSystemUsage"> System Usage
+              </label>
+            </div>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <button class="btn btn-export" onclick="generateCustomReport('pdf')">
+              <i class="fas fa-file-pdf"></i> Generate PDF
+            </button>
+            <button class="btn btn-export" onclick="generateCustomReport('excel')">
+              <i class="fas fa-file-excel"></i> Generate Excel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Tab navigation with smooth transition
+    function showTab(tabId) {
+      // Show loading indicator
+      const loading = document.getElementById('loadingIndicator');
+      loading.classList.add('active');
+      
+      setTimeout(() => {
+        // Remove active class from all tabs and content sections
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+        
+        // Add active class to clicked tab and corresponding content
+        event.target.closest('.tab-btn').classList.add('active');
+        document.getElementById(tabId).classList.add('active');
+        
+        // Hide loading indicator
+        loading.classList.remove('active');
+        
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        console.log(`Navigated to: ${tabId}`);
+      }, 300);
+    }
+
+    // Export data function
+    function exportData(type) {
+      console.log(`Exporting ${type} data...`);
+      alert(`Exporting ${type} data to Excel file...\n\nThis would download a file in a real application.`);
+    }
+
+    // Export report function
+    function exportReport(format, reportType) {
+      console.log(`Generating ${reportType} report in ${format} format...`);
+      alert(`Generating ${reportType} report in ${format.toUpperCase()} format...\n\nDownload will start shortly.`);
+    }
+
+    // Generate custom report
+    function generateCustomReport(format) {
+      const reportName = document.getElementById('customReportName').value;
+      const startDate = document.getElementById('startDate').value;
+      const endDate = document.getElementById('endDate').value;
+      
+      if (!reportName) {
+        alert('Please enter a report name.');
+        return;
+      }
+      
+      const selectedSections = [];
+      if (document.getElementById('includeJobTrends').checked) selectedSections.push('Job Trends');
+      if (document.getElementById('includeUserReg').checked) selectedSections.push('User Registration');
+      if (document.getElementById('includeApplications').checked) selectedSections.push('Applications');
+      if (document.getElementById('includeEmployer').checked) selectedSections.push('Employer Activity');
+      if (document.getElementById('includeSystemUsage').checked) selectedSections.push('System Usage');
+      
+      console.log('Custom Report:', {
+        name: reportName,
+        format: format,
+        dateRange: `${startDate} to ${endDate}`,
+        sections: selectedSections
+      });
+      
+      alert(`Generating custom report "${reportName}" in ${format.toUpperCase()} format...\n\nIncluded sections: ${selectedSections.join(', ')}\nDate range: ${startDate || 'N/A'} to ${endDate || 'N/A'}`);
+    }
+
+    // Select report type
+    function selectReportType(event, type) {
+      const buttons = document.querySelectorAll('.export-tabs button');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      console.log(`Selected report type: ${type}`);
+    }
+
+    // Refresh dashboard
+    function refreshDashboard() {
+      const loading = document.getElementById('loadingIndicator');
+      loading.classList.add('active');
+      
+      console.log('Refreshing dashboard data...');
+      
+      setTimeout(() => {
+        loading.classList.remove('active');
+        alert('Dashboard data refreshed successfully!');
+      }, 1500);
+    }
+
+    // Export all reports
+    function exportAllReports() {
+      console.log('Exporting all reports...');
+      alert('Preparing to export all reports...\n\nThis will generate a comprehensive report package including:\n- Overview\n- Job Trends\n- User Registration\n- Job Categories\n- Employer Activity\n- System Usage');
+    }
+
+    // Update overview data based on period
+    function updateOverviewData() {
+      const period = document.getElementById('period').value;
+      console.log(`Updating overview for: ${period}`);
+      alert(`Loading data for: ${period}`);
+    }
+
+    // View day details
+    function viewDayDetails(day) {
+      console.log(`Viewing details for: ${day}`);
+      alert(`Detailed analytics for ${day}:\n\n• Total activities\n• User engagement\n• Peak hours\n• Conversion rates`);
+    }
+
+    // View month details
+    function viewMonthDetails(month, count) {
+      console.log(`Viewing ${month} details: ${count} posts`);
+      alert(`${month} Job Posting Details:\n\n• Total Posts: ${count}\n• Top Industries\n• Growth Rate\n• Salary Trends`);
+    }
+
+    // View industry details
+    function viewIndustryDetails(industry) {
+      console.log(`Viewing industry: ${industry}`);
+      alert(`${industry} Industry Analysis:\n\n• Job posting trends\n• Salary ranges\n• Growth projections\n• Top companies`);
+    }
+
+    // View full industry report
+    function viewFullIndustryReport() {
+      console.log('Opening full industry report...');
+      alert('Opening comprehensive industry analysis report...');
+    }
+
+    // View user growth details
+    function viewUserGrowth(month) {
+      console.log(`Viewing user growth for: ${month}`);
+      alert(`${month} User Growth Analysis:\n\n• New registrations\n• User types breakdown\n• Traffic sources\n• Retention rates`);
+    }
+
+    // View category details
+    function viewCategoryDetails(category, count) {
+      console.log(`Viewing category: ${category} (${count} applications)`);
+      alert(`${category} Category Analysis:\n\n• Total Applications: ${count}\n• Competition level\n• Success rate\n• Popular positions`);
+    }
+
+    // View employer profile
+    function viewEmployerProfile(company) {
+      console.log(`Viewing profile for: ${company}`);
+      alert(`${company} Profile:\n\n• Job postings history\n• Application statistics\n• Hiring rate\n• Activity timeline`);
+    }
+
+    // View all employers
+    function viewAllEmployers() {
+      console.log('Viewing all employers...');
+      alert('Opening complete employer directory...');
+    }
+
+    // View hour details
+    function viewHourDetails(hour, traffic) {
+      console.log(`Viewing traffic at ${hour}: ${traffic} users`);
+      alert(`Traffic Analysis for ${hour}:\n\n• Active Users: ${traffic}\n• Page views\n• User actions\n• Peak activity`);
+    }
+
+    // View page analytics
+    function viewPageAnalytics(page) {
+      console.log(`Viewing analytics for: ${page}`);
+      alert(`${page} Analytics:\n\n• Detailed traffic data\n• User behavior\n• Conversion metrics\n• Performance stats`);
+    }
+
+    // Filter reports
+    function filterReports() {
+      console.log('Filtering reports...');
+      alert('Filtering report list based on selected time period...');
+    }
+
+    // Initialize dashboard
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Reports & Analytics Dashboard loaded successfully');
+      
+      // Add click effects to stat cards
+      document.querySelectorAll('.stat-card').forEach(card => {
+        card.addEventListener('mouseenter', function() {
+          this.style.transition = 'all 0.3s ease';
+        });
+      });
+    });
+
+    // =========================
+// FIXED TAB NAVIGATION
+// =========================
+function showTab(tabId, eventObj) {
+    const loading = document.getElementById('loadingIndicator');
+    loading.classList.add('active');
+  
+    setTimeout(() => {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+  
+      if (eventObj) {
+        eventObj.target.closest('.tab-btn').classList.add('active');
+      }
+  
+      document.getElementById(tabId).classList.add('active');
+  
+      loading.classList.remove('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+  
+      console.log("Navigated to:", tabId);
+    }, 300);
+  }
+  
+  // Make tab buttons call with event
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener("click", function(e) {
+      const tabId = this.getAttribute("onclick").match(/'(.*?)'/)[1];
+      showTab(tabId, e);
+    });
+  });
+  
+  
+  // =========================
+  // DASHBOARD ACTION FUNCTIONS
+  // =========================
+  
+  function updateOverviewData() {
+    alert("Overview data updated for: " + document.getElementById('period').value);
+  }
+  
+  function viewDayDetails(day) {
+    alert("Viewing details for: " + day);
+  }
+  
+  function viewMonthDetails(month, value) {
+    alert(`Month: ${month}\nPosts: ${value}`);
+  }
+  
+  function viewIndustryDetails(industry) {
+    alert("Industry Details: " + industry);
+  }
+  
+  function viewUserGrowth(month) {
+    alert("User growth details for: " + month);
+  }
+  
+  function viewCategoryDetails(category, count) {
+    alert(`Category: ${category}\nApplications: ${count}`);
+  }
+  
+  function viewEmployerProfile(name) {
+    alert("Opening employer profile: " + name);
+  }
+  
+  function viewAllEmployers() {
+    alert("Showing full employer list...");
+  }
+  
+  function viewHourDetails(hour, traffic) {
+    alert(`Hour: ${hour}\nTraffic: ${traffic}`);
+  }
+  
+  function viewPageAnalytics(page) {
+    alert("Opening analytics for: " + page);
+  }
+  
+  
+  // =========================
+  // REPORT SYSTEM FUNCTIONS
+  // =========================
+  
+  function filterReports() {
+    alert("Report filter applied!");
+  }
+  
+  function exportData(type) {
+    alert(`Exporting data: ${type}`);
+  }
+  
+  function exportReport(format, reportType) {
+    alert(`Exporting ${reportType} as ${format.toUpperCase()}`);
+  }
+  
+  function generateCustomReport(format) {
+    const name = document.getElementById("customReportName").value;
+    const start = document.getElementById("startDate").value;
+    const end = document.getElementById("endDate").value;
+  
+    if (!name) return alert("Enter a report name.");
+  
+    const sections = [];
+    if (includeJobTrends.checked) sections.push("Job Trends");
+    if (includeUserReg.checked) sections.push("User Registration");
+    if (includeApplications.checked) sections.push("Applications");
+    if (includeEmployer.checked) sections.push("Employer Activity");
+    if (includeSystemUsage.checked) sections.push("System Usage");
+  
+    alert(`Custom Report Generated!\nName: ${name}\nFormat: ${format}\nSections: ${sections.join(", ")}`);
+  }
+  
+  function selectReportType(event, type) {
+    document.querySelectorAll('.export-tabs button')
+      .forEach(btn => btn.classList.remove('active'));
+    
+    event.target.classList.add('active');
+    console.log("Report type selected:", type);
+  }
+  
+  
+  // =========================
+  // DASHBOARD REFRESH
+  // =========================
+  
+  function refreshDashboard() {
+    const loading = document.getElementById('loadingIndicator');
+    loading.classList.add('active');
+  
+    setTimeout(() => {
+      loading.classList.remove('active');
+      alert("Dashboard refreshed!");
+    }, 1500);
+  }
+  
+  
+  // =========================
+  // EXPORT ALL
+  // =========================
+  
+  function exportAllReports() {
+    alert("Exporting full system reports...");
+  }
+  
+  </script>
+</body>
+</html>

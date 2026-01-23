@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IntJob — Find Your First Job Faster</title>
+  <meta name="description" content="JobSync helps college students match skills and interests to job openings across web and mobile.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="thesistry.css">
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="nav container" role="navigation" aria-label="Main">
+    <a href="#home" class="brand">
+      <span class="logo" aria-hidden="true">
+        <img src="1.jpg" alt="IntJob Logo" width="60" height="60">
+      </span>
+      <span>IntJob</span>
+    </a>
+    <nav style="display:flex; gap:14px; align-items:center">
+      <a href="#features" class="btn">Features</a>
+      <a href="#how" class="btn">How it works</a>
+      <a href="#contact" class="btn">Contact</a>
+      <a href="#" class="btn cta" id="openLogin">Login</a>
+      <a href="#" class="btn cta" id="openSignup">Sign Up</a>
+      <div class="switch" id="themeToggle" role="button" tabindex="0"><span class="knob"></span></div>
+    </nav>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="container" id="home">
+    <section class="hero">
+      <div>
+        <span class="badge"><span>🎓</span> For graduating students & fresh grads</span>
+        <h1>Find your first job faster with smart, skills-based matching.</h1>
+        <p class="lead">IntJob connects your academics, talents, and interests to real job openings—clearly showing if roles require experience so you can apply with confidence.</p>
+        <div class="actions">
+          <a class="btn" href="#features">Explore Features</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <h2 class="section-title">Why students choose IntJob</h2>
+      <p class="muted">Purpose-built for fresh graduates entering the job market.</p>
+      <div class="grid cols-3" style="margin-top:18px">
+        <div class="card"><h3>Skills-based matching</h3><p>Connect your academics, talents, and interests to curated roles.</p></div>
+        <div class="card"><h3>Experience transparency</h3><p>Quickly see if experience is required.</p></div>
+        <div class="card"><h3>Cross-platform</h3><p>Available across websites and web apps.</p></div>
+      </div>
+    </section>
+
+    <section id="how">
+      <h2 class="section-title">How it works</h2>
+      <div class="steps" style="margin-top:12px">
+        <div class="card"><strong>1. Create your profile</strong><p class="muted">Add your course, strengths, and interests.</p></div>
+        <div class="card"><strong>2. Get smart suggestions</strong><p class="muted">Roles aligned to your profile.</p></div>
+        <div class="card"><strong>3. Check requirements</strong><p class="muted">Know if experience is needed.</p></div>
+        <div class="card"><strong>4. Apply with confidence</strong><p class="muted">Track applications easily.</p></div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2 class="section-title">Contact</h2>
+      <div class="grid cols-3" style="margin-top:1px">
+        <div class="card"><strong>Email</strong><p class="muted">hello@Intjobs.app</p></div>
+        <div class="card"><strong>Campus partners</strong><p class="muted">partner@intjobs.app</p></div>
+        <div class="card"><strong>Employers</strong><p class="muted">talent@Intjobs.app</p></div>
+      </div>
+    </section>
+  </main>
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-column"><h4>Solutions</h4><ul>
+        <li><a href="#">Integrations</a></li><li><a href="#">Enterprise ATS</a></li>
+        <li><a href="#">Mid Market ATS</a></li><li><a href="#">Candidate Sources</a></li>
+        <li><a href="#">Job Sites</a></li></ul></div>
+      <div class="footer-column"><h4>Company</h4><ul>
+        <li><a href="#">Partner</a></li><li><a href="#">Work With Us</a></li>
+        <li><a href="#">Contact Us</a></li><li><a href="#">Careers</a></li></ul></div>
+      <div class="footer-column"><h4>Resources</h4><ul>
+        <li><a href="#">Blog</a></li><li><a href="#">Downloads</a></li>
+        <li><a href="#">Recruitment Marketing</a></li><li><a href="#">Roundtable</a></li></ul></div>
+      <div class="footer-column"><h4>Legal</h4><ul>
+        <li><a href="#">Terms of Use</a></li><li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Data Processing Agreement</a></li><li><a href="#">Right To Be Forgotten</a></li></ul></div>
+    </div>
+    <div class="newsletter">
+      <p>Sign up for our newsletter</p>
+      <form><input type="email" placeholder="Enter your email" required><button type="submit">Sign Up</button></form>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span id="yr"></span> IntJob. All rights reserved.</p>
+      <div class="footer-social">
+        <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="#"><i class="fa-brands fa-youtube"></i></a>
+      </div>
+    </div>
+  </footer>
+ <!-- LOGIN / SIGNUP MODAL -->
+<div class="modal hidden" id="authModal" aria-hidden="true" role="dialog" aria-labelledby="authTitle">
+  <div class="modal-content">
+    <h3 id="authTitle">Login</h3>
+
+    <!-- LOGIN FORM -->
+    <form id="loginForm" class="auth-form">
+      <label>Email
+        <input type="email" name="email" required>
+      </label>
+
+      <label>Password
+        <input type="password" name="password" required>
+      </label>
+
+      <label>Role
+        <select name="role" required>
+          <option value="applicant">Employers</option>
+          <option value="employer">Applicant</option>
+          <option value="admin">Admin</option>
+        </select>
+      </label>
+
+      <div class="form-actions">
+        <button type="submit" class="btn">Login</button>
+      </div>
+
+      <p class="toggle-link small muted">
+        Don't have an account? <a href="#" id="switchToSignup">Sign up</a>
+      </p>
+    </form>
+
+    <!-- SIGNUP FORM -->
+    <form id="signUpForm" class="auth-form hidden">
+      <label>Full name
+        <input type="text" name="name" required>
+      </label>
+
+      <label>Email
+        <input type="email" name="email" required>
+      </label>
+
+      <label>Password
+        <input type="password" name="password" required>
+      </label>
+      <label>Role
+        <select name="role" required>
+          <option value="applicant">Applicant</option>
+          <option value="employer">Employer</option>
+          <option value="admin">Admin</option>
+        </select>
+      </label>
+
+      <div class="form-actions">
+        <button type="submit" class="btn">Create account</button>
+      </div>
+
+      <p class="toggle-link small muted">
+        Already have an account? <a href="#" id="switchToLogin">Login</a>
+      </p>
+    </form>
+  </div>
+</div>
+
+  <script src="thesistryjs.js"></script>  
+  </body>
+</html>

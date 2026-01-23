@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - IntJob</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="sett.css">
+</head>
+<body>
+     <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo">
+      Int<span>Job</span>
+  </div>
+    <a href="owner.html"><i class="fa fa-home"></i> Dashboard</a>
+    <a href="viewapp.html"><i class="fa fa-briefcase"></i> View Applicants</a>
+    <a href="jobspost.html"><i class="fa fa-briefcase"></i> Job Posts</a>
+    <a href="applicantsupdates.html"><i class="fa fa-users"></i> Applicants</a>
+    <a href="mess.html"><i class="fa fa-envelope"></i> Messages</a>
+    <a href="companypfp.html"><i class="fa fa-building"></i> Company Profile</a>
+    <a href="sett.html"><i class="fa fa-cog"></i> Settings</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <header>
+      <h2><i class="fas fa-cog"></i> Settings</h2>
+    </header>
+
+    <div class="settings-wrapper">
+      <div class="card">
+        <h3>Account Settings</h3>
+        <p>Update email, password, and login options.</p>
+        <button>Edit</button>
+      </div>
+
+      <div class="card">
+        <h3>Notifications</h3>
+        <p>Manage email and push notifications.</p>
+        <button>Edit</button>
+      </div>
+
+      <div class="card">
+        <h3>Privacy</h3>
+        <p>Control visibility of your profile and resume.</p>
+        <button>Edit</button>
+      </div>
+    </div>
+
+    <div class="logout-container">
+        <button class="logout-btn"><i class="fa fa-sign-out-alt"></i> Log Out</button>
+      </div>
+      <script>
+        document.querySelector('.logout-btn').addEventListener('click', () => {
+          if (confirm('Are you sure you want to log out?')) {
+            window.location.href = 'thesistry.html'; // change this to your actual login page
+          }
+        });
+      </script>
+      
+  </div>
+</body>
+</html>

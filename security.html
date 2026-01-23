@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security & Monitoring</title>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f6fa;
+            color: #333;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ================= SIDEBAR ================= */
+        nav {
+            width: 250px;
+            background: #2f3640;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        nav h2 {
+            text-align: center;
+            padding: 20px;
+            border-bottom: 1px solid #444;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        nav ul {
+            list-style: none;
+            flex: 1;
+        }
+
+        nav ul li {
+            border-bottom: 1px solid #444;
+            position: relative;
+        }
+
+        nav ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: #4da3ff;
+            transform: scaleY(0);
+            transition: transform 0.3s;
+        }
+
+        nav ul li a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: #fff;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        nav ul li a i {
+            margin-right: 10px;
+        }
+
+        nav ul li a:hover {
+            background: #40739e;
+        }
+
+        nav ul li a.active {
+            background: rgba(77, 163, 255, 0.15);
+            color: #4da3ff;
+        }
+
+        nav ul li a.active i {
+            color: #4da3ff;
+        }
+
+        nav ul li a.active::before {
+            transform: scaleY(1);
+            background: #4da3ff;
+        }
+
+        nav ul li:hover::before {
+            transform: scaleY(1);
+        }
+
+        /* ================= MAIN CONTENT ================= */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .header {
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background: #fff;
+            color: #333;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            border: none;
+            font-size: 14px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .tab.active {
+            background: #40739e;
+            color: #fff;
+        }
+
+        .tab:hover {
+            background: #40739e;
+            color: #fff;
+        }
+
+        .content {
+            margin-top: 20px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .stats-grid {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .stat-card h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .stat-card .value {
+            font-size: 22px;
+            font-weight: bold;
+            color: #40739e;
+        }
+
+        /* Filters */
+        .filter-group {
+            margin: 20px 0;
+        }
+
+        .filter-btn {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 8px 15px;
+            border-radius: 6px;
+            color: #333;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: #40739e;
+            color: #fff;
+            border-color: #40739e;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        thead {
+            background: #40739e;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            color: #fff;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .badge {
+            padding: 5px 10px;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 12px;
+            display: inline-block;
+            font-weight: 600;
+        }
+
+        .badge.info {
+            background: #4da3ff;
+        }
+
+        .badge.success {
+            background: #44bd32;
+        }
+
+        .badge.danger {
+            background: #e84118;
+        }
+
+        .badge.warning {
+            background: #f39c12;
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background: #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            border-left: 4px solid;
+        }
+
+        .alert.high {
+            border-left-color: #e84118;
+            background: #fff5f5;
+        }
+
+        .alert.medium {
+            border-left-color: #f39c12;
+            background: #fffbf0;
+        }
+
+        .alert.low {
+            border-left-color: #4da3ff;
+            background: #f0f8ff;
+        }
+
+        .alert h4 {
+            margin-bottom: 8px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .alert p {
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+            padding: 12px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            background: #fff;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: #40739e;
+        }
+
+        .blacklist-item {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            border-left: 4px solid #e84118;
+        }
+
+        .blacklist-item h4 {
+            margin-bottom: 10px;
+            color: #e84118;
+            font-size: 16px;
+        }
+
+        .blacklist-item p {
+            color: #555;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                width: 60px;
+            }
+
+            nav h2,
+            nav ul li a span {
+                display: none;
+            }
+
+            .stats-grid {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ================= SIDEBAR ================= -->
+<nav>
+    <h2>Admin</h2>
+    <ul>
+        <li><a href="admin.html"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+        <li><a href="usermanage.html"><i class="fas fa-users"></i> <span>Users Management</span></a></li>
+        <li><a href="applimanage.html"><i class="fas fa-file-alt"></i> <span>Applications Management</span></a></li>
+        <li><a href="contntmanage.html"><i class="fas fa-file-code"></i> <span>Content Management</span></a></li>
+        <li><a href="report.html"><i class="fas fa-chart-line"></i> <span>Reports & Analytics</span></a></li>
+        <li><a href="payment.html"><i class="fas fa-credit-card"></i> <span>Payment/Subscription Management</span></a></li>
+        <li><a href="feed.html"><i class="fas fa-comment-dots"></i> <span>Feedback & Complaints</span></a></li>
+        <li><a href="sysSett.html"><i class="fas fa-cogs"></i> <span>System Settings</span></a></li>
+        <li><a href="security.html" class="active"><i class="fas fa-shield-alt"></i> <span>Security & Monitoring</span></a></li>
+    </ul>
+</nav>
+
+<!-- ================= MAIN CONTENT ================= -->
+<div class="main-content">
+    <div class="header">
+        <h1>🔒 Security & Monitoring</h1>
+        <p>Periodic Security Monitoring and Threat Detection System</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab active" onclick="switchTab(0)">Login Logs</button>
+        <button class="tab" onclick="switchTab(1)">Activity Logs</button>
+        <button class="tab" onclick="switchTab(2)">Failed Login Attempts</button>
+        <button class="tab" onclick="switchTab(3)">Suspicious Behavior</button>
+        <button class="tab" onclick="switchTab(4)">Blacklisted Accounts</button>
+    </div>
+
+    <div class="content">
+            <!-- Login Logs Tab -->
+            <div class="tab-content active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Total Logins Today</h3>
+                        <div class="value">1,247</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Successful Logins</h3>
+                        <div class="value">1,189</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Failed Attempts</h3>
+                        <div class="value">58</div>
+                    </div>
+                </div>
+
+                <input type="text" class="search-bar" placeholder="Search by username, or location...">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Username</th>
+                        
+                            <th>Location</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2025-11-22 14:32:15</td>
+                            <td>john.doe@company.com</td>
+                       
+                            <td>Batangas City</td>
+                            <td><span class="badge success">Success</span></td>
+                        </tr>
+                        <tr>
+                            <td>2025-11-22 14:28:03</td>
+                            <td>sarah.wilson@company.com</td>
+                        
+                            <td>Tanay, Rizal</td>
+                            <td><span class="badge success">Success</span></td>
+                        </tr>
+                        <tr>
+                            <td>2025-11-22 14:25:47</td>
+                            <td>mike.chen@company.com</td>
+                           
+                            <td>Calamba laguna</td>
+                            <td><span class="badge success">Success</span></td>
+                        </tr>
+                        <tr>
+                            <td>2025-11-22 14:22:19</td>
+                            <td>emma.garcia@company.com</td>
+                         
+                            <td>Silang Cavite</td>
+                            <td><span class="badge success">Success</span></td>
+                        </tr>
+                        <tr>
+                            <td>2025-11-22 14:18:55</td>
+                            <td>david.kumar@company.com</td>
+                
+                            <td>Batangas City</td>
+                            <td><span class="badge success">Success</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Activity Logs Tab -->
+            <div class="tab-content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Total Activities</h3>
+                        <div class="value">3,842</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>File Operations</h3>
+                        <div class="value">892</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>System Changes</h3>
+                        <div class="value">145</div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <button class="filter-btn active">All</button>
+                    <button class="filter-btn">File Access</button>
+                    <button class="filter-btn">Data Export</button>
+                    <button class="filter-btn">Settings Change</button>
+                    <button class="filter-btn">User Management</button>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>User</th>
+                            <th>Activity Type</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2025-11-22 14:35:21</td>
+                            <td>admin@company.com</td>
+                            <td>File Access</td>
+                            <td>Accessed financial_report_Q4.pdf</td>
+                            <td><span class="badge info">Completed</span></td>
+                        </tr>
+                        <tr>
+                            <td>2025-11-22 14:33:45</td>
+                            <td>john.doe@company.com</td>
+                            <td>Data Export</td>
+                            <td>Exported customer database (250 records)</td>
+                            <td><span class="badge warning">Flagged</span></td>
+                        </tr>
+                        <tr>
+                            <td>2025-11-22 14:30:12</td>
+                            <td>sarah.wilson@company.com</td>
+                            <td>Settings Change</td>
+                            <td>Updated security settings for team</td>
+                            <td><span class="badge info">Completed</span></td>
+                        </tr>
+                        <tr>
+                            <td>2025-11-22 14:27:38</td>
+                            <td>mike.chen@company.com</td>
+                            <td>File Access</td>
+                            <td>Downloaded employee_handbook.docx</td>
+                            <td><span class="badge info">Completed</span></td>
+                        </tr>
+                        <tr>
+                            <td>2025-11-22 14:24:55</td>
+                            <td>admin@company.com</td>
+                            <td>User Management</td>
+                            <td>Created new user account: temp_contractor_001</td>
+                            <td><span class="badge info">Completed</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Failed Login Attempts Tab -->
+            <div class="tab-content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Failed Attempts (24h)</h3>
+                        <div class="value">58</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Blocked IPs</h3>
+                        <div class="value">12</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Brute Force Detected</h3>
+                        <div class="value">3</div>
+                    </div>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Username Attempted</th>
+                         
+                            <th>Location</th>
+                            <th>Attempts</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2025-11-22 14:31:45</td>
+                            <td>admin</td>
+                      
+                            <td>Unknown</td>
+                            <td>12</td>
+                            <td><span class="badge danger">Brute Force</span></td>
+                        </tr>
+                        <tr>
+                            <td>2025-11-22 14:29:12</td>
+                            <td>root</td>
+                           
+                            <td>Unknown</td>
+                            <td>8</td>
+                            <td><span class="badge danger">Invalid Username</span></td>
+                        </tr>
+                        <tr>
+                            <td>2025-11-22 14:26:33</td>
+                            <td>john.doe@company.com</td>
+                   
+                            <td>Quezon City</td>
+                            <td>3</td>
+                            <td><span class="badge warning">Wrong Password</span></td>
+                        </tr>
+                        <tr>
+                            <td>2025-11-22 14:23:18</td>
+                            <td>administrator</td>
+          
+                            <td>Antipolo</td>
+                            <td>15</td>
+                            <td><span class="badge danger">Brute Force</span></td>
+                        </tr>
+                        <tr>
+                            <td>2025-11-22 14:19:54</td>
+                            <td>test@company.com</td>
+                  
+                            <td>Antipolo</td>
+                            <td>6</td>
+                            <td><span class="badge danger">Account Locked</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Suspicious Behavior Tab -->
+            <div class="tab-content">
+                <div class="alert high">
+                    <h4>🚨 Critical Alert: Unusual Data Access Detected</h4>
+                    <p>User "john.doe@company.com" accessed 150 files in 5 minutes from new location</p>
+                    <p><strong>Time:</strong> 2025-11-22 14:20:00 | <strong>Risk Level:</strong> High</p>
+                </div>
+
+                <div class="alert medium">
+                    <h4>⚠️ Warning: Multiple Login Locations</h4>
+                    <p>User "sarah.wilson@company.com" logged in from 3 different countries within 1 hour</p>
+                    <p><strong>Time:</strong> 2025-11-22 13:45:00 | <strong>Risk Level:</strong> Medium</p>
+                </div>
+
+                <div class="alert low">
+                    <h4>ℹ️ Notice: After-Hours Activity</h4>
+                    <p>User "mike.chen@company.com" accessing system outside normal work hours</p>
+                    <p><strong>Time:</strong> 2025-11-22 02:15:00 | <strong>Risk Level:</strong> Low</p>
+                </div>
+
+                <h3 style="margin: 30px 0 20px 0;">Detailed Suspicious Activities</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>User</th>
+                            <th>Behavior Type</th>
+                            <th>Description</th>
+                            <th>Risk Level</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2025-11-22 14:20:00</td>
+                            <td>john.doe@company.com</td>
+                            <td>Mass File Access</td>
+                            <td>150 files accessed in 5 minutes</td>
+                            <td><span class="badge danger">High</span></td>
+                        </tr>
+                        <tr>
+                            <td>2025-11-22 13:45:00</td>
+                            <td>sarah.wilson@company.com</td>
+                            <td>Geo-Anomaly</td>
+                            <td>Logins from USA, UK, Japan within 1 hour</td>
+                            <td><span class="badge warning">Medium</span></td>
+                        </tr>
+                        <tr>
+                            <td>2025-11-22 12:30:00</td>
+                            <td>temp_contractor_001</td>
+                            <td>Unauthorized Access</td>
+                            <td>Attempted access to restricted finance folder</td>
+                            <td><span class="badge danger">High</span></td>
+                        </tr>
+                        <tr>
+                            <td>2025-11-22 02:15:00</td>
+                            <td>mike.chen@company.com</td>
+                            <td>Off-Hours Activity</td>
+                            <td>Database queries at 2 AM local time</td>
+                            <td><span class="badge info">Low</span></td>
+                        </tr>
+                        <tr>
+                            <td>2025-11-22 11:22:00</td>
+                            <td>emma.garcia@company.com</td>
+                            <td>Privilege Escalation</td>
+                            <td>Multiple attempts to access admin panel</td>
+                            <td><span class="badge warning">Medium</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Blacklisted Accounts Tab -->
+            <div class="tab-content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Total Blacklisted</h3>
+                        <div class="value">24</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Permanent Bans</h3>
+                        <div class="value">18</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Temporary Suspensions</h3>
+                        <div class="value">6</div>
+                    </div>
+                </div>
+
+                <div class="blacklist-item">
+                    <h4>🚫 hacker_account_001@suspicious.com</h4>
+                    <p><strong>Reason:</strong> Multiple brute force attacks detected</p>
+         
+                    <p><strong>Blacklisted On:</strong> 2025-11-20 09:15:00</p>
+                    <p><strong>Status:</strong> Permanent Ban</p>
+                </div>
+
+                <div class="blacklist-item">
+                    <h4>🚫 test_user_malicious@test.com</h4>
+                    <p><strong>Reason:</strong> Attempted SQL injection attacks</p>
+                  
+                    <p><strong>Blacklisted On:</strong> 2025-11-19 16:42:00</p>
+                    <p><strong>Status:</strong> Permanent Ban</p>
+                </div>
+
+                <div class="blacklist-item">
+                    <h4>🚫 former_employee_012@company.com</h4>
+                    <p><strong>Reason:</strong> Unauthorized access after termination</p>
+          
+                    <p><strong>Blacklisted On:</strong> 2025-11-18 14:30:00</p>
+                    <p><strong>Status:</strong> Permanent Ban</p>
+                </div>
+
+                <div class="blacklist-item">
+                    <h4>🚫 contractor_temp_005@external.com</h4>
+                    <p><strong>Reason:</strong> Policy violation - data exfiltration attempt</p>
+                  
+                    <p><strong>Blacklisted On:</strong> 2025-11-22 10:15:00</p>
+                    <p><strong>Status:</strong> Temporary (30 days)</p>
+                </div>
+
+                <div class="blacklist-item">
+                    <h4>🚫 spam_bot_network@bot.net</h4>
+                    <p><strong>Reason:</strong> Automated bot activity detected</p>
+            
+                    <p><strong>Blacklisted On:</strong> 2025-11-21 08:20:00</p>
+                    <p><strong>Status:</strong> Permanent Ban</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(index) {
+            // Remove active class from all tabs and content
+            const tabs = document.querySelectorAll('.tab');
+            const contents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+            
+            // Add active class to selected tab and content
+            tabs[index].classList.add('active');
+            contents[index].classList.add('active');
+        }
+
+        // Add filter functionality
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Add search functionality
+        const searchBars = document.querySelectorAll('.search-bar');
+        searchBars.forEach(searchBar => {
+            searchBar.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const table = this.nextElementSibling.tagName === 'TABLE' ? 
+                              this.nextElementSibling : 
+                              this.parentElement.querySelector('table');
+                
+                if (table) {
+                    const rows = table.querySelectorAll('tbody tr');
+                    rows.forEach(row => {
+                        const text = row.textContent.toLowerCase();
+                        row.style.display = text.includes(searchTerm) ? '' : 'none';
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
