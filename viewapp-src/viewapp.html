@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employer Dashboard — View Applicants</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="viewapp.css">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo">
+      Int<span>Job</span>
+  </div>
+    <a href="owner.html"><i class="fa fa-home"></i> Dashboard</a>
+    <a href="viewapp.html"><i class="fa fa-briefcase"></i> View Applicants</a>
+    <a href="jobspost.html"><i class="fa fa-briefcase"></i> Job Posts</a>
+    <a href="applicantsupdates.html"><i class="fa fa-users"></i> Applicants</a>
+    <a href="mess.html"><i class="fa fa-envelope"></i> Messages</a>
+    <a href="companypfp.html"><i class="fa fa-building"></i> Company Profile</a>
+    <a href="sett.html"><i class="fa fa-cog"></i> Settings</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="top-bar">
+      <a href="jobspost.html" class="btn-back">← Back to Job Posts</a>
+    </div>
+
+    <h1>Applicants for Front-End Developer</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Applicant Name</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Leira Mia D. Malutao</td>
+          <td>leira.malutao@email.com</td>
+          <td><span class="status review">Under Review</span></td>
+          <td><button class="btn">View Resume</button></td>
+        </tr>
+        <tr>
+          <td>John Reyes</td>
+          <td>john.reyes@email.com</td>
+          <td><span class="status interview">Interview Scheduled</span></td>
+          <td><button class="btn">View Resume</button></td>
+        </tr>
+        <tr>
+          <td>Angela Cruz</td>
+          <td>angela.cruz@email.com</td>
+          <td><span class="status shortlisted">Shortlisted</span></td>
+          <td><button class="btn">View Resume</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

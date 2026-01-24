@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Messages</title>
+  <link rel="stylesheet" href="mess.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- ===== SIDEBAR ===== -->
+  <div class="sidebar">
+    <div class="logo">
+      Int<span>Job</span>
+  </div>
+    <a href="owner.html"><i class="fa fa-home"></i> Dashboard</a>
+    <a href="viewapp.html"><i class="fa fa-briefcase"></i> View Applicants</a>
+    <a href="jobspost.html"><i class="fa fa-briefcase"></i> Job Posts</a>
+    <a href="applicantsupdates.html"><i class="fa fa-users"></i> Applicants</a>
+    <a href="mess.html"><i class="fa fa-envelope"></i> Messages</a>
+    <a href="companypfp.html"><i class="fa fa-building"></i> Company Profile</a>
+    <a href="sett.html"><i class="fa fa-cog"></i> Settings</a>
+  </div>
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="main-content">
+    <h1>Messages</h1>
+
+    <div class="message-container card">
+      <!-- LEFT SIDE: Applicant List -->
+      <div class="applicant-list">
+        <div class="applicant active">John Dela Cruz — Applicant (Frontend Dev)</div>
+        <div class="applicant">Maria Santos — Applicant (UI/UX Designer)</div>
+        <div class="applicant">Carlos Reyes — Applicant (Backend Dev)</div>
+      </div>
+
+      <!-- RIGHT SIDE: Chat Area -->
+      <div class="chat-area">
+        <div class="chat-box">
+          <div class="message applicant-msg">Hello! I’d like to ask about the Frontend Developer position.</div>
+          <div class="message owner-msg">Hi John! Sure, what would you like to know?</div>
+          <div class="message applicant-msg">Is this position remote or on-site?</div>
+          <div class="message owner-msg">It’s a fully remote position. You can apply directly here in the system.</div>
+        </div>
+
+        <!-- Input -->
+        <div class="chat-input">
+          <input type="text" placeholder="Type your message..." />
+          <button class="btn">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

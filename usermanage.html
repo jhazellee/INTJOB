@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Management Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* Reset & base */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+    body { display: flex; min-height: 100vh; background: #f5f6fa; }
+
+    /* Sidebar */
+    nav { width: 250px; background: #2f3640; color: #fff; display: flex; flex-direction: column; }
+    nav h2 { text-align: center; padding: 20px; border-bottom: 1px solid #444; }
+    nav ul { list-style: none; flex: 1; }
+    nav ul li { border-bottom: 1px solid #444; }
+    nav ul li a { display: flex; align-items: center; padding: 15px 20px; color: #fff; text-decoration: none; transition: 0.3s; }
+    nav ul li a i { margin-right: 10px; }
+    nav ul li a.active, nav ul li a:hover { background: #40739e; }
+
+    /* Main content */
+    main { flex: 1; padding: 20px; overflow-x: auto; }
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    header h1 { font-size: 28px; }
+
+    /* Table */
+    table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+    th { background: #40739e; color: #fff; }
+    .action-btn { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; margin-right: 5px; color: #fff; }
+    .approve { background: #44bd32; }
+    .reject { background: #e84118; }
+    .edit { background: #fbc531; color: #000; }
+    .deactivate { background: #718093; }
+    .remove { background: #c23616; }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 20px; margin-bottom: 20px; }
+    .tabs button { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; background: #dcdde1; transition: 0.3s; }
+    .tabs button.active { background: #40739e; color: #fff; }
+
+    @media (max-width:768px) {
+      nav { width: 60px; }
+      nav h2, nav ul li a span { display:none; }
+    }
+/* Active Link */
+nav ul li a.active {
+    background: rgba(77, 163, 255, 0.15);
+    color: #4da3ff;
+}
+
+nav ul li a.active i {
+    color: #4da3ff;
+    opacity: 1;
+}
+
+/* Slide bar active */
+nav ul li a.active::before {
+    transform: scaleY(1);
+    background: #4da3ff;
+}
+
+/* Modify hover to avoid conflict */
+nav ul li:hover::before,
+nav ul li a:hover::before {
+    transform: scaleY(1);
+}
+
+    
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <nav>
+    <h2>Admin</h2>
+    <ul>
+      <li><a href="admin.html"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+      <li><a href="usermanage.html" class="active"><i class="fas fa-users"></i> <span>Users Management</span></a></li>
+      <li><a href="applimanage.html"><i class="fas fa-file-alt"></i> <span>Applications Management</span></a></li>
+      <li><a href="contntmanage.html"><i class="fas fa-file-code"></i> <span>Content Management</span></a></li>
+      <li><a href="report.html"><i class="fas fa-chart-line"></i> <span>Reports & Analytics</span></a></li>
+      <li><a href="payment.html"><i class="fas fa-credit-card"></i> <span>Payment/Subscription Management</span></a></li>
+      <li><a href="feed.html"><i class="fas fa-comment-dots"></i> <span>Feedback & Complaints</span></a></li>
+      <li><a href="sysSett.html"><i class="fas fa-cogs"></i> <span>System Settings</span></a></li>
+      <li><a href="security.html"><i class="fas fa-shield-alt"></i> <span>Security & Monitoring</span></a></li>
+    </ul>
+  </nav>
+  
+
+  <!-- Main Content -->
+  <main>
+    <header>
+      <h1>Admin Management Dashboard</h1>
+      <input type="text" id="searchInput" placeholder="Search...">
+    </header>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" data-target="jobSeekers">Job Seekers</button>
+      <button class="tab-btn" data-target="employers">Employers</button>
+      <button class="tab-btn" data-target="jobPosts">Job Post Management</button>
+    </div>
+
+    <!-- Job Seekers Table -->
+    <div id="jobSeekers" class="tab-content">
+      <table>
+        <thead>
+          <tr><th>Name</th><th>Email</th><th>Applications</th><th>Status</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>John Doe</td><td>john@example.com</td><td>5</td><td class="status">Pending</td>
+            <td>
+              <button class="action-btn approve">Approve</button>
+              <button class="action-btn edit">Edit</button>
+              <button class="action-btn deactivate">Deactivate</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Jane Smith</td><td>jane@example.com</td><td>2</td><td class="status">Active</td>
+            <td>
+              <button class="action-btn approve">Approve</button>
+              <button class="action-btn edit">Edit</button>
+              <button class="action-btn deactivate">Deactivate</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Employers Table -->
+    <div id="employers" class="tab-content" style="display:none;">
+      <table>
+        <thead>
+          <tr><th>Company Name</th><th>Email</th><th>Job Posts</th><th>Status</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ABC Corp</td><td>abc@example.com</td><td>3</td><td class="status">Pending</td>
+            <td>
+              <button class="action-btn approve">Approve</button>
+              <button class="action-btn edit">View/Edit</button>
+              <button class="action-btn deactivate">Ban</button>
+            </td>
+          </tr>
+          <tr>
+            <td>XYZ Ltd</td><td>xyz@example.com</td><td>5</td><td class="status">Active</td>
+            <td>
+              <button class="action-btn approve">Approve</button>
+              <button class="action-btn edit">View/Edit</button>
+              <button class="action-btn deactivate">Ban</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Job Posts Table -->
+    <div id="jobPosts" class="tab-content" style="display:none;">
+
+      <div style="background:#fff;padding:15px;border-radius:8px;margin-bottom:20px;box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+
+      </div>
+
+      <table>
+        <thead>
+          <tr><th>Job Title</th><th>Company</th><th>Category</th><th>Expiration</th><th>Status</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Front-End Developer</td><td>ABC Corp</td><td>IT / Software</td><td>2025-02-15</td>
+            <td class="status">Pending</td>
+            <td>
+              <button class="action-btn approve">Approve</button>
+              <button class="action-btn reject">Decline</button>
+              <button class="action-btn edit">Edit</button>
+              <button class="action-btn remove">Remove</button>
+            </td>
+          </tr>
+
+          <tr>
+            <td>Marketing Manager</td><td>XYZ Ltd</td><td>Marketing / Sales</td><td>2025-03-10</td>
+            <td class="status">Active</td>
+            <td>
+              <button class="action-btn approve">Approve</button>
+              <button class="action-btn reject">Decline</button>
+              <button class="action-btn edit">Edit</button>
+              <button class="action-btn remove">Remove</button>
+            </td>
+          </tr>
+
+          <tr>
+            <td>Warehouse Assistant</td><td>FastMove Logistics</td><td>Operations / Logistics</td><td>2024-12-01</td>
+            <td class="status">Expired</td>
+            <td>
+              <button class="action-btn edit">Edit</button>
+              <button class="action-btn remove">Remove</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <!-- FINAL CLEAN SCRIPT — NO DUPLICATES -->
+  <script>
+    /* Sidebar Active Highlight */
+    document.querySelectorAll('nav ul li a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.querySelectorAll('nav ul li a').forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      });
+    });
+
+    /* Tabs */
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        tabContents.forEach(c => c.style.display = 'none');
+        document.getElementById(btn.dataset.target).style.display = 'block';
+      });
+    });
+
+    /* Actions: approve, deactivate, remove */
+    document.body.addEventListener('click', function(e) {
+      if (e.target.classList.contains('approve')) {
+        e.target.closest('tr').querySelector('.status').textContent = 'Active';
+      }
+      if (e.target.classList.contains('deactivate')) {
+        e.target.closest('tr').querySelector('.status').textContent = 'Deactivated';
+      }
+      if (e.target.classList.contains('remove')) {
+        e.target.closest('tr').querySelector('.status').textContent = 'Removed';
+      }
+      if (e.target.classList.contains('reject')) {
+        e.target.closest('tr').querySelector('.status').textContent = 'Rejected';
+      }
+    });
+
+    /* Search Filter */
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('keyup', () => {
+      const filter = searchInput.value.toLowerCase();
+      document.querySelectorAll('tbody tr').forEach(row => {
+        row.style.display = row.textContent.toLowerCase().includes(filter) ? '' : 'none';
+      });
+    });
+  </script>
+
+</body>
+</html>

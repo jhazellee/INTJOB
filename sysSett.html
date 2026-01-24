@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>System Settings</title>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+body { display: flex; min-height: 100vh; background: #f5f6fa; }
+
+/* Sidebar */
+nav { width: 250px; background: #2f3640; color: #fff; display: flex; flex-direction: column; }
+nav h2 { text-align: center; padding: 20px; border-bottom: 1px solid #444; }
+nav ul { list-style: none; flex: 1; }
+nav ul li { border-bottom: 1px solid #444; }
+nav ul li a {
+  display: flex; align-items: center; padding: 15px 20px;
+  color: #fff; text-decoration: none; transition: 0.3s;
+}
+nav ul li a i { margin-right: 10px; }
+nav ul li a:hover, nav ul li a.active { background: #40739e; }
+
+/* Main */
+main { flex: 1; padding: 20px; overflow-y: auto; }
+header h1 { font-size: 28px; margin-bottom: 15px; }
+
+/* Tabs */
+.tab-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.tab-btn {
+  padding: 10px 15px;
+  background: #dcdde1;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.tab-btn.active {
+  background: #40739e;
+  color: #fff;
+}
+
+/* Sections */
+.content-section { display: none; }
+.content-section.active { display: block; }
+
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+/* Form elements */
+label { margin-top: 10px; display: block; font-weight: bold; }
+input, select {
+  width: 100%; padding: 8px; margin-top: 5px;
+  border: 1px solid #ccc; border-radius: 4px;
+}
+button { cursor: pointer; }
+
+.btn-primary {
+  padding: 10px 15px;
+  background: #40739e; color: #fff; border: none; border-radius: 5px;
+  margin-top: 10px;
+}
+.btn-primary:hover { background: #2f3640; }
+
+.btn-danger {
+  padding: 10px 15px;
+  background: #e84118; color: #fff; border: none; border-radius: 5px;
+}
+.btn-danger:hover { background: #c23616; }
+
+table {
+  width: 100%; border-collapse: collapse; margin-top: 10px;
+}
+table th, table td {
+  border: 1px solid #ccc; padding: 10px; text-align: left;
+}
+
+/* Badges */
+.badge-success { color: green; font-weight: bold; }
+.badge-info { color: #2980b9; font-weight: bold; }
+.badge-warning { color: #e67e22; font-weight: bold; }
+
+/* Toggle Switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+.switch input { display: none; }
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: .3s;
+  border-radius: 30px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px; width: 18px;
+  left: 3px; bottom: 3px;
+  background: #fff;
+  border-radius: 50%;
+  transition: .3s;
+}
+input:checked + .slider {
+  background: #40739e;
+}
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<nav>
+  <h2>Admin</h2>
+  <ul>
+    <li><a href="admin.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+    <li><a href="usermanage.html"><i class="fas fa-users"></i><span>Users Management</span></a></li>
+    <li><a href="applimanage.html"><i class="fas fa-file-alt"></i><span>Applications Management</span></a></li>
+    <li><a href="contntmanage.html"><i class="fas fa-file-code"></i><span>Content Management</span></a></li>
+    <li><a href="report.html"><i class="fas fa-chart-line"></i><span>Reports & Analytics</span></a></li>
+    <li><a href="payment.html"><i class="fas fa-credit-card"></i><span>Payment/Subscription Management</span></a></li>
+    <li><a href="feed.html"><i class="fas fa-comment-dots"></i> <span>Feedback & Complaints</span></a></li>
+    <li><a href="sysSett.html" class="active"><i class="fas fa-cogs"></i><span>System Settings</span></a></li>
+    <li><a href="security.html"><i class="fas fa-shield-alt"></i><span>Security & Monitoring</span></a></li>
+  </ul>
+</nav>
+
+
+<!-- MAIN CONTENT -->
+<main>
+
+<header>
+  <h1><i class="fas fa-cogs"></i> System Settings</h1>
+</header>
+
+<!-- TAB BUTTONS -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('system-config')"><i class="fas fa-sliders-h"></i> System Configurations</button>
+  <button class="tab-btn" onclick="showTab('notifications')"><i class="fas fa-bell"></i> Notifications</button>
+  <button class="tab-btn" onclick="showTab('roles')"><i class="fas fa-user-shield"></i> Roles & Permissions</button>
+  <button class="tab-btn" onclick="showTab('backup')"><i class="fas fa-database"></i> Backup</button>
+  <button class="tab-btn" onclick="showTab('admin-accounts')"><i class="fas fa-users-cog"></i> Admin Accounts</button>
+  <button class="tab-btn" onclick="showTab('security')"><i class="fas fa-shield-alt"></i> Security</button>
+</div>
+
+
+<!-- SYSTEM CONFIG SECTION -->
+<div id="system-config" class="content-section active card">
+
+  <h2><i class="fas fa-cogs"></i> General System Settings</h2>
+
+  <label>System Name</label>
+  <input type="text" value="Job Portal Admin System">
+
+  <label>System Email</label>
+  <input type="email" value="admin@jobportal.com">
+
+  <label>Time Zone</label>
+  <select>
+    <option>UTC +8:00 (Manila)</option>
+    <option>UTC +0:00 (GMT)</option>
+    <option>UTC -5:00 (EST)</option>
+    <option>UTC -8:00 (PST)</option>
+  </select>
+
+  <label>Date Format</label>
+  <select>
+    <option>MM/DD/YYYY</option>
+    <option>DD/MM/YYYY</option>
+    <option>YYYY-MM-DD</option>
+  </select>
+
+  <label>Default Language</label>
+  <select>
+    <option>English</option>
+    <option>Filipino</option>
+    <option>Spanish</option>
+  </select>
+
+  <h3>Job Posting Settings</h3>
+
+  <label>Max Job Post Duration (days)</label>
+  <input type="number" value="60">
+
+  <label>Auto-Archive After (days)</label>
+  <input type="number" value="90">
+
+  <label>Require Admin Approval</label>
+  <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+
+  <h3>Application Settings</h3>
+
+  <label>Max Applications Per Day</label>
+  <input type="number" value="10">
+
+  <label>Allow Resume Upload</label>
+  <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+
+  <label>Max Resume File Size (MB)</label>
+  <input type="number" value="5">
+
+  <button class="btn-primary"><i class="fas fa-save"></i> Save Changes</button>
+</div>
+
+
+<!-- NOTIFICATIONS -->
+<div id="notifications" class="content-section card">
+  <h2><i class="fas fa-bell"></i> Notification Settings</h2>
+
+  <label>Email Notifications</label>
+  <select><option>Enabled</option><option>Disabled</option></select>
+
+  <label>SMS Alerts</label>
+  <select><option>Enabled</option><option>Disabled</option></select>
+
+  <button class="btn-primary">Save Notifications</button>
+</div>
+
+
+<!-- ROLES -->
+<div id="roles" class="content-section card">
+  <h2><i class="fas fa-user-shield"></i> Roles & Permissions</h2>
+
+  <table>
+    <tr><th>Role</th><th>Description</th><th>Access</th><th>Action</th></tr>
+    <tr><td>Super Admin</td><td>Full Access</td><td>100%</td><td><button class="btn-primary">Edit</button></td></tr>
+    <tr><td>Moderator</td><td>Manage Users & Content</td><td>60%</td><td><button class="btn-primary">Edit</button></td></tr>
+    <tr><td>Support Admin</td><td>Reports & Feedback</td><td>40%</td><td><button class="btn-primary">Edit</button></td></tr>
+  </table>
+</div>
+
+
+<!-- BACKUP -->
+<div id="backup" class="content-section card">
+  <h2><i class="fas fa-database"></i> Backup & Restore</h2>
+  <button class="btn-primary"><i class="fas fa-download"></i> Backup Now</button>
+  <button class="btn-danger"><i class="fas fa-upload"></i> Restore Backup</button>
+</div>
+
+
+<!-- ADMIN ACCOUNTS -->
+<div id="admin-accounts" class="content-section card">
+  <h2><i class="fas fa-users-cog"></i> Admin Accounts</h2>
+
+  <table>
+    <tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Action</th></tr>
+    <tr><td>Michael Cruz</td><td>michael@admin.com</td><td>Super Admin</td><td><span class="badge-success">Active</span></td><td><button class="btn-danger">Deactivate</button></td></tr>
+    <tr><td>Sarah Lee</td><td>sarah@admin.com</td><td>Moderator</td><td><span class="badge-success">Active</span></td><td><button class="btn-danger">Deactivate</button></td></tr>
+    <tr><td>George Wilson</td><td>george@admin.com</td><td>Support Admin</td><td><span class="badge-warning">Disabled</span></td><td><button class="btn-primary">Activate</button></td></tr>
+  </table>
+</div>
+
+
+<!-- SECURITY -->
+<div id="security" class="content-section card">
+  <h2><i class="fas fa-shield-alt"></i> Security & Monitoring</h2>
+
+  <label>Enable Two-Factor Authentication</label>
+  <select><option>Enabled</option><option>Disabled</option></select>
+
+  <label>Max Login Attempts</label>
+  <input type="number" value="5">
+
+  <h3>System Monitoring</h3>
+  <table>
+    <tr><th>Event</th><th>Status</th><th>Last Updated</th></tr>
+    <tr><td>Firewall Status</td><td><span class="badge-success">Active</span></td><td>5 mins ago</td></tr>
+    <tr><td>Login Tracking</td><td><span class="badge-info">Monitoring</span></td><td>Just now</td></tr>
+    <tr><td>Suspicious Activity</td><td><span class="badge-warning">Review Needed</span></td><td>10 mins ago</td></tr>
+  </table>
+
+  <button class="btn-primary">Apply Security</button>
+</div>
+
+
+</main>
+
+<!-- JS -->
+<script>
+function showTab(tabId) {
+  document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+}
+</script>
+
+</body>
+</html>

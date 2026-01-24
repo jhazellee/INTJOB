@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Choose Subjects</title>
+    <link rel="stylesheet" href="subjectsdesign.css"> <!-- ✅ external CSS -->
+  </head>
+<body>
+  <main class="container" role="main">
+    <header>
+      <div>
+        <h1>Choose your subjects</h1>
+        <p class="lead">Pick the subjects that interest you from the list below.</p>
+      </div>
+      <div class="note">You can pick one or many</div>
+    </header>
+
+    <form id="subjectsForm" autocomplete="on">
+      <div class="grid" id="subjectsGrid">
+        <!-- 10 subjects -->
+        <div class="subject"><input type="checkbox" name="subjects" id="s-math" value="Mathematics"><label for="s-math">Mathematics</label></div>
+        <div class="subject"><input type="checkbox" name="subjects" id="s-physics" value="Physics"><label for="s-physics">Physics</label></div>
+        <div class="subject"><input type="checkbox" name="subjects" id="s-chem" value="Chemistry"><label for="s-chem">Chemistry</label></div>
+        <div class="subject"><input type="checkbox" name="subjects" id="s-bio" value="Biology"><label for="s-bio">Biology</label></div>
+        <div class="subject"><input type="checkbox" name="subjects" id="s-eng" value="English"><label for="s-eng">English</label></div>
+        <div class="subject"><input type="checkbox" name="subjects" id="s-hist" value="History"><label for="s-hist">History</label></div>
+        <div class="subject"><input type="checkbox" name="subjects" id="s-geo" value="Geography"><label for="s-geo">Geography</label></div>
+        <div class="subject"><input type="checkbox" name="subjects" id="s-cs" value="Computer Science"><label for="s-cs">Computer Science</label></div>
+        <div class="subject"><input type="checkbox" name="subjects" id="s-econ" value="Economics"><label for="s-econ">Economics</label></div>
+        <div class="subject"><input type="checkbox" name="subjects" id="s-art" value="Art"><label for="s-art">Art</label></div>
+
+        <!-- ✅ Others input -->
+        <div class="subject other-input">
+          <label for="s-other">Others:</label>
+          <input type="text" id="s-other" name="otherSubject" placeholder="Type subject here..." />
+        </div>
+      </div>
+
+      <div class="controls">
+        <button type="button" id="selectAll" class="btn ghost">Select all</button>
+        <button type="button" id="clearAll" class="btn ghost">Clear</button>
+        <button type="submit" class="btn">Submit</button>
+        <div class="note" id="countNote">0 selected</div>
+      </div>
+
+      <div class="error" id="errorMsg">Please select at least one subject.</div>
+
+      <div class="confirm" id="confirmPanel" aria-live="polite">
+        <h3>Selected subjects</h3>
+        <div class="tags" id="selectedTags"></div>
+        <div style="margin-top:12px; display:flex; gap:10px;">
+          <button type="button" id="continueBtn" class="btn">Save and Submit</button>
+          <button type="button" id="editBtn" class="btn ghost">Edit selection</button>
+        </div>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    // DOM refs
+    const form = document.getElementById('subjectsForm');
+    const checkboxes = Array.from(document.querySelectorAll("input[name='subjects']"));
+    const countNote = document.getElementById('countNote');
+    const selectAllBtn = document.getElementById('selectAll');
+    const clearAllBtn = document.getElementById('clearAll');
+    const errorMsg = document.getElementById('errorMsg');
+    const confirmPanel = document.getElementById('confirmPanel');
+    const selectedTags = document.getElementById('selectedTags');
+    const continueBtn = document.getElementById('continueBtn');
+    const editBtn = document.getElementById('editBtn');
+    const otherInput = document.getElementById('s-other');
+
+    function updateCount(){
+      const n = checkboxes.filter(cb => cb.checked).length;
+      countNote.textContent = n + ' selected';
+    }
+
+    // toggle subject card when clicking the whole box area
+    document.getElementById('subjectsGrid').addEventListener('click', (e) => {
+      const target = e.target;
+      if(target.tagName === 'DIV' && target.classList.contains('subject') && !target.classList.contains('other-input')){
+        const cb = target.querySelector("input[type='checkbox']");
+        cb.checked = !cb.checked;
+        updateCount();
+      }
+      if(target.tagName === 'LABEL'){
+        setTimeout(updateCount, 5);
+      }
+    });
+
+    // wire up buttons
+    selectAllBtn.addEventListener('click', () => {
+      checkboxes.forEach(cb => cb.checked = true);
+      updateCount();
+    });
+
+    clearAllBtn.addEventListener('click', () => {
+      checkboxes.forEach(cb => cb.checked = false);
+      otherInput.value = ""; // also clear "Others"
+      updateCount();
+    });
+
+    checkboxes.forEach(cb => cb.addEventListener('change', updateCount));
+    updateCount();
+
+    // submit handler
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const selected = checkboxes.filter(cb => cb.checked).map(cb => cb.value);
+
+      // ✅ include "Others" if filled
+      const otherVal = otherInput.value.trim();
+      if(otherVal) selected.push(otherVal);
+
+      if(selected.length === 0){
+        errorMsg.style.display = 'block';
+        confirmPanel.style.display = 'none';
+        return;
+      }
+      errorMsg.style.display = 'none';
+
+      localStorage.setItem('selectedSubjects', JSON.stringify(selected));
+
+      selectedTags.innerHTML = '';
+      selected.forEach(s => {
+        const el = document.createElement('span');
+        el.className = 'tag';
+        el.textContent = s;
+        selectedTags.appendChild(el);
+      });
+      confirmPanel.style.display = 'block';
+      confirmPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    continueBtn.addEventListener('click', () => {
+      window.location.href = 'main2.html';
+    });
+
+    editBtn.addEventListener('click', () => {
+      confirmPanel.style.display = 'none';
+    });
+  </script>
+</body>
+</html>

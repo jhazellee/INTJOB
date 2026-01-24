@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Subscription & Payment Management</title>
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+/* Reset & base */
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+body { display: flex; min-height: 100vh; background: #f5f6fa; }
+
+/* Sidebar */
+nav { width: 250px; background: #2f3640; color: #fff; display: flex; flex-direction: column; }
+nav h2 { text-align: center; padding: 20px; border-bottom: 1px solid #444; }
+nav ul { list-style: none; flex: 1; }
+nav ul li { border-bottom: 1px solid #444; }
+nav ul li a {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  color: #fff;
+  text-decoration: none;
+  transition: 0.3s;
+  cursor:pointer;
+}
+nav ul li a i { margin-right: 10px; }
+nav ul li a.active, nav ul li a:hover { background: #40739e; }
+
+/* Main content */
+main { flex: 1; padding: 20px; overflow-x: auto; }
+header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+header h1 { font-size: 28px; }
+
+/* Cards */
+.sub-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+.sub-card {
+  background: #fff;
+  padding: 20px;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.07);
+}
+.sub-card i { font-size: 26px; color: #40739e; margin-bottom: 10px; }
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.07);
+}
+table th, table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+table th { background: #40739e; color: #fff; }
+.status { padding: 4px 8px; border-radius: 4px; color: #fff; font-weight: bold; font-size: 0.85em; }
+.status.active { background: #27ae60; }
+.status.expired { background: #e84118; }
+
+/* Buttons */
+.btn-action, .btn-approve, .btn-reject {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #fff;
+  margin-right: 5px;
+}
+.btn-action { background: #40739e; }
+.btn-action:hover { background:#2f3640; }
+.btn-approve { background: #27ae60; }
+.btn-approve:hover { background: #218c53; }
+.btn-reject { background: #e84118; }
+.btn-reject:hover { background: #c23616; }
+
+/* Cards for payment proofs */
+.card {
+  background: #fff;
+  padding: 15px 20px;
+  margin-top: 15px;
+  border-radius: 8px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.07);
+}
+.file-upload {
+  margin-top: 10px;
+}
+.upload-label {
+  background: #40739e;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+/* Responsive */
+@media (max-width:768px) {
+  nav { width: 60px; }
+  nav h2, nav ul li a span { display:none; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<nav>
+    <h2>Admin</h2>
+    <ul>
+      <li><a href="admin.html" ><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+      <li><a href="usermanage.html"><i class="fas fa-users"></i> <span>Users Management</span></a></li>
+      <li><a href="applimanage.html"><i class="fas fa-file-alt"></i> <span>Applications Management</span></a></li>
+      <li><a href="contntmanage.html"><i class="fas fa-file-code"></i> <span>Content Management</span></a></li>
+      <li><a href="report.html"><i class="fas fa-chart-line"></i> <span>Reports & Analytics</span></a></li>
+      <li><a href="payment.html" class="active"><i class="fas fa-credit-card"></i> <span>Payment/Subscription Management</span></a></li>
+      <li><a href="feed.html"><i class="fas fa-comment-dots"></i> <span>Feedback & Complaints</span></a></li>
+      <li><a href="sysSett.html"><i class="fas fa-cogs"></i> <span>System Settings</span></a></li>
+      <li><a href="security.html"><i class="fas fa-shield-alt"></i> <span>Security & Monitoring</span></a></li>
+    </ul>
+  </nav>
+
+<!-- MAIN CONTENT -->
+<main>
+  <header><h1><i class="fas fa-credit-card"></i> Payment & Subscription Management</h1></header>
+
+  <!-- Overview Cards -->
+  <div class="sub-grid">
+    <div class="sub-card">
+      <i class="fas fa-users"></i>
+      <h3>Active Subscribers</h3>
+      <p>128 Employers</p>
+    </div>
+
+    <div class="sub-card">
+      <i class="fas fa-clock"></i>
+      <h3>Pending Approvals</h3>
+      <p>6 Payment Proofs</p>
+    </div>
+
+    <div class="sub-card">
+      <i class="fas fa-coins"></i>
+      <h3>Total Revenue</h3>
+      <p>₱5,420</p>
+    </div>
+
+    <div class="sub-card">
+      <i class="fas fa-star"></i>
+      <h3>Premium Enabled</h3>
+      <p>54 Employers</p>
+    </div>
+  </div>
+
+  <!-- Monitor Subscriptions -->
+  <h2 style="margin-top:30px;"><i class="fas fa-list-alt"></i> Monitor Employer Subscriptions</h2>
+  <table>
+    <tr>
+      <th>Employer</th>
+      <th>Plan</th>
+      <th>Status</th>
+      <th>Expiry</th>
+      <th>Premium</th>
+    </tr>
+
+    <tr>
+      <td>ABC Corporation</td>
+      <td>Premium</td>
+      <td><span class="status active">Active</span></td>
+      <td>Dec 20, 2025</td>
+      <td><button class="btn-action">Disable</button></td>
+    </tr>
+
+    <tr>
+      <td>GlobalTech Ltd.</td>
+      <td>Basic</td>
+      <td><span class="status expired">Expired</span></td>
+      <td>Aug 4, 2024</td>
+      <td><button class="btn-action">Activate</button></td>
+    </tr>
+
+    <tr>
+      <td>NextWave Solutions</td>
+      <td>Premium</td>
+      <td><span class="status active">Active</span></td>
+      <td>Mar 11, 2026</td>
+      <td><button class="btn-action">Disable</button></td>
+    </tr>
+  </table>
+
+  <!-- Payment Proof Approval -->
+  <h2 style="margin-top:30px;"><i class="fas fa-file-invoice-dollar"></i> Approve Payment Proofs</h2>
+  <div class="card">
+    <h3><i class="fas fa-user"></i> Employer: SkyPoint Enterprises</h3>
+    <p><strong>Submitted On:</strong> Jan 12, 2025</p>
+    <p><strong>Plan:</strong> Premium (12 Months)</p>
+    
+    <div class="file-upload">
+      <label class="upload-label"><i class="fas fa-upload"></i> View Payment Proof</label>
+      <span class="file-name">proof_skypoint.jpg</span>
+    </div>
+
+    <div style="margin-top:10px;">
+      <button class="btn-approve">Approve</button>
+      <button class="btn-reject">Reject</button>
+    </div>
+  </div>
+
+  <!-- Billing History -->
+  <h2 style="margin-top:30px;"><i class="fas fa-receipt"></i> Billing History</h2>
+  <table>
+    <tr>
+      <th>Employer</th>
+      <th>Amount</th>
+      <th>Plan</th>
+      <th>Date Paid</th>
+      <th>Transaction ID</th>
+    </tr>
+
+    <tr>
+      <td>ABC Corporation</td>
+      <td>₱120.00</td>
+      <td>Premium</td>
+      <td>Nov 1, 2024</td>
+      <td>#TXN0009221</td>
+    </tr>
+
+    <tr>
+      <td>SkyPoint Enterprises</td>
+      <td>₱50.00</td>
+      <td>Basic</td>
+      <td>Oct 13, 2024</td>
+      <td>#TXN0008912</td>
+    </tr>
+
+    <tr>
+      <td>NextWave Solutions</td>
+      <td>₱120.00</td>
+      <td>Premium</td>
+      <td>Sep 25, 2024</td>
+      <td>#TXN0008015</td>
+    </tr>
+  </table>
+</main>
+</body>
+</html>

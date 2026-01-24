@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Applicant Status Management</title>
+
+  <!-- Embedded CSS -->
+  <style>
+/* jobspost.css - Job Posts Page Styles */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 260px;
+  background: #2c3e50;
+  position: fixed;
+  height: 100vh;
+  overflow-y: auto;
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 18px 25px;
+  color: #ecf0f1;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+  font-size: 15px;
+}
+
+.sidebar a:hover {
+  background: rgba(52, 152, 219, 0.15);
+  border-left-color: #3498db;
+  padding-left: 30px;
+}
+
+.sidebar a.active {
+  background: rgba(52, 152, 219, 0.25);
+  border-left-color: #3498db;
+}
+
+.sidebar a i {
+  width: 20px;
+  text-align: center;
+  font-size: 18px;
+}
+
+/* Main Content */
+.main-content {
+  margin-left: 260px;
+  padding: 40px;
+  width: calc(100% - 260px);
+}
+
+/* Page Title */
+h1 {
+  color: white;
+  font-size: 32px;
+  margin-bottom: 35px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+h1 i {
+  font-size: 36px;
+}
+
+/* Profile Card Structure */
+.profile-card {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.profile-form label {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #2c3e50;
+}
+
+.profile-form input, 
+.profile-form textarea, 
+.profile-form select {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  outline: none;
+  margin-bottom: 12px;
+}
+
+textarea {
+  height: 120px;
+  resize: none;
+}
+
+/* Progress Bar */
+.progress-bar {
+  width: 100%;
+  background: #ddd;
+  height: 12px;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
+.progress {
+  height: 100%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 6px;
+  width: 5%;
+  transition: 0.4s ease;
+}
+
+/* Buttons */
+.btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  margin-right: 10px;
+  margin-top: 15px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+/* Responsive adjustments included original breakpoints */
+
+/* Tablets and below (768px) */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 70px;
+  }
+
+  .sidebar a span {
+    display: none;
+  }
+
+  .sidebar a {
+    justify-content: center;
+    padding: 18px 10px;
+  }
+
+  .sidebar a:hover {
+    padding-left: 10px;
+  }
+
+  .main-content {
+    margin-left: 70px;
+    width: calc(100% - 70px);
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+}
+
+/* Small phones (576px and below) */
+@media (max-width: 576px) {
+  .btn {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+}
+.logo {
+  font-size: 32px;
+  font-weight: bold;
+  color: #fff;             /* Main color */
+  text-align: center;
+  margin: 20px 0;
+  font-family: 'Arial', sans-serif;
+}
+
+.logo span {
+  color: #3d044e;           /* Accent color */
+}
+  </style>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+  <!-- ===== Sidebar ===== -->
+  <div class="sidebar">
+    <div class="logo">
+      Int<span>Job</span>
+  </div>
+    <a href="owner.html"><i class="fa fa-home"></i> Dashboard</a>
+    <a href="viewapp.html"><i class="fa fa-briefcase"></i> View Applicants</a>
+    <a href="jobspost.html"><i class="fa fa-briefcase"></i> Job Posts</a>
+    <a href="applicantsupdates.html"><i class="fa fa-users"></i> Applicants</a>
+    <a href="mess.html"><i class="fa fa-envelope"></i> Messages</a>
+    <a href="companypfp.html"><i class="fa fa-building"></i> Company Profile</a>
+    <a href="sett.html"><i class="fa fa-cog"></i> Settings</a>
+  </div>
+
+  <!-- ===== Main Content ===== -->
+  <div class="main-content">
+    <h1>👥 Applicant Status Management</h1>
+
+    <div class="profile-card">
+
+      <!-- Top Information -->
+      <div class="profile-form">
+        <label>Name</label>
+        <input type="text" placeholder="Enter applicant's name">
+
+        <label>Position Applied</label>
+        <input type="text" placeholder="Enter position">
+
+        <label>Application ID</label>
+        <input type="text" placeholder="Enter application ID">
+
+        <label>Date Applied</label>
+        <input type="date">
+      </div>
+
+      <!-- Status Section -->
+      <div class="profile-form">
+        <label>Current Status</label>
+        <select id="statusSelect">
+          <option value="0">For HR Evaluation</option>
+          <option value="50">Interview Scheduled</option>
+          <option value="75">Passed</option>
+          <option value="100">Rejected</option>
+        </select>
+
+        <div class="progress-bar">
+          <div class="progress" id="progressBar"></div>
+        </div>
+        <small id="progressText">Progress: 5% completed</small>
+      </div>
+
+      <!-- Important Dates -->
+      <div class="profile-form">
+        <label>Important Dates</label>
+        <textarea placeholder="Enter dates, e.g. Submitted, Reviewed, Interview..."></textarea>
+      </div>
+
+      <!-- HR Notes -->
+      <div class="profile-form">
+        <label>HR Remarks / Notes</label>
+        <textarea placeholder="Write or update remarks here..."></textarea>
+      </div>
+
+      <!-- Documents -->
+      <div class="profile-form">
+        <label>Attached Documents</label>
+        <input type="file" multiple>
+      </div>
+
+      <!-- Contact -->
+      <div class="profile-form">
+        <label>Applicant Contact</label>
+        <input type="email" placeholder="Enter email">
+        <input type="text" placeholder="Enter phone number">
+      </div>
+
+      <!-- Buttons -->
+      <button class="btn"><i class="fa fa-refresh"></i> Update Status</button>
+      <button class="btn"><i class="fa fa-paper-plane"></i> Send Message</button>
+
+    </div>
+  </div>
+
+  <script>
+    const statusSelect =  document.getElementById("statusSelect");
+    const progressBar = document.getElementById("progressBar");
+    const progressText = document.getElementById("progressText");
+
+    const progressMap = {
+      "For HR Evaluation": 5,
+      "Interview Scheduled": 50,
+      "Passed": 100,
+      "Rejected": 10
+    };
+
+    statusSelect.addEventListener("change", function() {
+      const selectedText = statusSelect.options[statusSelect.selectedIndex].text;
+      const progress = progressMap[selectedText] || 0;
+      progressBar.style.width = progress + "%";
+      progressText.textContent = `Progress: ${progress}% completed`;
+    });
+  </script>
+
+</body>
+</html>

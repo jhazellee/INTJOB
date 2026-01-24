@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IntJob - Profile</title>
+  <link rel="stylesheet" href="profile1.css">
+
+  <!-- Font Awesome (for icons) -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  >
+</head>
+<body>
+  <div class="container">
+    
+    <!-- ✅ Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="1.jpg" alt="IntJob Logo">
+        <span>INTJOB</span>
+      </div>
+      
+      <ul>
+        <li><a href="main2.html"><i class="fas fa-home"></i> Home Page</a></li>
+        <li><a href="jobcatego.html"><i class="fas fa-briefcase"></i>Job categories</a></li>
+        <li><a href="inbox.html"><i class="fas fa-inbox"></i> Inbox</a></li>
+        <li><a href="appliedsta.html"><i class="fas fa-clipboard-check"></i> Applied Status</a></li>
+        <li><a href="resume.html"><i class="fas fa-file-alt"></i> Resume</a></li>
+      </ul>
+      
+      <div class="bottom-links">
+        <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+        <a href="profile.html" class="active"><i class="fas fa-user"></i> Profile</a>
+      </div>
+    </aside>
+
+    <!-- ✅ Main Profile Content -->
+    <main class="profile-content">
+      <header class="profile-header">
+        <div class="profile-info">
+          <h1>Profile</h1>
+          <p><strong>Name:</strong> John Doe</p>
+          <p>Municipality, Province, Country</p>
+        </div>
+        <div class="profile-pic">
+          <img src="https://via.placeholder.com/100" alt="Profile Picture">
+        </div>
+      </header>
+
+      <!-- Profile Sections -->
+      <section class="profile-section">
+        <h2>Personal Summary</h2>
+        <p>Add a personal summary to your profile as a way to introduce yourself.</p>
+        <button>Add Summary</button>
+      </section>
+
+      <section class="profile-section">
+        <h2>Career History</h2>
+        <p>Highlight your experience to employers.</p>
+        <button>Add Role</button>
+      </section>
+
+      <section class="profile-section">
+        <h2>Education</h2>
+        <p>Tell employers about your education.</p>
+        <button>Add Education</button>
+      </section>
+
+      <section class="profile-section">
+        <h2>Licenses</h2>
+        <p>Show your licenses to prove yourself.</p>
+        <button>Upload Licenses</button>
+      </section>
+
+      <footer class="logout">
+        <button class="logout-btn" onclick="window.location.href='thesistry.html'">
+          Log Out Account
+        </button>
+      </footer>      
+    </main>
+  </div>
+</body>
+</html>

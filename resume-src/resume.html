@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume Fill-Up</title>
+  <link rel="stylesheet" href="resume.css">
+</head>
+<body>
+  <div class="container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="1.jpg" alt="IntJob Logo" />
+        <span>INTJOB</span>
+      </div>
+
+      <ul>
+        <li><a href="main2.html">🏠 <span>Home Page</span></a></li>
+        <li><a href="jobcatego.html">📂 <span>Job Categories</span></a></li>
+        <li><a href="inbox.html">📥 <span>Inbox</span></a></li>
+        <li><a href="appliedsta.html">✅ <span>Applied Status</span></a></li>
+        <li><a href="resume.html" class="active">📄 <span>Resume</span></a></li>
+      </ul>
+
+      <div class="bottom-links">
+        <a href="settings.html">⚙️ <span>Settings</span></a>
+        <a href="profile.html">👤 <span>Profile</span></a>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <form class="resume-form">
+        <h2>Resume Fill-Up Form</h2>
+
+        <!-- PERSONAL INFO -->
+        <section>
+          <h3>Personal Information</h3>
+          <div class="two-column">
+            <label>Full Name<input type="text" placeholder="e.g. Leira Mia D. Malutao"></label>
+            <label>Email Address<input type="email" placeholder="e.g. leira.mia@email.com"></label>
+            <label>Phone Number<input type="text" placeholder="e.g. 0917-555-9878"></label>
+            <label>Address<input type="text" placeholder="e.g. Quezon City, Philippines"></label>
+            <label>Date of Birth<input type="date"></label>
+            <label>Gender
+              <select>
+                <option>Select Gender</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+              </select>
+            </label>
+          </div>
+        </section>
+
+        <!-- EDUCATION -->
+        <section>
+          <h3>Educational Background</h3>
+          <div class="two-column">
+            <label>School Name<input type="text" placeholder="e.g. Technological University of the Philippines"></label>
+            <label>Degree / Course<input type="text" placeholder="e.g. BS Information Technology"></label>
+            <label>Year Graduated<input type="text" placeholder="e.g. 2026"></label>
+            <label>Academic Awards (optional)<input type="text" placeholder="e.g. Dean’s Lister"></label>
+          </div>
+        </section>
+
+        <!-- EXPERIENCE -->
+        <section>
+          <h3>Work Experience</h3>
+          <label>Company Name<input type="text" placeholder="e.g. XYZ Software Solutions"></label>
+          <label>Position / Role<input type="text" placeholder="e.g. Front-End Developer Intern"></label>
+          <label>Duration<input type="text" placeholder="e.g. June 2024 – March 2025"></label>
+          <label>Job Description<textarea placeholder="Describe your responsibilities and tasks..."></textarea></label>
+        </section>
+
+        <!-- SKILLS -->
+        <section>
+          <h3>Skills & Expertise</h3>
+          <textarea placeholder="e.g. HTML, CSS, JavaScript, Java, React, Photoshop"></textarea>
+        </section>
+
+        <!-- REFERENCES -->
+        <section>
+          <h3>References</h3>
+          <label>Reference Name<input type="text" placeholder="e.g. Ma’am Elyneh – HR Specialist"></label>
+          <label>Contact Info<input type="text" placeholder="e.g. hr@intjob.ph / 0917-555-9878"></label>
+        </section>
+
+        <div class="button-row">
+          <button type="button" class="draft"> Save as Draft</button>
+          <button type="submit" class="submit">> Submit Resume</button>
+        </div>
+
+        <footer>© 2025 IntJob | Resume Fill-Up Form Interface</footer>
+      </form>
+    </main>
+  </div>
+</body>
+</html>

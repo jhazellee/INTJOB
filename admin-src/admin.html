@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard (Admin Home)</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Basic Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+    body { display: flex; min-height: 100vh; background: #f5f6fa; }
+
+    /* Sidebar */
+    nav { width: 250px; background: #2f3640; color: #fff; display: flex; flex-direction: column; }
+    nav h2 { text-align: center; padding: 20px; border-bottom: 1px solid #444; }
+    nav ul { list-style: none; flex: 1; }
+    nav ul li { border-bottom: 1px solid #444; }
+    nav ul li a { display: flex; align-items: center; padding: 15px 20px; color: #fff; text-decoration: none; transition: 0.3s; }
+    nav ul li a i { margin-right: 10px; }
+    nav ul li a.active, nav ul li a:hover { background: #40739e; }
+
+    /* Main Content */
+    main { flex: 1; padding: 20px; overflow-x: auto; }
+
+    header { margin-bottom: 20px; }
+    header h1 { font-size: 28px; margin-bottom: 10px; }
+    header p { font-size: 16px; color: #555; }
+
+    /* Stats Cards */
+    .stats { display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
+    .card { background: #fff; padding: 20px; border-radius: 8px; flex: 1; min-width: 150px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    .card h3 { font-size: 16px; margin-bottom: 10px; color: #333; }
+    .card p { font-size: 22px; font-weight: bold; color: #40739e; }
+
+    /* Table */
+    table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+    th { background: #40739e; color: #fff; }
+    .action-btn { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; margin-right: 5px; color: #fff; }
+    .approve { background: #44bd32; }
+    .reject { background: #e84118; }
+
+    /* Reports Section */
+    .reports { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+    .report-card { flex: 1; min-width: 200px; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    .report-card h4 { margin-bottom: 10px; color: #333; }
+    .report-card p { font-size: 18px; font-weight: bold; color: #40739e; }
+
+    /* Recent Activities */
+    .activities { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    .activities h3 { margin-bottom: 10px; color: #333; }
+    .activities ul { list-style: none; }
+    .activities ul li { padding: 10px 0; border-bottom: 1px solid #eee; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      nav { width: 60px; }
+      nav h2, nav ul li a span { display: none; }
+      .stats, .reports { flex-direction: column; }
+    }
+    /* Active Link */
+nav ul li a.active {
+    background: rgba(77, 163, 255, 0.15);
+    color: #4da3ff;
+}
+
+nav ul li a.active i {
+    color: #4da3ff;
+    opacity: 1;
+}
+
+/* Slide bar active */
+nav ul li a.active::before {
+    transform: scaleY(1);
+    background: #4da3ff;
+}
+
+/* Modify hover to avoid conflict */
+nav ul li:hover::before,
+nav ul li a:hover::before {
+    transform: scaleY(1);
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <nav>
+    <h2>Admin</h2>
+    <ul>
+      <li><a href="admin.html" class="active"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+      <li><a href="usermanage.html"><i class="fas fa-users"></i> <span>Users Management</span></a></li>
+      <li><a href="applimanage.html"><i class="fas fa-file-alt"></i> <span>Applications Management</span></a></li>
+      <li><a href="contntmanage.html"><i class="fas fa-file-code"></i> <span>Content Management</span></a></li>
+      <li><a href="report.html"><i class="fas fa-chart-line"></i> <span>Reports & Analytics</span></a></li>
+      <li><a href="payment.html"><i class="fas fa-credit-card"></i> <span>Payment/Subscription Management</span></a></li>
+      <li><a href="feed.html"><i class="fas fa-comment-dots"></i> <span>Feedback & Complaints</span></a></li>
+      <li><a href="sysSett.html"><i class="fas fa-cogs"></i> <span>System Settings</span></a></li>
+      <li><a href="security.html"><i class="fas fa-shield-alt"></i> <span>Security & Monitoring</span></a></li>
+    </ul>
+  </nav>
+  
+
+  <!-- Main Content -->
+  <main>
+    <header>
+      <h1>Dashboard (Admin Home)</h1>
+      <p>A quick overview of system activity</p>
+    </header>
+
+    <!-- Stats Cards -->
+    <div class="stats">
+      <div class="card"><h3>Total Registered Users</h3><p id="totalUsers">0</p></div>
+      <div class="card"><h3>Total Job Seekers</h3><p id="totalSeekers">0</p></div>
+      <div class="card"><h3>Total Employers</h3><p id="totalEmployers">0</p></div>
+      <div class="card"><h3>Total Job Posts</h3><p id="totalJobs">0</p></div>
+      <div class="card"><h3>Pending Job Posts</h3><p id="pendingJobs">0</p></div>
+    </div>
+
+    <!-- Reports Summary -->
+    <div class="reports">
+      <div class="report-card"><h4>Daily Reports</h4><p id="dailyReports">0</p></div>
+      <div class="report-card"><h4>Weekly Reports</h4><p id="weeklyReports">0</p></div>
+      <div class="report-card"><h4>Monthly Reports</h4><p id="monthlyReports">0</p></div>
+      <div class="report-card"><h4>Monthly income</h4><p id="monthlyIncome">0</p></div>
+    </div>
+
+    <!-- Recent Activities -->
+    <div class="activities">
+      <h3>Recent Activities</h3>
+      <ul id="recentActivities">
+        <li>User John Doe registered</li>
+        <li>New job post added: "Frontend Developer"</li>
+        <li>Employer Jane Smith approved a job post</li>
+      </ul>
+    </div>
+
+    <!-- Users Table -->
+    <table id="usersTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>John Doe</td>
+          <td>john@example.com</td>
+          <td class="status">Pending</td>
+          <td>
+            <button class="action-btn approve">Approve</button>
+            <button class="action-btn reject">Reject</button>
+          </td>
+        </tr>
+        <tr>
+          <td>Jane Smith</td>
+          <td>jane@example.com</td>
+          <td class="status">Active</td>
+          <td>
+            <button class="action-btn approve">Approve</button>
+            <button class="action-btn reject">Reject</button>
+          </td>
+        </tr>
+        <tr>
+          <td>Bob Johnson</td>
+          <td>bob@example.com</td>
+          <td class="status">Pending</td>
+          <td>
+            <button class="action-btn approve">Approve</button>
+            <button class="action-btn reject">Reject</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+
+  <!-- JavaScript -->
+  <script>
+    // Sidebar highlight
+    document.querySelectorAll('nav ul li a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.querySelectorAll('nav ul li a').forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      });
+    });
+
+    // Stats animation
+    const stats = {
+      totalUsers: 500,
+      totalSeekers: 350,
+      totalEmployers: 150,
+      totalJobs: 220,
+      pendingJobs: 15,
+      dailyReports: 20,
+      weeklyReports: 120,
+      monthlyReports: 450
+    };
+
+    function animateStat(id, endValue) {
+      let current = 0;
+      const el = document.getElementById(id);
+      const increment = Math.ceil(endValue / 50);
+      const interval = setInterval(() => {
+        current += increment;
+        if (current >= endValue) { current = endValue; clearInterval(interval); }
+        el.textContent = current;
+      }, 20);
+    }
+
+    for (const key in stats) {
+      animateStat(key, stats[key]);
+    }
+
+    // Table actions
+    document.querySelectorAll('.approve').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.closest('tr').querySelector('.status').textContent = 'Active';
+      });
+    });
+    document.querySelectorAll('.reject').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.closest('tr').querySelector('.status').textContent = 'Rejected';
+      });
+    });
+
+    // Search filter
+    const searchInput = document.createElement('input');
+    searchInput.type = 'text';
+    searchInput.placeholder = 'Search users...';
+    searchInput.style.marginBottom = '10px';
+    searchInput.style.padding = '6px 10px';
+    document.querySelector('main').insertBefore(searchInput, document.querySelector('#usersTable'));
+
+    searchInput.addEventListener('keyup', () => {
+      const filter = searchInput.value.toLowerCase();
+      document.querySelectorAll('#usersTable tbody tr').forEach(row => {
+        const name = row.cells[0].textContent.toLowerCase();
+        const email = row.cells[1].textContent.toLowerCase();
+        row.style.display = (name.includes(filter) || email.includes(filter)) ? '' : 'none';
+      });
+    });
+  </script>
+
+</body>
+</html>

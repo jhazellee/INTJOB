@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inbox - INTJOB</title>
+  <link rel="stylesheet" href="inbox.css" />
+</head>
+<body>
+  <div class="container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar collapsed" id="sidebar">
+      <div class="logo">
+        <img src="1.jpg" alt="IntJob Logo" class="logo-img">
+        <span class="logo-text">INTJOB</span>
+      </div>
+
+      <ul>
+        <li><a href="main2.html" title="Home">🏠 <span>Home</span></a></li>
+        <li><a href="jobcatego.html" title="Job Categories">📂 <span>Job Categories</span></a></li>
+        <li><a href="inbox.html" class="active" title="Inbox">📥 <span>Inbox</span></a></li>
+        <li><a href="appliedsta.html" title="Applied">✅ <span>Applied</span></a></li>
+        <li><a href="resume.html" title="Resume">📄 <span>Resume</span></a></li>
+      </ul>
+
+      <div class="bottom-links">
+        <a href="settings.html" title="Settings">⚙️ <span>Settings</span></a>
+        <a href="profile.html" title="Profile">👤 <span>Profile</span></a>
+      </div>
+
+      <button id="toggleSidebar" class="toggle-btn">☰</button>
+    </aside>
+
+    <!-- Main Inbox Content -->
+    <div class="inbox-page">
+      <header class="topbar">
+        <h1>📥 Inbox</h1>
+        <input type="text" placeholder="Search messages..." class="search-bar">
+      </header>
+
+      <div class="inbox-wrapper">
+        <!-- Left Message List -->
+        <aside class="message-list">
+          <div class="message active">
+            <div class="msg-info">
+              <h4>Company HR</h4>
+              <p>We received your application for Engineer...</p>
+            </div>
+            <span class="time">2h</span>
+          </div>
+
+          <div class="message">
+            <div class="msg-info">
+              <h4>IntJob Support</h4>
+              <p>Your profile has been updated successfully.</p>
+            </div>
+            <span class="time">5h</span>
+          </div>
+
+          <div class="message">
+            <div class="msg-info">
+              <h4>Recruiter A</h4>
+              <p>Please send your updated resume...</p>
+            </div>
+            <span class="time">1d</span>
+          </div>
+        </aside>
+
+        <!-- Right Message Content -->
+        <section class="chat-view">
+          <div class="chat-header">
+            <div>
+              <h2>Company HR</h2>
+              <span>Project Engineer Application</span>
+            </div>
+            <button class="reply-btn">↩ Reply</button>
+          </div>
+
+          <div class="chat-body">
+            <div class="chat-msg received">
+              <p>Hello! We’ve reviewed your resume. Can you join a quick interview this week?</p>
+              <span>2:30 PM</span>
+            </div>
+            <div class="chat-msg sent">
+              <p>Yes, I’m available. What time works for you?</p>
+              <span>2:45 PM</span>
+            </div>
+          </div>
+
+          <div class="chat-input">
+            <input type="text" placeholder="Type a message...">
+            <button>Send</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sidebar Toggle
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('toggleSidebar');
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+    });
+  </script>
+</body>
+</html>
