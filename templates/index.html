@@ -12,14 +12,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="thesistry.css">
+  <link rel="stylesheet" href="/static/thesistry.css">
 </head>
+
 <body>
   <!-- HEADER -->
   <header class="nav container" role="navigation" aria-label="Main">
     <a href="#home" class="brand">
       <span class="logo" aria-hidden="true">
-        <img src="1.jpg" alt="IntJob Logo" width="60" height="60">
+        <img src="/static/1.jpg" alt="IntJob Logo" width="60" height="60">
       </span>
       <span>IntJob</span>
     </a>
@@ -104,13 +105,14 @@
       </div>
     </div>
   </footer>
+
  <!-- LOGIN / SIGNUP MODAL -->
 <div class="modal hidden" id="authModal" aria-hidden="true" role="dialog" aria-labelledby="authTitle">
   <div class="modal-content">
     <h3 id="authTitle">Login</h3>
 
     <!-- LOGIN FORM -->
-    <form id="loginForm" class="auth-form">
+    <form id="loginForm" class="auth-form hidden" action="/login" method="POST">
       <label>Email
         <input type="email" name="email" required>
       </label>
@@ -121,8 +123,8 @@
 
       <label>Role
         <select name="role" required>
-          <option value="applicant">Employers</option>
-          <option value="employer">Applicant</option>
+          <option value="applicant">Applicant</option>
+          <option value="employer">Employer</option>
           <option value="admin">Admin</option>
         </select>
       </label>
@@ -137,7 +139,7 @@
     </form>
 
     <!-- SIGNUP FORM -->
-    <form id="signUpForm" class="auth-form hidden">
+    <form id="signUpForm" class="auth-form hidden" action="/signup" method="POST">
       <label>Full name
         <input type="text" name="name" required>
       </label>
@@ -149,6 +151,7 @@
       <label>Password
         <input type="password" name="password" required>
       </label>
+      
       <label>Role
         <select name="role" required>
           <option value="applicant">Applicant</option>
@@ -168,6 +171,6 @@
   </div>
 </div>
 
-  <script src="thesistryjs.js"></script>  
+  <script src="/static/thesistryjs.js"></script>  
   </body>
 </html>
