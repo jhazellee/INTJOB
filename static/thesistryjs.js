@@ -42,11 +42,14 @@ document.addEventListener('DOMContentLoaded', function() {
     openModal(false);
   });
 
-  // Openers from nav buttons
+  // Open and Switch Logic
   openLogin?.addEventListener('click', e => { e.preventDefault(); openModal(false); });
   openSignup?.addEventListener('click', e => { e.preventDefault(); openModal(true); });
+  switchToSignup.addEventListener('click', e => { e.preventDefault(); openModal(true); });
+  switchToLogin.addEventListener('click', e => { e.preventDefault(); openModal(false); });
 
-  // Login submission
+  // Remove this block if you want to handle form submissions with actual backend logic
+  /*// Login submission
   loginForm.addEventListener('submit', e => {
     e.preventDefault();
     const role = loginForm.querySelector("select[name='role']").value;
@@ -59,5 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
   signUpForm.addEventListener('submit', e => {
     e.preventDefault();
     alert('Sign up submitted!'); // Replace with your backend submission logic
-  });
+  });*/
 });
+
+
