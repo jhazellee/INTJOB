@@ -1,50 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Employer Dashboard — IntJob</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="owner2.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employer Dashboard — IntJob</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/owner2.css">
 </head>
 <body>
-
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <div class="logo">
-      Int<span>Job</span>
-  </div>
-    <a href="/templates/owner.html"><i class="fa fa-home"></i> Dashboard</a>
-    <a href="viewapp.html"><i class="fa fa-briefcase"></i> View Applicants</a>
-    <a href="jobspost.html"><i class="fa fa-briefcase"></i> Job Posts</a>
-    <a href="applicantsupdates.html"><i class="fa fa-users"></i> Applicants</a>
-    <a href="mess.html"><i class="fa fa-envelope"></i> Messages</a>
-    <a href="companypfp.html"><i class="fa fa-building"></i> Company Profile</a>
-    <a href="sett.html"><i class="fa fa-cog"></i> Settings</a>
-  </div>
-  <!-- Main Content -->
-  <div class="main-content">
-    <h1><i class="fa fa-briefcase"></i> Employer Dashboard — IntJob</h1>
-
-    <div class="card">
-      <h2><i class="fa fa-chart-bar"></i> Overview</h2>
-      <p>Total Posts: <strong>5</strong></p>
-      <p>Active Applicants: <strong>34</strong></p>
-      <p>Pending Reviews: <strong>7</strong></p>
+    <div class="sidebar">
+        <div class="logo">
+            Int<span>Job</span>
+        </div>
+        <a href="/templates/owner.html"><i class="fa fa-home"></i> Dashboard</a>
+        <a href="../viewapp.html"><i class="fa fa-briefcase"></i> View Applicants</a>
+        <a href="../jobspost.html"><i class="fa fa-briefcase"></i> Job Posts</a>
+        <a href="../applicantsupdates.html"><i class="fa fa-users"></i> Applicants</a>
+        <a href="/mess.html"><i class="fa fa-envelope"></i> Messages</a>
+        <a href="../companypfp.html"><i class="fa fa-building"></i> Company Profile</a>
+        <a href="../sett.html"><i class="fa fa-cog"></i> Settings</a>
+        
+        <a href="/logout" style="color: #ff4d4d;"><i class="fa fa-sign-out-alt"></i> Logout</a>
     </div>
 
-    <div class="card">
-      <h2><i class="fa fa-clipboard-list"></i> Job Postings</h2>
-      <p>Manage your active and closed job listings here.</p>
-      <button class="btn"><i class="fa fa-plus"></i> Add New Job</button>
-    </div>
+    <div class="main-content">
+        <h1><i class="fa fa-briefcase"></i> Welcome, {{ session['user_name'] }}!</h1>
 
-    <div class="card">
-      <h2><i class="fa fa-bell"></i> Notifications</h2>
-      <p>New applicant for “Web Developer” position.</p>
-      <p>Reminder: Interview scheduled with Leira Mia at 3PM.</p>
-    </div>
+        <div class="card">
+            <h2><i class="fa fa-chart-bar"></i> Overview</h2>
+            <p>Total Posts: <strong>5</strong></p>
+            <p>Active Applicants: <strong>34</strong></p>
+            <p>Pending Reviews: <strong>7</strong></p>
+        </div>
 
-  </div>
+        <div class="card">
+            <h2><i class="fa fa-clipboard-list"></i> Job Postings</h2>
+            <p>Manage your active and closed job listings here.</p>
+            <button class="btn"><i class="fa fa-plus"></i> Add New Job</button>
+        </div>
+
+        <div class="card">
+            <h2><i class="fa fa-bell"></i> Notifications</h2>
+            <p>New applicant for “Web Developer” position.</p>
+            <p>Reminder: Interview scheduled with Leira Mia at 3PM.</p>
+        </div>
+    </div>
 </body>
 </html>

@@ -54,12 +54,11 @@ def signup():
 # Applicant, Employer, Admin Home Routes
 @app.route('/applicant-home')
 def applicant_dashboard():
-    return render_template('owner.html') # This is your applicant page
+    return render_template('skillsandsports.html') # This is your applicant page
 
 @app.route('/employer-home')
 def employer_dashboard():
-    return render_template('skillsandsports.html') # This is your employer page
-
+    return render_template('owner.html') # This is your employer page
 @app.route('/admin-home')
 def admin_dashboard():
     return render_template('admin.html')
@@ -110,3 +109,6 @@ def dashboard():
         return redirect(url_for('index')) # Boot them out if not logged in
     
     return "This is your private job dashboard!"
+
+if __name__ == '__main__':
+    app.run(debug=True)

@@ -306,6 +306,10 @@
   .footer-social a:hover {
     transform: translateY(-3px);
   }
+
+  /* Insert Alert Styles here */
+  
+ 
   
   /* ================= ANIMATIONS ================= */
   @keyframes fadeInUp {

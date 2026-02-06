@@ -48,6 +48,9 @@ document.addEventListener('DOMContentLoaded', function() {
   switchToSignup.addEventListener('click', e => { e.preventDefault(); openModal(true); });
   switchToLogin.addEventListener('click', e => { e.preventDefault(); openModal(false); });
 
+  // Alert for login
+  
+
   // Remove this block if you want to handle form submissions with actual backend logic
   /*// Login submission
   loginForm.addEventListener('submit', e => {
