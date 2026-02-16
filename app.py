@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, redirect, url_for, flash
+from flask import Flask, render_template, request, session, redirect, url_for, flash, jsonify
 import pyodbc
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -59,11 +59,46 @@ def applicant_dashboard():
 @app.route('/employer-home')
 def employer_dashboard():
     return render_template('owner.html') # This is your employer page
+
 @app.route('/admin-home')
 def admin_dashboard():
     return render_template('admin.html')
 
-# Login Route
+@app.route('/admin/users')
+def admin_users():
+    return render_template('usermanage.html') # Admin user management page
+
+@app.route('/admin/applications')
+def admin_applications():
+    return render_template('applimanage.html') # Admin applications management page
+
+@app.route('/admin/content')
+def admin_content():
+    return render_template('contntmanage.html') # Admin content management page
+
+@app.route('/admin/reports')
+def admin_reports():    
+    return render_template('report.html') # Admin reports & analytics page
+
+@app.route('/admin/payments')
+def admin_payments():
+    return render_template('payment.html') # Admin payment/subscription management page
+
+@app.route('/admin/feedback')
+def admin_feedback():
+    return render_template('feed.html') # Admin feedback & complaints page
+
+@app.route('/admin/settings')
+def admin_settings():
+    return render_template('sysSett.html') # Admin system settings page
+
+@app.route('/admin/security')
+def admin_security():
+    return render_template('security.html') # Admin security & monitoring page
+
+
+
+# -------------------- Login Route --------------------
 @app.route('/login', methods=['POST'])
 def login():
     email = request.form.get('email')
@@ -78,22 +113,23 @@ def login():
         conn.close()
 
         if user and check_password_hash(user.password_hash, password):
-            # 1. Save info to session
+
+            if user.role != role:
+                return jsonify({"success": False, "message": "Invalid role selected."})
+
             session['user_id'] = user.id
             session['user_name'] = user.full_name
             session['role'] = user.role
 
-            # 2. Redirect based on role (The Python version of your JS logic)
             if user.role == 'applicant':
-                return redirect(url_for('applicant_dashboard'))
+                return jsonify({"success": True, "redirect": url_for('applicant_dashboard')})
             elif user.role == 'employer':
-                return redirect(url_for('employer_dashboard'))
-            elif user.role == 'admin':
-                return redirect(url_for('admin_dashboard'))
-        
-        return "Invalid credentials"
+                return jsonify({"success": True, "redirect": url_for('employer_dashboard')})
+
+        return jsonify({"success": False, "message": "Invalid email or password."})
+
     except Exception as e:
-        return f"Error: {e}"
+        return jsonify({"success": False, "message": str(e)})
 
 # Logout Route
 @app.route('/logout')

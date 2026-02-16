@@ -111,8 +111,17 @@
   <div class="modal-content">
     <h3 id="authTitle">Login</h3>
 
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <p class="alert {{ category }}">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
     <!-- LOGIN FORM -->
     <form id="loginForm" class="auth-form hidden" action="/login" method="POST">
+      <p id="loginError" class="alert error hidden"></p>
       <label>Email
         <input type="email" name="email" required placeholder="example@email.com">
       </label>
@@ -124,8 +133,7 @@
       <label>Role
         <select name="role" required>
           <option value="applicant">Applicant</option>
-          <option value="employer">Employer</option>
-          <option value="admin">Admin</option>
+          <option value="employer">Employer</option> <!-- removed Admin option -->
         </select>
       </label>
 
@@ -157,7 +165,7 @@
         <select name="role" required>
           <option value="applicant">Applicant</option>
           <option value="employer">Employer</option>
-          <option value="admin">Admin</option>
+          <!-- Removed Admin Option -->
         </select>
       </label>
 

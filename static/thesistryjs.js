@@ -49,7 +49,26 @@ document.addEventListener('DOMContentLoaded', function() {
   switchToLogin.addEventListener('click', e => { e.preventDefault(); openModal(false); });
 
   // Alert for login
-  
+loginForm.addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const formData = new FormData(loginForm);
+  const errorBox = document.getElementById('loginError');
+
+  const response = await fetch('/login', {
+    method: 'POST',
+    body: formData
+  });
+
+  const data = await response.json();
+
+  if (data.success) {
+    window.location.href = data.redirect;
+  } else {
+    errorBox.textContent = data.message;
+    errorBox.classList.remove('hidden');
+  }
+});
 
   // Remove this block if you want to handle form submissions with actual backend logic
   /*// Login submission

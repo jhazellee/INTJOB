@@ -308,9 +308,21 @@
   }
 
   /* Insert Alert Styles here */
-  
- 
-  
+.alert {
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.alert.error {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+
   /* ================= ANIMATIONS ================= */
   @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px);}
