@@ -7,33 +7,50 @@
   <link rel="stylesheet" href="/static/subjectsdesign.css">
 </head>
 <body>
-  <!-- HEADER -->
   <main class="container" role="main">
     <header>
       <div>
         <h1>Choose your Skills</h1>
         <p class="lead">Let your employer know how valuable you can be to them.</p>
+        <span class="note1">You can pick one or many</span>
       </div>
-      <div class="note">You can pick one or many</div>
     </header>
 
     <form id="sportsSkillsForm" autocomplete="on">
-      <div class="grid" id="sportsSkillsGrid">
-        <!-- Technical Skills -->
-        <div class="subject"><input type="checkbox" name="choices" id="c-basketball" value="Basketball"><label for="c-basketball">Basketball</label></div>
-        <div class="subject"><input type="checkbox" name="choices" id="c-football" value="Football"><label for="c-football">Football</label></div>
-        <div class="subject"><input type="checkbox" name="choices" id="c-volleyball" value="Volleyball"><label for="c-volleyball">Volleyball</label></div>
-        <div class="subject"><input type="checkbox" name="choices" id="c-swimming" value="Swimming"><label for="c-swimming">Swimming</label></div>
-        <div class="subject"><input type="checkbox" name="choices" id="c-tennis" value="Tennis"><label for="c-tennis">Tennis</label></div>
-        <div class="subject"><input type="checkbox" name="choices" id="c-running" value="Running"><label for="c-running">Running</label></div>
+      
+      <h3>Technical Skills</h3>
+      <div class="grid" id="techSkillsGrid">
+        <div class="subject"><input type="checkbox" name="choices" id="c-graphic" value="Graphic Design"><label for="c-graphic">Graphic Design</label></div>
+        <div class="subject"><input type="checkbox" name="choices" id="c-dataAnalysis" value="Data Analysis"><label for="c-dataAnalysis">Data Analysis</label></div>
+        <div class="subject"><input type="checkbox" name="choices" id="c-healthsafety" value="Health & Safety"><label for="c-healthsafety">Health & Safety Compliance</label></div>
+        <div class="subject"><input type="checkbox" name="choices" id="c-webdev" value="Web Development"><label for="c-webdev">Web Development</label></div>
+      </div>
 
-        <!-- Soft Skills -->
-        <div class="subject"><input type="checkbox" name="choices" id="c-leadership" value="Leadership"><label for="c-leadership">Leadership</label></div>
+      <div id="webdevDetails" style="display: none;">
+        <h4>Web Development Specializations</h4>
+        <div class="grid">
+          <div class="subject"><input type="checkbox" name="subChoices" id="sc-frontend" value="Frontend"><label for="sc-frontend">Frontend</label></div>
+          <div class="subject"><input type="checkbox" name="subChoices" id="sc-backend" value="Backend"><label for="sc-backend">Backend</label></div>
+          <div class="subject"><input type="checkbox" name="subChoices" id="sc-fullstack" value="Fullstack"><label for="sc-fullstack">Fullstack</label></div>
+        </div>
+      </div>
+
+      <div id="dataAnalysisDetails" style="display: none;">
+        <h4>Data Analysis Specializations</h4>
+        <div class="grid">
+          <div class="subject"><input type="checkbox" name="subChoices" id="sc-statistics" value="Statistics"><label for="sc-statistics">Statistics</label></div>
+          <div class="subject"><input type="checkbox" name="subChoices" id="sc-machinelearning" value="Machine Learning"><label for="sc-machinelearning">Machine Learning</label></div>
+          <div class="subject"><input type="checkbox" name="subChoices" id="sc-datavisualization" value="Data Visualization"><label for="sc-datavisualization">Data Visualization</label></div>
+        </div>
+      </div>
+
+      <h3>Soft Skills</h3>
+      <div class="grid" id="softSkillsGrid">
+        <div class="subject"><input type="checkbox" name="choices" id="c-problem" value="Problem Solving"><label for="c-problem">Problem Solving</label></div>
         <div class="subject"><input type="checkbox" name="choices" id="c-teamwork" value="Teamwork"><label for="c-teamwork">Teamwork</label></div>
-        <div class="subject"><input type="checkbox" name="choices" id="c-coding" value="Coding"><label for="c-coding">Coding</label></div>
-        <div class="subject"><input type="checkbox" name="choices" id="c-communication" value="Communication"><label for="c-communication">Communication</label></div>
+        <div class="subject"><input type="checkbox" name="choices" id="c-communication" value="Communication"><label for="communication">Communication</label></div>
+        <div class="subject"><input type="checkbox" name="choices" id="c-adaptability" value="Adaptability"><label for="c-adaptability">Adaptability</label></div>
 
-        <!-- ✅ Others input -->
         <div class="subject other-input">
           <label for="c-other">Others:</label>
           <input type="text" id="c-other" name="otherChoice" placeholder="Type here..." />
@@ -60,89 +77,6 @@
     </form>
   </main>
 
-  <script>
-    // DOM refs
-    const form = document.getElementById('sportsSkillsForm');
-    const checkboxes = Array.from(document.querySelectorAll("input[name='choices']"));
-    const countNote = document.getElementById('countNote');
-    const selectAllBtn = document.getElementById('selectAll');
-    const clearAllBtn = document.getElementById('clearAll');
-    const errorMsg = document.getElementById('errorMsg');
-    const confirmPanel = document.getElementById('confirmPanel');
-    const selectedTags = document.getElementById('selectedTags');
-    const continueBtn = document.getElementById('continueBtn');
-    const editBtn = document.getElementById('editBtn');
-    const otherInput = document.getElementById('c-other');
-
-    function updateCount(){
-      const n = checkboxes.filter(cb => cb.checked).length;
-      countNote.textContent = n + ' selected';
-    }
-
-    // toggle when clicking the card
-    document.getElementById('sportsSkillsGrid').addEventListener('click', (e) => {
-      const target = e.target;
-      if(target.tagName === 'DIV' && target.classList.contains('subject') && !target.classList.contains('other-input')){
-        const cb = target.querySelector("input[type='checkbox']");
-        cb.checked = !cb.checked;
-        updateCount();
-      }
-      if(target.tagName === 'LABEL'){
-        setTimeout(updateCount, 5);
-      }
-    });
-
-    // select all
-    selectAllBtn.addEventListener('click', () => {
-      checkboxes.forEach(cb => cb.checked = true);
-      updateCount();
-    });
-
-    // clear all
-    clearAllBtn.addEventListener('click', () => {
-      checkboxes.forEach(cb => cb.checked = false);
-      otherInput.value = "";
-      updateCount();
-    });
-
-    // live update
-    checkboxes.forEach(cb => cb.addEventListener('change', updateCount));
-    updateCount();
-
-    // submit
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const selected = checkboxes.filter(cb => cb.checked).map(cb => cb.value);
-      const otherVal = otherInput.value.trim();
-      if(otherVal) selected.push(otherVal);
-
-      if(selected.length === 0){
-        errorMsg.style.display = 'block';
-        confirmPanel.style.display = 'none';
-        return;
-      }
-      errorMsg.style.display = 'none';
-
-      localStorage.setItem('selectedSportsSkills', JSON.stringify(selected));
-
-      selectedTags.innerHTML = '';
-      selected.forEach(s => {
-        const el = document.createElement('span');
-        el.className = 'tag';
-        el.textContent = s;
-        selectedTags.appendChild(el);
-      });
-      confirmPanel.style.display = 'block';
-      confirmPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    });
-
-    continueBtn.addEventListener('click', () => {
-      window.location.href = 'subjects.html';
-    });
-
-    editBtn.addEventListener('click', () => {
-      confirmPanel.style.display = 'none';
-    });
-  </script>
+  <script src="/static/skillsandsports.js"></script>
 </body>
 </html>

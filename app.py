@@ -54,7 +54,7 @@ def signup():
 # Applicant, Employer, Admin Home Routes
 @app.route('/applicant')
 def applicant_dashboard():
-    return render_template('skillsandsports.html') # This is your applicant page
+    return render_template('main2.html') # This is your applicant page
 
 @app.route('/employer')
 def employer_dashboard():
@@ -100,9 +100,36 @@ def admin_security():
 #-------------------------------------------------------------------------
 
 #--------------------- Employer Routes --------------------
-@app.route('/employer/viewapp')
+@app.route('/employer/owner')
 def view_applicants():
-    return render_template('viewapp.html') # Employer view applicants page
+    if 'user_id' not in session or session.get('role') != 'employer':
+        return redirect(url_for('index'))
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        
+        # This query groups skills by user so you don't get duplicate rows for one person
+        # STRING_AGG is a SQL Server function that puts skills in a comma-separated list
+        query = """
+            SELECT 
+                u.id, 
+                u.full_name, 
+                u.email,
+                STRING_AGG(s.skill_name, ', ') AS all_skills
+            FROM users u
+            LEFT JOIN user_skills us ON u.id = us.user_id
+            LEFT JOIN skills s ON us.skill_id = s.id
+            WHERE u.role = 'applicant'
+            GROUP BY u.id, u.full_name, u.email
+        """
+        cursor.execute(query)
+        applicants = cursor.fetchall()
+        conn.close()
+
+        return render_template('viewapp.html', applicants=applicants)
+    except Exception as e:
+        return f"Error loading applicants: {e}" # Employer view applicants page
 
 @app.route('/employer/jobspost')
 def jobspost():
@@ -123,9 +150,25 @@ def companypfp():
 @app.route('/employer/sett')
 def sett():
     return render_template('sett.html') # Employer settings page
+#-------------------Employer Route End ---------------------------
 
+# --------------------- Applicant Routes --------------------
+@app.route('/applicant/jobcatego')
+def jobcatego():
+    return render_template('jobcatego.html') # Applicant job categories page
 
+@app.route('/applicant/inbox')
+def inbox():
+    return render_template('inbox.html') # Applicant inbox page 
 
+@app.route('/applicant/appliedsta')
+def appliedsta():
+    return render_template('appliedsta.html') # Applicant application status page
+
+@app.route('/applicant/resume')
+def resume():
+    return render_template('resume.html') # Applicant resume page
+# ------------------- Applicant Route End ---------------------------
 
 # -------------------- Login Route --------------------
 @app.route('/login', methods=['POST'])
@@ -175,5 +218,36 @@ def dashboard():
     
     return "This is your private job dashboard!"
 
+
+
+# For Saving Skills
+@app.route('/save-skills', methods=['POST'])
+def save_skills():
+    if 'user_id' not in session:
+        return jsonify({"success": False, "message": "Session expired"}), 401
+
+    data = request.get_json()
+    skills_list = data.get('skills', [])
+    user_id = session['user_id']
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM user_skills WHERE user_id = ?", (user_id,))
+        for skill_name in skills_list:
+            cursor.execute("SELECT id FROM skills WHERE skill_name = ?", (skill_name,))
+            row = cursor.fetchone()
+            if row:
+                skill_id = row[0]
+            else:
+                cursor.execute("INSERT INTO skills (skill_name) OUTPUT INSERTED.id VALUES (?)", (skill_name,))
+                skill_id = cursor.fetchone()[0]
+            cursor.execute("INSERT INTO user_skills (user_id, skill_id) VALUES (?, ?)", (user_id, skill_id))
+        conn.commit()
+        conn.close()
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)}), 500
+    
 if __name__ == '__main__':
     app.run(debug=True)

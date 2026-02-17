@@ -5,22 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Application Status</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="applied.css">
+  <link rel="stylesheet" href="/static/applied.css">
 </head>
 <body>
   <!-- Sidebar -->
   <div class="sidebar">
     <div>
       <div class="logo">
-        <img src="1.jpg" alt="IntJob Logo" />
+        <img src="/static/1.jpg" alt="IntJob Logo" />
         <span>INTJOB</span>
       </div>
       <ul>
-        <li><a href="main2.html">🏠 <span>Home page</span></a></li>
-        <li><a href="jobcatego.html">📂 <span>Job Categories</span></a></li>
-        <li><a href="inbox.html">📥 <span>Inbox</span></a></li>
-        <li><a href="appliedsta.html" class="active">✅ <span>Applied status</span></a></li>
-        <li><a href="resume.html">📄 <span>Resume</span></a></li>
+        <li><a href="{{ url_for('applicant_dashboard') }}">🏠 <span>Home page</span></a></li>
+        <li><a href="{{ url_for('jobcatego') }}">📂 <span>Job Categories</span></a></li>
+        <li><a href="{{ url_for('inbox') }}">📥 <span>Inbox</span></a></li>
+        <li><a href="{{ url_for('appliedsta') }}" class="active">✅ <span>Applied status</span></a></li>
+        <li><a href="{{ url_for('resume') }}">📄 <span>Resume</span></a></li>
       </ul>
     </div>
 

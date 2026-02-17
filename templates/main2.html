@@ -7,24 +7,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IntJob Dashboard</title>
   <!-- External CSS -->
-  <link rel="stylesheet" href="main2.1.css">
+  <link rel="stylesheet" href="/static/main2.css">
 </head>
 <body>
   <!-- Sidebar -->
   <div class="sidebar" id="sidebar">
     <!-- Logo -->
     <div class="logo">
-      <img src="1.jpg" alt="IntJob Logo">
+      <img src="/static/1.jpg" alt="IntJob Logo">
       <span>INTJOB</span>
     </div>
     
     <!-- Navigation -->
     <ul>
-      <li><a href="main2.html">🏠 <span>Home page</span></a></li>
-      <li><a href="jobcatego.html">📂 <span>Job categories</span></a></li>
-      <li><a href="inbox.html">📥 <span>Inbox</span></a></li>
-      <li><a href="appliedsta.html">✅ <span>Applied status</span></a></li>
-      <li><a href="resume.html">📄 <span>Resume</span></a></li>
+      <li><a href="{{ url_for('applicant_dashboard') }}">🏠 <span>Home page</span></a></li>
+      <li><a href="{{ url_for('jobcatego') }}">📂 <span>Job categories</span></a></li>
+      <li><a href="{{ url_for('inbox') }}">📥 <span>Inbox</span></a></li>
+      <li><a href="{{ url_for('appliedsta') }}">✅ <span>Applied status</span></a></li>
+      <li><a href="{{ url_for('resume') }}">📄 <span>Resume</span></a></li>
     </ul>
   
     <!-- Bottom Links -->

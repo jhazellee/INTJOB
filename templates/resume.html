@@ -1,27 +1,26 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Resume Fill-Up</title>
-  <link rel="stylesheet" href="resume.css">
+  <link rel="stylesheet" href="/static/resume.css">
 </head>
 <body>
   <div class="container">
     <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="logo">
-        <img src="1.jpg" alt="IntJob Logo" />
+        <img src="/static/1.jpg" alt="IntJob Logo" />
         <span>INTJOB</span>
       </div>
 
       <ul>
-        <li><a href="main2.html">🏠 <span>Home Page</span></a></li>
-        <li><a href="jobcatego.html">📂 <span>Job Categories</span></a></li>
-        <li><a href="inbox.html">📥 <span>Inbox</span></a></li>
-        <li><a href="appliedsta.html">✅ <span>Applied Status</span></a></li>
-        <li><a href="resume.html" class="active">📄 <span>Resume</span></a></li>
+        <li><a href="{{ url_for('applicant_dashboard') }}">🏠 <span>Home Page</span></a></li>
+        <li><a href="{{ url_for('jobcatego') }}">📂 <span>Job Categories</span></a></li>
+        <li><a href="{{ url_for('inbox') }}">📥 <span>Inbox</span></a></li>
+        <li><a href="{{ url_for('appliedsta') }}">✅ <span>Applied Status</span></a></li>
+        <li><a href="{{ url_for('resume') }}" class="active">📄 <span>Resume</span></a></li>
       </ul>
 
       <div class="bottom-links">

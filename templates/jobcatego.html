@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Job Classification</title>
-  <link rel="stylesheet" href="jobcatego.css">
+  <link rel="stylesheet" href="/static/jobcatego.css">
 </head>
 <body>
   <div class="container">
@@ -12,17 +12,17 @@
     <!-- Sidebar -->
     <aside class="sidebar">
       <div class="logo">
-        <img src="1.jpg" alt="IntJob Logo" class="logo-img">
+        <img src="/static/1.jpg" alt="IntJob Logo" class="logo-img">
         <span>INTJOB</span>
       </div>
 
       <!-- Navigation -->
       <ul>
-        <li><a href="main2.html">🏠 <span>Home page</span></a></li>
-        <li><a href="jobcatego.html" class="active">📂 <span>Job categories</span></a></li>
-        <li><a href="inbox.html">📥 <span>Inbox</span></a></li>
-        <li><a href="appliedsta.html">✅ <span>Applied status</span></a></li>
-        <li><a href="resume.html">📄 <span>Resume</span></a></li>
+        <li><a href="{{ url_for('applicant_dashboard') }}">🏠 <span>Home page</span></a></li>
+        <li><a href="{{ url_for('jobcatego') }}" class="active">📂 <span>Job categories</span></a></li>
+        <li><a href="{{ url_for('inbox') }}">📥 <span>Inbox</span></a></li>
+        <li><a href="{{ url_for('appliedsta') }}">✅ <span>Applied status</span></a></li>
+        <li><a href="{{ url_for('resume') }}">📄 <span>Resume</span></a></li>
       </ul>
 
       <!-- Bottom Links -->

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Inbox - INTJOB</title>
-  <link rel="stylesheet" href="inbox.css" />
+  <link rel="stylesheet" href="/static/inbox.css" />
 </head>
 <body>
   <div class="container">
@@ -12,16 +12,16 @@
     <!-- Sidebar -->
     <aside class="sidebar collapsed" id="sidebar">
       <div class="logo">
-        <img src="1.jpg" alt="IntJob Logo" class="logo-img">
+        <img src="/static/1.jpg" alt="IntJob Logo" class="logo-img">
         <span class="logo-text">INTJOB</span>
       </div>
 
       <ul>
-        <li><a href="main2.html" title="Home">🏠 <span>Home</span></a></li>
-        <li><a href="jobcatego.html" title="Job Categories">📂 <span>Job Categories</span></a></li>
-        <li><a href="inbox.html" class="active" title="Inbox">📥 <span>Inbox</span></a></li>
-        <li><a href="appliedsta.html" title="Applied">✅ <span>Applied</span></a></li>
-        <li><a href="resume.html" title="Resume">📄 <span>Resume</span></a></li>
+        <li><a href="{{ url_for('applicant_dashboard') }}" title="Home">🏠 <span>Home</span></a></li>
+        <li><a href="{{ url_for('jobcatego') }}" title="Job Categories">📂 <span>Job Categories</span></a></li>
+        <li><a href="{{ url_for('inbox') }}" class="active" title="Inbox">📥 <span>Inbox</span></a></li>
+        <li><a href="{{ url_for('appliedsta') }}" title="Applied">✅ <span>Applied</span></a></li>
+        <li><a href="{{ url_for('resume') }}" title="Resume">📄 <span>Resume</span></a></li>
       </ul>
 
       <div class="bottom-links">
