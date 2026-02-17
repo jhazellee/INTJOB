@@ -52,18 +52,20 @@ def signup():
 
 # --------------------------------------------------------------------------
 # Applicant, Employer, Admin Home Routes
-@app.route('/applicant-home')
+@app.route('/applicant')
 def applicant_dashboard():
     return render_template('skillsandsports.html') # This is your applicant page
 
-@app.route('/employer-home')
+@app.route('/employer')
 def employer_dashboard():
     return render_template('owner.html') # This is your employer page
 
-@app.route('/admin-home')
+@app.route('/admin')
 def admin_dashboard():
     return render_template('admin.html')
+# --------------------------------------------------------------------------
 
+# -------------------- Admin Management Routes --------------------
 @app.route('/admin/users')
 def admin_users():
     return render_template('usermanage.html') # Admin user management page
@@ -76,16 +78,16 @@ def admin_applications():
 def admin_content():
     return render_template('contntmanage.html') # Admin content management page
 
-@app.route('/admin/reports')
-def admin_reports():    
+@app.route('/admin/report')
+def admin_report():    
     return render_template('report.html') # Admin reports & analytics page
 
 @app.route('/admin/payments')
 def admin_payments():
     return render_template('payment.html') # Admin payment/subscription management page
 
-@app.route('/admin/feedback')
-def admin_feedback():
+@app.route('/admin/feed')
+def admin_feed():
     return render_template('feed.html') # Admin feedback & complaints page
 
 @app.route('/admin/settings')
@@ -95,7 +97,16 @@ def admin_settings():
 @app.route('/admin/security')
 def admin_security():
     return render_template('security.html') # Admin security & monitoring page
+#-------------------------------------------------------------------------
 
+#--------------------- Employer Routes --------------------
+@app.route('/employer/viewapp')
+def view_applicants():
+    return render_template('viewapp.html') # Employer view applicants page
+
+@app.route('/employer/jobspost')
+def jobspost():
+    return render_template('jobspost.html') # Employer job posting page
 
 
 # -------------------- Login Route --------------------
