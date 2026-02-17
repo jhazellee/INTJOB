@@ -89,15 +89,15 @@ nav ul li a:hover::before {
   <nav>
     <h2>Admin</h2>
     <ul>
-      <li><a href="admin.html" class="active"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
-      <li><a href="usermanage.html"><i class="fas fa-users"></i> <span>Users Management</span></a></li>
-      <li><a href="applimanage.html"><i class="fas fa-file-alt"></i> <span>Applications Management</span></a></li>
-      <li><a href="contntmanage.html"><i class="fas fa-file-code"></i> <span>Content Management</span></a></li>
-      <li><a href="report.html"><i class="fas fa-chart-line"></i> <span>Reports & Analytics</span></a></li>
-      <li><a href="payment.html"><i class="fas fa-credit-card"></i> <span>Payment/Subscription Management</span></a></li>
-      <li><a href="feed.html"><i class="fas fa-comment-dots"></i> <span>Feedback & Complaints</span></a></li>
-      <li><a href="sysSett.html"><i class="fas fa-cogs"></i> <span>System Settings</span></a></li>
-      <li><a href="security.html"><i class="fas fa-shield-alt"></i> <span>Security & Monitoring</span></a></li>
+      <li><a href="{{ url_for('admin_dashboard') }}" class="active"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+      <li><a href="{{ url_for('admin_users') }}"><i class="fas fa-users"></i> <span>Users Management</span></a></li>
+      <li><a href="{{ url_for('admin_applications') }}"><i class="fas fa-file-alt"></i> <span>Applications Management</span></a></li>
+      <li><a href="{{ url_for('admin_content') }}"><i class="fas fa-file-code"></i> <span>Content Management</span></a></li>
+      <li><a href="{{ url_for('admin_report') }}"><i class="fas fa-chart-line"></i> <span>Reports & Analytics</span></a></li>
+      <li><a href="{{ url_for('admin_payments') }}"><i class="fas fa-credit-card"></i> <span>Payment/Subscription Management</span></a></li>
+      <li><a href="{{ url_for('admin_feed') }}"><i class="fas fa-comment-dots"></i> <span>Feedback & Complaints</span></a></li>
+      <li><a href="{{ url_for('admin_settings') }}"><i class="fas fa-cogs"></i> <span>System Settings</span></a></li>
+      <li><a href="{{ url_for('admin_security') }}"><i class="fas fa-shield-alt"></i> <span>Security & Monitoring</span></a></li>
     </ul>
   </nav>
   
