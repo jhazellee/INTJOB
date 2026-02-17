@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Employer Dashboard — Company Profile</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-  <link rel="stylesheet" href="compnypfp.css">
+  <link rel="stylesheet" href="/static/compnypfp.css">
 </head>
 <body>
   <!-- Sidebar -->
@@ -13,13 +13,13 @@
     <div class="logo">
       Int<span>Job</span>
   </div>
-    <a href="owner.html"><i class="fa fa-home"></i> Dashboard</a>
-    <a href="viewapp.html"><i class="fa fa-briefcase"></i> View Applicants</a>
-    <a href="jobspost.html"><i class="fa fa-briefcase"></i> Job Posts</a>
-    <a href="applicantsupdates.html"><i class="fa fa-users"></i> Applicants</a>
-    <a href="mess.html"><i class="fa fa-envelope"></i> Messages</a>
-    <a href="companypfp.html"><i class="fa fa-building"></i> Company Profile</a>
-    <a href="sett.html"><i class="fa fa-cog"></i> Settings</a>
+    <a href="{{ url_for('employer_dashboard') }}"><i class="fa fa-home"></i> Dashboard</a>
+    <a href="{{ url_for('view_applicants') }}"><i class="fa fa-briefcase"></i> View Applicants</a>
+    <a href="{{ url_for('jobspost') }}"><i class="fa fa-briefcase"></i> Job Posts</a>
+    <a href="{{ url_for('applicant_update') }}"><i class="fa fa-users"></i> Applicants</a>
+    <a href="{{ url_for('mess') }}"><i class="fa fa-envelope"></i> Messages</a>
+    <a href="{{ url_for('companypfp') }}"><i class="fa fa-building"></i> Company Profile</a>
+    <a href="{{ url_for('sett') }}"><i class="fa fa-cog"></i> Settings</a>
   </div>
   <!-- Main Content -->
   <div class="main-content">
