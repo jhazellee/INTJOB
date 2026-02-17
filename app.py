@@ -108,6 +108,24 @@ def view_applicants():
 def jobspost():
     return render_template('jobspost.html') # Employer job posting page
 
+@app.route('/employer/appupdate')
+def applicant_update():
+    return render_template('applicantsupdates.html') # Employer applicant update page
+
+@app.route('/employer/mess')
+def mess():
+    return render_template('mess.html') # Employer messaging page  
+
+@app.route('/employer/companypfp')
+def companypfp():
+    return render_template('companypfp.html') # Employer company profile page
+
+@app.route('/employer/sett')
+def sett():
+    return render_template('sett.html') # Employer settings page
+
+
+
 
 # -------------------- Login Route --------------------
 @app.route('/login', methods=['POST'])
