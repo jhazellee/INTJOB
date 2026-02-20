@@ -322,6 +322,12 @@
   border: 1px solid #fecaca;
 }
 
+/* Green for successful signup */
+.alert.success {
+  background-color: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
 
   /* ================= ANIMATIONS ================= */
   @keyframes fadeInUp {

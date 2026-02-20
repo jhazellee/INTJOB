@@ -59,7 +59,6 @@ loginForm.addEventListener('submit', async function(e) {
     method: 'POST',
     body: formData
   });
-
   const data = await response.json();
 
   if (data.success) {
@@ -69,6 +68,31 @@ loginForm.addEventListener('submit', async function(e) {
     errorBox.classList.remove('hidden');
   }
 });
+
+const flashMarker = document.getElementById('has-flash-messages');
+if (flashMarker) {
+    const authModal = document.getElementById('authModal');
+    const loginForm = document.getElementById('loginForm');
+    const signUpForm = document.getElementById('signUpForm');
+    const authTitle = document.getElementById('authTitle');
+
+    authModal.classList.remove('hidden');
+
+    // If the message is an error, show the Signup form
+    const errorAlert = document.querySelector('.alert.error');
+    if (errorAlert) {
+        signUpForm.classList.remove('hidden');
+        loginForm.classList.add('hidden');
+        authTitle.textContent = 'Create Account';
+    } else {
+        // Otherwise, show the Login form for success messages
+        loginForm.classList.remove('hidden');
+        signUpForm.classList.add('hidden');
+        authTitle.textContent = 'Login';
+    }
+  }
+});
+
 
   // Remove this block if you want to handle form submissions with actual backend logic
   /*// Login submission
@@ -85,6 +109,6 @@ loginForm.addEventListener('submit', async function(e) {
     e.preventDefault();
     alert('Sign up submitted!'); // Replace with your backend submission logic
   });*/
-});
+
 
 

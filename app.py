@@ -32,23 +32,35 @@ def signup():
     password = request.form.get('password')
     role = request.form.get('role')
 
-    # Hash the password before it ever touches the database
     hashed_pw = generate_password_hash(password)
 
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
         
-        # We save hashed_pw, NOT the raw password
+        # --- 1. CHECK IF EMAIL ALREADY EXISTS ---
+        cursor.execute("SELECT id FROM users WHERE email = ?", (email,))
+        existing_user = cursor.fetchone()
+
+        if existing_user:
+            conn.close()
+            flash("This email is already registered. Please login instead.", "error")
+            return redirect(url_for('index'))
+
+        # --- 2. IF NOT EXISTS, PROCEED WITH INSERT ---
         cursor.execute(
             "INSERT INTO users (full_name, email, password_hash, role) VALUES (?, ?, ?, ?)",
             (full_name, email, hashed_pw, role)
         )
         conn.commit()
         conn.close()
-        return "Account created securely! You can now login."
+        
+        flash("Account created successfully! You can now login.", "success")
+        return redirect(url_for('index'))
+
     except Exception as e:
-        return f"Signup Error: {e}"
+        flash(f"Signup Error: {e}", "error")
+        return redirect(url_for('index'))
 
 # --------------------------------------------------------------------------
 # Applicant, Employer, Admin Home Routes

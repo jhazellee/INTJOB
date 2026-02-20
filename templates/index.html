@@ -111,14 +111,6 @@
   <div class="modal-content">
     <h3 id="authTitle">Login</h3>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <p class="alert {{ category }}">{{ message }}</p>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
-
     <!-- LOGIN FORM -->
     <form id="loginForm" class="auth-form hidden" action="/login" method="POST">
       <p id="loginError" class="alert error hidden"></p>
@@ -149,6 +141,15 @@
 
     <!-- SIGNUP FORM -->
     <form id="signUpForm" class="auth-form hidden" action="/signup" method="POST">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div id="has-flash-messages" style="display: none;"></div>
+          {% for category, message in messages %}
+            <div class="alert {{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+      
       <label>Full name
         <input type="text" name="name" required placeholder="Full name">
       </label>
@@ -180,6 +181,6 @@
   </div>
 </div>
 
-  <script src="/static/thesistryjs.js"></script>  
+  <script src="/static/thesistryjs.js"></script> 
   </body>
 </html>
