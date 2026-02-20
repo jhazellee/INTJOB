@@ -9,25 +9,25 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="custosupport.css">
+  <link rel="stylesheet" href="/static/custosupport.css">
 </head>
 <body>
   <!-- Sidebar -->
   <div class="sidebar">
     <div class="logo">
-      <img src="1.jpg" alt="IntJob Logo">
+      <img src="/static/1.jpg" alt="IntJob Logo">
       <span>INTJOB</span>
     </div>
 
     <ul>
-      <li><a href="jobcatego.html"><i class="fas fa-briefcase"></i><span>Job categories</span></a></li>
-      <li><a href="inbox.html"><i class="fas fa-inbox"></i><span>Inbox</span></a></li>
-      <li><a href="support.html" class="active"><i class="fas fa-headset"></i><span>Support</span></a></li>
+      <li><a href="{{ url_for('jobcatego') }}"><i class="fas fa-briefcase"></i><span>Job categories</span></a></li>
+      <li><a href="{{ url_for('inbox') }}"><i class="fas fa-inbox"></i><span>Inbox</span></a></li>
+      <!-- <li><a href="support.html" class="active"><i class="fas fa-headset"></i><span>Support</span></a></li>-->
     </ul>
 
     <div class="bottom-links">
-      <a href="settings.html"><i class="fas fa-cog"></i><span>Settings</span></a>
-      <a href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a>
+      <a href="{{ url_for('applicant_settings') }}"><i class="fas fa-cog"></i><span>Settings</span></a>
+      <a href="{{ url_for('applicant_profile') }}"><i class="fas fa-user"></i><span>Profile</span></a>
     </div>
   </div>
 

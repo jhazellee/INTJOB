@@ -24,7 +24,7 @@ def get_db_connection():
 def index():
     return render_template('index.html')
 
-# Signup Route
+# ----------------- Signup Route ----------------------------
 @app.route('/signup', methods=['POST'])
 def signup():
     full_name = request.form.get('name')
@@ -112,16 +112,11 @@ def view_applicants():
         # This query groups skills by user so you don't get duplicate rows for one person
         # STRING_AGG is a SQL Server function that puts skills in a comma-separated list
         query = """
-            SELECT 
-                u.id, 
-                u.full_name, 
-                u.email,
-                STRING_AGG(s.skill_name, ', ') AS all_skills
+            SELECT u.full_name, s.skill_name, s.category
             FROM users u
-            LEFT JOIN user_skills us ON u.id = us.user_id
-            LEFT JOIN skills s ON us.skill_id = s.id
+            JOIN user_skills us ON u.id = us.user_id
+            JOIN skills s ON us.skill_id = s.id
             WHERE u.role = 'applicant'
-            GROUP BY u.id, u.full_name, u.email
         """
         cursor.execute(query)
         applicants = cursor.fetchall()
@@ -168,7 +163,27 @@ def appliedsta():
 @app.route('/applicant/resume')
 def resume():
     return render_template('resume.html') # Applicant resume page
+
+@app.route('/skills-checklist')
+def skills_page():
+    if 'user_id' not in session:
+        return redirect(url_for('index'))
+    return render_template('skillsandsports.html')
+
+@app.route('/applicant/settings')
+def applicant_settings():
+    return render_template('settings.html')
+
+@app.route('/applicant/profile')
+def applicant_profile():
+    return render_template('profile.html')
+
+@app.route('/applicant/customersupport')
+def customersupport():
+    return render_template('customersupport.html')
+
 # ------------------- Applicant Route End ---------------------------
+
 
 # -------------------- Login Route --------------------
 @app.route('/login', methods=['POST'])
@@ -182,22 +197,37 @@ def login():
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM users WHERE email = ?", (email,))
         user = cursor.fetchone()
-        conn.close()
 
         if user and check_password_hash(user.password_hash, password):
-
             if user.role != role:
+                conn.close()
                 return jsonify({"success": False, "message": "Invalid role selected."})
 
+            # Set Session
             session['user_id'] = user.id
             session['user_name'] = user.full_name
             session['role'] = user.role
 
+            # --- APPLICANT REDIRECTION LOGIC ---
             if user.role == 'applicant':
-                return jsonify({"success": True, "redirect": url_for('applicant_dashboard')})
+                # Check if this user has any skills saved already
+                cursor.execute("SELECT COUNT(*) FROM user_skills WHERE user_id = ?", (user.id,))
+                has_skills = cursor.fetchone()[0]
+                conn.close()
+
+                if has_skills > 0:
+                    # User exists and has profile completed
+                    return jsonify({"success": True, "redirect": url_for('applicant_dashboard')})
+                else:
+                    # New user or profile incomplete
+                    return jsonify({"success": True, "redirect": url_for('skills_page')})
+
+            # --- EMPLOYER REDIRECTION LOGIC ---
             elif user.role == 'employer':
+                conn.close()
                 return jsonify({"success": True, "redirect": url_for('employer_dashboard')})
 
+        if conn: conn.close()
         return jsonify({"success": False, "message": "Invalid email or password."})
 
     except Exception as e:
@@ -219,8 +249,7 @@ def dashboard():
     return "This is your private job dashboard!"
 
 
-
-# For Saving Skills
+# -------------------- For Saving Skills ---------------------------
 @app.route('/save-skills', methods=['POST'])
 def save_skills():
     if 'user_id' not in session:
@@ -248,6 +277,8 @@ def save_skills():
         return jsonify({"success": True})
     except Exception as e:
         return jsonify({"success": False, "message": str(e)}), 500
-    
+
+
+ # ------------------------------------------  
 if __name__ == '__main__':
     app.run(debug=True)

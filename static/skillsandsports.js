@@ -153,7 +153,11 @@ function displayConfirmationTags(selected) {
 
 // 5. General Nav
 continueBtn?.addEventListener('click', () => {
-    window.location.href = '/applicant';
+    // If they finished skills and you want them to go to the dashboard:
+    window.location.href = '/applicant'; 
+    
+    // OR, if you want them to pick subjects next:
+    // window.location.href = '/subjects'; 
 });
 
 editBtn?.addEventListener('click', () => {
